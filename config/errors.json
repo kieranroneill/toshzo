@@ -1,0 +1,6 @@
+{
+  "INVALID_COLOUR": "Please use a valid colour",
+  "REQUIRED_COLOUR": "A colour is required",
+  "SERVER_ERROR": "Server error",
+  "TEAPOT_ERROR": "I am a little teapot short and stout!"
+}

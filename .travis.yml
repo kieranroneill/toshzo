@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - 4.4.5
+env:
+  - SERVER_IP=127.0.0.1
+
+addons:
+  artifacts: true
+
+notifications:
+  email: false
+
+install:
+  - npm install
+
+script:
+  - npm run lint
+  - npm test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

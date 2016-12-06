@@ -1,0 +1,15 @@
+{
+  "PORT": "8080",
+
+  "ROUTE": {
+    "TEAPOT_ENDPOINT": "/teapot",
+    "UNICORN_ENDPOINT": "/unicorn"
+  },
+
+  "COLOURS": {
+    "BLUE": "blue",
+    "GREEN": "green",
+    "RED": "red",
+    "WHITE": "white"
+  }
+}

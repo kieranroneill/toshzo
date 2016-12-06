@@ -1,0 +1,21 @@
+{
+    "env": {
+        "es6": true,
+        "mocha": true,
+        "node": true
+    },
+    "globals": {
+        "server": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "eol-last": ["error", "always"],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "linebreak-style": ["error", "unix"],
+        "no-unused-vars": ["error", { "varsIgnorePattern": "mongoose|sinonAsPromised|sinonMongoose" }],
+        "max-len": ["error", 120, { "ignoreComments": true }],
+        "quote-props": ["error", "consistent-as-needed"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
+    }
+}
