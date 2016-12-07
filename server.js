@@ -59,7 +59,7 @@ app.get(config.ROUTE.AUTH, (request, response) => response.render('auth', {
     secret: process.env.SUPER_SECRET
 }));
 
-app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
+app.get(config.ROUTE.COMPLETE, (request, response) => response.render('complete'));
 
 app.get('/', auth.isAuthenticated, (request, response) => response.render('index'));
 

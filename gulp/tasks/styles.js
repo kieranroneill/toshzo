@@ -9,7 +9,7 @@ module.exports = (gulp, config, plugins) => {
             .pipe(plugins.concat('style.scss'))
             .pipe(plugins.sass({ includePaths: ['./web/src/scss'] }).on('error', plugins.sass.logError))
             .pipe(plugins.autoprefixer()); // Add vendor prefixes.
-        let stream = plugins.streamqueue({ objectMode: true }, libStream, sassStream)
+        const stream = plugins.streamqueue({ objectMode: true }, libStream, sassStream)
             .pipe(plugins.concat('style.css'));
 
         if(isDevelopment) {
