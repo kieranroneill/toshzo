@@ -4,13 +4,15 @@ process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
+const exphbs = require('express-handlebars');
 const express = require('express');
 const expressValidator = require('express-validator');
 const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
+const path = require('path');
 
-const validator = require('./middleware/index').validator;
+const auth = require('./middleware/index').auth;
 
 const config = require('./config/default.json');
 
@@ -18,6 +20,10 @@ const Router = require('./routes/router');
 
 const app = express();
 const server = http.Server(app);
+const hbs = exphbs.create({
+    defaultLayout: 'main',
+    extname: '.hbs'
+});
 
 //====================================================
 // Configuration.
@@ -32,7 +38,10 @@ dotenv.config();
 app.use(morgan('dev')); // Log requests to console.
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(expressValidator(validator));
+app.use(expressValidator());
+app.use(express.static(path.resolve(__dirname, 'web', 'dist')));
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
 
 //====================================================
 // Routes.
@@ -40,7 +49,12 @@ app.use(expressValidator(validator));
 
 const router = new Router();
 
-app.use('/', router.router);
+app.use(config.ENDPOINTS.API, router.router);
+
+app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
+app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
+
+app.get('/', auth.isAuthenticated, (request, response) => response.render('index'));
 
 //====================================================
 // Errors...gotta catch 'em all.

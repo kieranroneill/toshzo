@@ -16,9 +16,5 @@ module.exports = {
         };
     },
 
-    getExpressValidationErrors: (errors) => {
-        return _.map(errors, (object) => {
-            return object.msg;
-        });
-    }
+    getExpressValidationErrors: errors => _.map(errors, object => object.msg)
 };

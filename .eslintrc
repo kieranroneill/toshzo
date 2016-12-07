@@ -1,5 +1,6 @@
 {
     "env": {
+        "browser": true,
         "es6": true,
         "mocha": true,
         "node": true
@@ -12,7 +13,7 @@
         "eol-last": ["error", "always"],
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "linebreak-style": ["error", "unix"],
-        "no-unused-vars": ["error", { "varsIgnorePattern": "mongoose|sinonAsPromised|sinonMongoose" }],
+        "no-unused-vars": ["error", { "varsIgnorePattern": "sinonAsPromised" }],
         "max-len": ["error", 120, { "ignoreComments": true }],
         "quote-props": ["error", "consistent-as-needed"],
         "quotes": ["error", "single"],

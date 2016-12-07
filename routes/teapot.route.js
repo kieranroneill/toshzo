@@ -17,7 +17,7 @@ class Teapot extends BaseRoute {
 
     registerRoutes() {
         this.router
-            .route(config.ROUTE.TEAPOT_ENDPOINT)
+            .route(config.ENDPOINTS.TEAPOT)
             .get((request, response, next) => next(util.createError(httpCodes.IM_A_TEAPOT, [errors.TEAPOT_ERROR])));
     }
 }

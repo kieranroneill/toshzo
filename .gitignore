@@ -52,8 +52,12 @@ out
 gen
 
 ### Test
-coverage/
-test-results.xml
+**coverage/
+**junit/
+**analysis/
+
+### Build
+**dist/
 
 ### Dependencies
 **node_modules/

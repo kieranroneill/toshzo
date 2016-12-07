@@ -8,7 +8,7 @@ const config = require('../../config/default.json');
 const errors = require('../../config/errors.json');
 
 const expect = chai.expect;
-const route = config.ROUTE.TEAPOT_ENDPOINT;
+const route = config.ENDPOINTS.API + config.ENDPOINTS.TEAPOT;
 
 describe('/teapot', () => {
     before(() => this.app = server.app);

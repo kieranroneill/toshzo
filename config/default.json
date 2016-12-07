@@ -1,15 +1,23 @@
 {
-  "PORT": "8080",
-
-  "ROUTE": {
-    "TEAPOT_ENDPOINT": "/teapot",
-    "UNICORN_ENDPOINT": "/unicorn"
+  "ENDPOINTS": {
+    "API": "/api",
+    "AUTH": "/auth",
+    "MONZO": "/monzo",
+    "TEAPOT": "/teapot"
   },
 
-  "COLOURS": {
-    "BLUE": "blue",
-    "GREEN": "green",
-    "RED": "red",
-    "WHITE": "white"
+  "MONZO": {
+    "ACCOUNTS": "/accounts",
+    "BASE": "https://api.monzo.com",
+    "TOKEN": "/oauth2/token",
+    "WEBHOOKS": "/webhooks",
+    "WHOAMI": "/ping/whoami"
+  },
+
+  "PORT": "1337",
+
+  "ROUTE": {
+    "AUTH": "/auth",
+    "COMPLETE": "/complete"
   }
 }
