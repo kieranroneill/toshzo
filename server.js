@@ -14,6 +14,8 @@ const path = require('path');
 
 const auth = require('./middleware/index').auth;
 
+const util = require('./util/index').util;
+
 const config = require('./config/default.json');
 
 const Router = require('./routes/router');
@@ -51,7 +53,12 @@ const router = new Router();
 
 app.use(config.ENDPOINTS.API, router.router);
 
-app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
+app.get(config.ROUTE.AUTH, (request, response) => response.render('auth', {
+    clientId: process.env.MONZO_CLIENT_ID,
+    redirectUri: util.getMonzoRedirectUri(request),
+    secret: process.env.SUPER_SECRET
+}));
+
 app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
 
 app.get('/', auth.isAuthenticated, (request, response) => response.render('index'));
