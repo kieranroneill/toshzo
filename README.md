@@ -2,7 +2,7 @@
 
 | Branch | CI Status | Code Coverage |
 |:------ |:----------|:--------------|
-| `master` | [![Build Status](https://travis-ci.org/kieranroneill/node-api-boilerplate.svg?branch=master)](https://travis-ci.org/kieranroneill/node-api-boilerplate) | [![codecov](https://codecov.io/gh/kieranroneill/node-api-boilerplate/branch/master/graph/badge.svg)](https://codecov.io/gh/kieranroneill/node-api-boilerplate) |
-| `develop` | [![Build Status](https://travis-ci.org/kieranroneill/node-api-boilerplate.svg?branch=develop)](https://travis-ci.org/kieranroneill/node-api-boilerplate) | [![codecov](https://codecov.io/gh/kieranroneill/node-api-boilerplate/branch/develop/graph/badge.svg)](https://codecov.io/gh/kieranroneill/node-api-boilerplate)
+| `master` | [![CircleCI](https://circleci.com/gh/kieranroneill/toshzo/tree/master.svg?style=svg)](https://circleci.com/gh/kieranroneill/toshzo/tree/master) | [![codecov](https://codecov.io/gh/kieranroneill/toshzo/branch/master/graph/badge.svg)](https://codecov.io/gh/kieranroneill/toshzo) |
+| `develop` | [![CircleCI](https://circleci.com/gh/kieranroneill/toshzo/tree/develop.svg?style=svg)](https://circleci.com/gh/kieranroneill/toshzo/tree/develop) | [![codecov](https://codecov.io/gh/kieranroneill/toshzo/branch/develop/graph/badge.svg)](https://codecov.io/gh/kieranroneill/toshzo)
  |
  
