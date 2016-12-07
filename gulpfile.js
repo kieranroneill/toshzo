@@ -5,12 +5,13 @@ const config = require('./gulp/config');
 const gulp = require('gulp');
 const plugins = require('gulp-load-plugins')(config.Plugins.loadPlugins);
 
+require('./gulp/tasks/copy')(gulp, config, plugins);
 require('./gulp/tasks/clean')(gulp, config, plugins);
 require('./gulp/tasks/scripts')(gulp, config, plugins);
 require('./gulp/tasks/styles')(gulp, config, plugins);
 
 gulp.task('default', done => {
-    plugins.runSequence(['clean'], ['scripts', 'styles'], done);
+    plugins.runSequence(['clean'], ['copy:fonts', 'scripts', 'styles'], done);
 
     if(plugins.util.env.watch) {
         const logger = new plugins.consologger();

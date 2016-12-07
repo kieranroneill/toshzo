@@ -5,6 +5,7 @@ const src = './web/src';
 module.exports = {
     Paths: {
         dist: './web/dist',
+        fonts: src + '/assets/fonts/**/*',
         scripts: {
             main: src + '/js/main.js',
             watch: src + '/js/**/*.js'

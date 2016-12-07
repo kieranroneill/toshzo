@@ -2,6 +2,8 @@
 
 const chai = require('chai');
 const httpCodes = require('http-codes');
+const requestClient = require('request');
+const sinon = require('sinon');
 
 const monzoController = require('../../controllers/index').monzo;
 
@@ -12,6 +14,12 @@ const expect = chai.expect;
 describe('controllers/monzo', () => {
     beforeEach(() => {
         process.env.MONZO_ACCESS_TOKEN = global.validAcccessToken;
+
+        this.requestClientMock = sinon.mock(requestClient);
+    });
+
+    afterEach(() => {
+        this.requestClientMock.restore();
     });
 
     describe('getAccounts()', () => {
