@@ -1,12 +1,12 @@
 {
-  "name": "node-api-boilerplate",
+  "name": "toshzo",
   "private": true,
   "version": "1.0.0",
   "main": "server.js",
-  "description": "Boilerplate code for a Nodejs API.",
+  "description": "A middleware app that connects Monzo transactions to Toshi.",
   "repository": {
     "type": "git",
-    "url": "https://github.com/childmindr/childmindr-api"
+    "url": "https://github.com/kieranroneill/toshzo"
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
