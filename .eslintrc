@@ -8,6 +8,10 @@
     "globals": {
         "server": true
     },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
     "extends": "eslint:recommended",
     "rules": {
         "eol-last": ["error", "always"],

@@ -3,6 +3,8 @@
 const chai = require('chai');
 const httpCodes = require('http-codes');
 const request = require('supertest');
+const requestClient = require('request');
+const sinon = require('sinon');
 
 const config = require('../../config/default.json');
 const errors = require('../../config/errors.json');
@@ -12,6 +14,14 @@ const route = config.ENDPOINTS.API + config.ENDPOINTS.MONZO;
 
 describe('/monzo', () => {
     before(() => this.app = server.app);
+
+    beforeEach(() => {
+        this.requestClientPostStub = sinon.stub(requestClient, 'post');
+    });
+
+    afterEach(() => {
+        this.requestClientPostStub.restore();
+    });
 
     describe('creates a Monzo access token', () => {
         it('should fail if the body is invalid', done => {
@@ -36,6 +46,9 @@ describe('/monzo', () => {
             const body = {
                 authorizationCode: 'Yeah... this is not a valid code.'
             };
+
+            this.requestClientPostStub
+                .callsArgWith(1, null, { statusCode: httpCodes.BAD_REQUEST });
 
             request(this.app)
                 .post(url)
