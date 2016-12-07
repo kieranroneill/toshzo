@@ -13,18 +13,24 @@ const expect = chai.expect;
 
 describe('controllers/monzo', () => {
     beforeEach(() => {
-        process.env.MONZO_ACCESS_TOKEN = global.validAcccessToken;
-
-        this.requestClientMock = sinon.mock(requestClient);
+        this.requestClientGetStub = sinon.stub(requestClient, 'get');
     });
 
     afterEach(() => {
-        this.requestClientMock.restore();
+        this.requestClientGetStub.restore();
     });
 
     describe('getAccounts()', () => {
         it('should fail if the access token is invalid', done => {
+            const responseBody = {
+                code: 'unauthorized',
+                message: 'User authentication required'
+            };
+            
             process.env.MONZO_ACCESS_TOKEN = 'So terribly invalid.';
+
+            this.requestClientGetStub
+                .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
                 .getAccounts()
@@ -35,17 +41,34 @@ describe('controllers/monzo', () => {
                     expect(error).to.have.property('error')
                         .to.be.an('array')
                         .to.include(errors.INVALID_MONZO_TOKEN);
-                })
-                .finally(() => done());
+
+                    done();
+                });
         });
 
         it('should return the accounts if the access token is valid', done => {
+            const responseBody = {
+                accounts: [
+                    {
+                        id: 'acc_00009237aqC8c5umZmrRdh',
+                        description: 'Peter Pan\'s Account',
+                        created: '2015-11-13T12:17:42Z'
+                    }
+                ]
+            };
+
+            process.env.MONZO_ACCESS_TOKEN = 'I am a valid token.... ftw!';
+
+            this.requestClientGetStub
+                .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
+
             monzoController
                 .getAccounts()
                 .then(result => {
                     expect(result).to.be.an('array');
-                })
-                .finally(() => done());
+
+                    done();
+                });
         });
     });
 });

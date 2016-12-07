@@ -53,8 +53,8 @@ gen
 
 ### Test
 **coverage/
-**junit/
 **analysis/
+test-results.xml
 
 ### Build
 **dist/
