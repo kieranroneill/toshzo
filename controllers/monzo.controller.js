@@ -11,7 +11,7 @@ const config = require('../config/default.json');
 const errors = require('../config/errors.json');
 
 module.exports = {
-    getAccounts: (accessToken) => {
+    getMonzoAccounts: (accessToken) => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.ACCOUNTS,

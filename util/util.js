@@ -33,5 +33,16 @@ module.exports = {
         redirectUri += config.ENDPOINTS.AUTH;
 
         return redirectUri;
+    },
+
+    /**
+     * Forms a base URL used for authenticated requests to Toshl.
+     * @param token a Toshl access token.
+     * @returns {string} a signed base URL.
+     */
+    getAuthenticatedToshlUrl: (token) => {
+        let baseUrl = 'https://username:{$username}:@api.toshl.com';
+
+        return baseUrl.replace('{$username}', token);
     }
 };

@@ -24,7 +24,7 @@ describe('controllers/monzo', () => {
         this.requestClientPostStub.restore();
     });
 
-    describe('getAccounts()', () => {
+    describe('getMonzoAccounts()', () => {
         it('should fail if the access token is invalid', done => {
             const accessToken = 'So terribly invalid.';
             const responseBody = {
@@ -36,7 +36,7 @@ describe('controllers/monzo', () => {
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
-                .getAccounts(accessToken)
+                .getMonzoAccounts(accessToken)
                 .catch(error => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
@@ -65,7 +65,7 @@ describe('controllers/monzo', () => {
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .getAccounts(accessToken)
+                .getMonzoAccounts(accessToken)
                 .then(result => {
                     expect(result).to.be.an('array');
 
@@ -215,4 +215,3 @@ describe('controllers/monzo', () => {
         });
     });
 });
-
