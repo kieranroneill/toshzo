@@ -8,7 +8,6 @@ const requestClient = require('request');
 const util = require('../util/index').util;
 
 const config = require('../config/default.json');
-const errors = require('../config/errors.json');
 
 module.exports = {
     getMonzoAccounts: (accessToken) => {
@@ -24,7 +23,7 @@ module.exports = {
         requestClient
             .get(options, (error, response, body) => {
                 if(error || response.statusCode !== httpCodes.OK) {
-                    return deferred.reject(util.createError(response.statusCode, [errors.INVALID_MONZO_TOKEN]));
+                    return deferred.reject(util.createMonzoError(response.statusCode));
                 }
 
                 deferred.resolve(body.accounts);
@@ -48,7 +47,7 @@ module.exports = {
         requestClient
             .get(options, (error, response, body) => {
                 if(error || response.statusCode !== httpCodes.OK) {
-                    return deferred.reject(util.createError(response.statusCode, [errors.INVALID_MONZO_TOKEN]));
+                    return deferred.reject(util.createMonzoError(response.statusCode));
                 }
 
                 deferred.resolve(body.webhooks);
@@ -77,7 +76,7 @@ module.exports = {
         requestClient
             .post(options, (error, response, body) => {
                 if(error || response.statusCode !== httpCodes.OK) {
-                    return deferred.reject(util.createError(response.statusCode, [errors.INVALID_MONZO_TOKEN]));
+                    return deferred.reject(util.createMonzoError(response.statusCode));
                 }
 
                 deferred.resolve(body);
