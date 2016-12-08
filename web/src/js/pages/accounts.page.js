@@ -1,7 +1,7 @@
 'use strict';
 
 const axios = require('axios');
-const dragula = require('dragula');
+//const dragula = require('dragula');
 
 import BasePage from './base.page';
 
@@ -13,7 +13,7 @@ export default class AccountsPage extends BasePage {
     init() {
         axios
             .get('/api/accounts')
-            .then(response => {
+            .then(() => {
 
             });
     }
