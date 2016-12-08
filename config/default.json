@@ -21,5 +21,9 @@
     "AUTH": "/auth",
     "ACCOUNTS": "/accounts",
     "COMPLETE": "/complete"
+  },
+
+  "TOSHL": {
+    "ACCOUNTS": "/accounts"
   }
 }
