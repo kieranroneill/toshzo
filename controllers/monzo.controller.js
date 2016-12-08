@@ -11,12 +11,12 @@ const config = require('../config/default.json');
 const errors = require('../config/errors.json');
 
 module.exports = {
-    getAccounts: () => {
+    getAccounts: (accessToken) => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.ACCOUNTS,
             headers: {
-                Authorization: process.env.MONZO_ACCESS_TOKEN
+                Authorization: accessToken
             },
             json: true
         };
@@ -35,12 +35,12 @@ module.exports = {
             .then(accounts => _.map(accounts, account => account.id));
     },
 
-    getWebhooks: (accountId) => {
+    getWebhooks: (accessToken, accountId) => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.WEBHOOKS + '?account_id=' + accountId,
             headers: {
-                Authorization: process.env.MONZO_ACCESS_TOKEN
+                Authorization: accessToken
             },
             json: true
         };
@@ -60,12 +60,12 @@ module.exports = {
             .then(webhooks => _.filter(webhooks, webhook => (webhook.url === process.env.MONZO_WEBHOOK_URL)));
     },
 
-    registerWebhook: (accountId) => {
+    registerWebhook: (accessToken, accountId) => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.WEBHOOKS,
             headers: {
-                Authorization: process.env.MONZO_ACCESS_TOKEN
+                Authorization: accessToken
             },
             body: {
                 account_id: accountId,

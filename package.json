@@ -33,6 +33,7 @@
     "body-parser": "~1.5.2",
     "browserify": "^13.1.1",
     "dotenv": "^2.0.0",
+    "dragula": "^3.7.2",
     "express": "^4.7.4",
     "express-handlebars": "^3.0.0",
     "express-validator": "^2.21.0",

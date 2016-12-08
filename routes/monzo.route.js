@@ -63,8 +63,8 @@ class Monzo extends BaseRoute {
                         process.env.MONZO_ACCESS_TOKEN = body.access_token;
                         process.env.MONZO_REFRESH_TOKEN = body.refresh_token;
 
-                        // Redirect to complete.
-                        response.redirect(config.ROUTE.COMPLETE);
+                        // Redirect to account linking.
+                        response.redirect(config.ROUTE.ACCOUNTS);
                     });
             });
     }

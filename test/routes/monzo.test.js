@@ -97,7 +97,7 @@ describe('/monzo', () => {
                 .end((error, response) => {
                     expect(error).to.equal(null);
                     expect(response.redirect).to.be.true;
-                    expect(response.headers.location).to.equal(config.ROUTE.COMPLETE);
+                    expect(response.headers.location).to.equal(config.ROUTE.ACCOUNTS);
 
                     done();
                 });

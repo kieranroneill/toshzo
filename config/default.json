@@ -19,6 +19,7 @@
 
   "ROUTE": {
     "AUTH": "/auth",
+    "ACCOUNTS": "/accounts",
     "COMPLETE": "/complete"
   }
 }

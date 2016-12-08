@@ -26,18 +26,17 @@ describe('controllers/monzo', () => {
 
     describe('getAccounts()', () => {
         it('should fail if the access token is invalid', done => {
+            const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
-            
-            process.env.MONZO_ACCESS_TOKEN = 'So terribly invalid.';
 
             this.requestClientGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
-                .getAccounts()
+                .getAccounts(accessToken)
                 .catch(error => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
@@ -51,6 +50,7 @@ describe('controllers/monzo', () => {
         });
 
         it('should return the accounts if the access token is valid', done => {
+            const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 accounts: [
                     {
@@ -61,13 +61,11 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'I am a valid token.... ftw!';
-
             this.requestClientGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .getAccounts()
+                .getAccounts(accessToken)
                 .then(result => {
                     expect(result).to.be.an('array');
 
@@ -78,18 +76,17 @@ describe('controllers/monzo', () => {
 
     describe('getWebhooks()', () => {
         it('should fail if the access token is invalid', done => {
+            const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'So terribly invalid.';
-
             this.requestClientGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
-                .getWebhooks(accountId)
+                .getWebhooks(accessToken, accountId)
                 .catch(error => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
@@ -103,6 +100,7 @@ describe('controllers/monzo', () => {
         });
 
         it('should provide a list of filtered webhooks', done => {
+            const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 webhooks: [
                     {
@@ -118,13 +116,11 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'I am a valid token.... ftw!';
-
             this.requestClientGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .getWebhooks(accountId)
+                .getWebhooks(accessToken, accountId)
                 .then(result => {
                     expect(result).to.be.an('array');
                     expect(result).to.be.lengthOf(1);
@@ -134,6 +130,7 @@ describe('controllers/monzo', () => {
         });
 
         it('should provide the list of webhooks', done => {
+            const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 webhooks: [
                     {
@@ -149,13 +146,11 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'I am a valid token.... ftw!';
-
             this.requestClientGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .getWebhooks(accountId)
+                .getWebhooks(accessToken, accountId)
                 .then(result => {
                     expect(result).to.be.an('array');
                     expect(result).to.be.lengthOf(2);
@@ -167,18 +162,17 @@ describe('controllers/monzo', () => {
 
     describe('registerWebhooks()', () => {
         it('should fail if the access token is invalid', done => {
+            const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'So terribly invalid.';
-
             this.requestClientPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
-                .registerWebhook(accountId)
+                .registerWebhook(accessToken, accountId)
                 .catch(error => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
@@ -192,6 +186,7 @@ describe('controllers/monzo', () => {
         });
 
         it('should register the new webhook', done => {
+            const accessToken = 'Oh yeah baby!!';
             const responseBody = {
                 webhook: {
                     account_id: accountId,
@@ -200,13 +195,11 @@ describe('controllers/monzo', () => {
                 }
             };
 
-            process.env.MONZO_ACCESS_TOKEN = 'Oh yeah baby!!';
-
             this.requestClientPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .registerWebhook(accountId)
+                .registerWebhook(accessToken, accountId)
                 .then(result => {
                     expect(result).to.be.an('object');
                     expect(result).to.have.property('webhook');
