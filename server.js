@@ -55,11 +55,10 @@ app.use(config.ENDPOINTS.API, router.router);
 
 app.get(config.ROUTE.AUTH, (request, response) => response.render('auth', {
     clientId: process.env.MONZO_CLIENT_ID,
-    redirectUri: util.getMonzoRedirectUri(request),
-    secret: process.env.SUPER_SECRET
+    redirectUri: util.getMonzoRedirectUri(request)
 }));
 
-app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('accounts'));
+app.get(config.ROUTE.ACCOUNTS, auth.isAuthenticated, (request, response) => response.render('accounts'));
 
 app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
 

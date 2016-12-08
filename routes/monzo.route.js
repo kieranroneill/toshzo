@@ -28,10 +28,6 @@ class Monzo extends BaseRoute {
                 let validationErrors, options;
 
                 request.checkQuery('code', errors.REQUIRED_AUTHORIZATION_CODE).notEmpty();
-                request.checkQuery('state', errors.REQUIRED_SUPER_SECRET)
-                    .notEmpty()
-                    .equals(process.env.SUPER_SECRET)
-                    .withMessage(errors.INVALID_SUPER_SECRET);
 
                 validationErrors = request.validationErrors();
 

@@ -59,7 +59,7 @@ module.exports = {
             .then(webhooks => _.filter(webhooks, webhook => (webhook.url === process.env.MONZO_WEBHOOK_URL)));
     },
 
-    registerWebhook: (accessToken, accountId) => {
+    registerWebhook: (accessToken, accountId, webhookUrl) => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.WEBHOOKS,
@@ -68,7 +68,7 @@ module.exports = {
             },
             body: {
                 account_id: accountId,
-                url: process.env.MONZO_WEBHOOK_URL
+                url: webhookUrl
             },
             json: true
         };

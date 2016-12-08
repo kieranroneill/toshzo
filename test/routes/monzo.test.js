@@ -35,25 +35,7 @@ describe('/monzo', () => {
                     expect(response.body).to.be.an('object');
                     expect(response.body).to.have.property('error')
                         .to.be.an('array')
-                        .to.include(errors.REQUIRED_AUTHORIZATION_CODE)
-                        .to.include(errors.REQUIRED_SUPER_SECRET);
-
-                    done();
-                });
-        });
-
-        it('should fail if the super secret is invalid', done => {
-            const url = route + config.ENDPOINTS.AUTH + '?code=authorio&state=hahahahaha';
-
-            request(this.app)
-                .get(url)
-                .expect(httpCodes.BAD_REQUEST)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('error')
-                        .to.be.an('array')
-                        .to.include(errors.INVALID_SUPER_SECRET);
+                        .to.include(errors.REQUIRED_AUTHORIZATION_CODE);
 
                     done();
                 });

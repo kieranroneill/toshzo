@@ -13,6 +13,7 @@ const expect = chai.expect;
 
 describe('controllers/monzo', () => {
     const accountId = 'I am Groot';
+    const webhookUrl = 'webhookery';
 
     beforeEach(() => {
         this.requestClientGetStub = sinon.stub(requestClient, 'get');
@@ -172,7 +173,7 @@ describe('controllers/monzo', () => {
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
-                .registerWebhook(accessToken, accountId)
+                .registerWebhook(accessToken, accountId, webhookUrl)
                 .catch(error => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
@@ -199,7 +200,7 @@ describe('controllers/monzo', () => {
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
-                .registerWebhook(accessToken, accountId)
+                .registerWebhook(accessToken, accountId, webhookUrl)
                 .then(result => {
                     expect(result).to.be.an('object');
                     expect(result).to.have.property('webhook');
