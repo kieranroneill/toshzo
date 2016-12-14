@@ -1,32 +1,19 @@
 'use strict';
 
-const requestClient = require('request');
+const httpCodes = require('http-codes');
 
-const config = require('../config/default.json');
+const util = require('../util/index').util;
+
+const errors = require('../config/errors.json');
 
 module.exports = {
     isAuthenticated: function(request, response, next) {
-        let options;
+        const token = request.headers['toshzo-token'];
 
-        if(!process.env.MONZO_ACCESS_TOKEN) {
-            return response.redirect(config.ROUTE.AUTH);
+        if(!token || token !== process.env.SUPER_SECRET) {
+            return next(util.createError(httpCodes.UNAUTHORIZED, [errors.INVALID_SUPER_SECRET]));
         }
 
-        options = {
-            url: config.MONZO.BASE + config.MONZO.WHOAMI,
-            method: 'GET',
-            headers: {
-                Authorization: 'Bearer ' + process.env.MONZO_ACCESS_TOKEN
-            },
-            json: true
-        };
-
-        requestClient(options, (error, result, body) => {
-            if(error || !body.authenticated) {
-                return response.redirect(config.ROUTE.AUTH);
-            }
-
-            next();
-        });
+        next();
     }
 };

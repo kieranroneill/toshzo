@@ -20,7 +20,8 @@
   "ROUTE": {
     "AUTH": "/auth",
     "ACCOUNTS": "/accounts",
-    "COMPLETE": "/complete"
+    "COMPLETE": "/complete",
+    "SETUP": "/setup"
   },
 
   "TOSHL": {

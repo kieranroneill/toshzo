@@ -1,0 +1,4 @@
+// Fixes the flicker of the svg on load.
+img.svg-inject {
+  display: none;
+}

@@ -5,16 +5,34 @@
     </div>
 
     <div class="row">
-        <p class="center-align">Click the button below to be taken to <a href="https://monzo.com" target="_blank">Monzo</a> to authorise your account.</p>
+        <p class="center-align">Enter the super secret code to access Toshzo.</p>
 
 
     </div>
 
     <div class="row">
-        <div class="center-align">
-            <a class="waves-effect waves-light btn" href="https://auth.getmondo.co.uk/?client_id={{ clientId }}&redirect_uri={{ redirectUri }}&response_type=code&state={{ secret }}">Authorise Monzo</a>
+        <form id="superSecretForm" class="col s12">
+            <div class="row">
+                <div class="input-field col s6 offset-s3">
+                    <input id="superSecret" type="password">
+                    <label for="superSecret">Super Secret</label>
 
-        </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="center-align">
+                    <button class="btn waves-effect waves-light" type="submit">
+                        Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
 
     </div>
 

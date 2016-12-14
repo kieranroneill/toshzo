@@ -53,16 +53,18 @@ const router = new Router();
 
 app.use(config.ENDPOINTS.API, router.router);
 
-app.get(config.ROUTE.AUTH, (request, response) => response.render('auth', {
-    clientId: process.env.MONZO_CLIENT_ID,
-    redirectUri: util.getMonzoRedirectUri(request)
-}));
+app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
 
 app.get(config.ROUTE.ACCOUNTS, auth.isAuthenticated, (request, response) => response.render('accounts'));
 
 app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
 
-app.get('/', auth.isAuthenticated, (request, response) => response.render('index'));
+app.get(config.ROUTE.SETUP, (request, response) => response.render('setup', {
+    clientId: process.env.MONZO_CLIENT_ID,
+    redirectUri: util.getMonzoRedirectUri(request)
+}));
+
+app.get('/', auth.isAuthenticated, (request, response) => response.redirect(config.ROUTE.ACCOUNTS));
 
 //====================================================
 // Errors...gotta catch 'em all.
@@ -70,6 +72,10 @@ app.get('/', auth.isAuthenticated, (request, response) => response.render('index
 
 app.use((error, request, response, next) => {
     if(error) {
+        if(error.status === httpCodes.UNAUTHORIZED) {
+            return response.redirect(config.ROUTE.AUTH);
+        }
+
         return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ error: error.error });
     }
 
