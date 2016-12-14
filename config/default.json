@@ -7,6 +7,10 @@
     "TEAPOT": "/teapot"
   },
 
+  "HEADERS": {
+    "TOSHL_TOKEN": "toshl-token"
+  },
+
   "MONZO": {
     "ACCOUNTS": "/accounts",
     "BASE": "https://api.monzo.com",
