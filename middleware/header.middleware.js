@@ -8,5 +8,10 @@ module.exports = {
         response.set(config.HEADERS.POWERED_BY, 'Unicorns!');
 
         next();
+    },
+
+    addStaticResponseHeaders: (response) => {
+        // Show the unicorn power!
+        response.set(config.HEADERS.POWERED_BY, 'Unicorns!');
     }
 };

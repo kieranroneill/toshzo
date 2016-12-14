@@ -32,4 +32,12 @@ describe('middleware/header', () => {
             sinon.assert.calledWith(this.nextSpy);
         });
     });
+
+    describe('addStaticResponseHeaders()', () => {
+        it('should add a new "X-Powered-By" header', () => {
+            headerMiddleware.addStaticResponseHeaders(this.response);
+
+            expect(this.response.getHeader(config.HEADERS.POWERED_BY)).to.equal('Unicorns!');
+        });
+    });
 });

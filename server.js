@@ -7,6 +7,7 @@ const dotenv = require('dotenv');
 const exphbs = require('express-handlebars');
 const express = require('express');
 const expressValidator = require('express-validator');
+const helmet = require('helmet');
 const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
@@ -38,14 +39,14 @@ dotenv.config();
 // Middleware.
 //====================================================
 
-//app.disable(config.HEADERS.POWERED_BY);
+app.use(helmet());
 app.use(morgan('dev')); // Log requests to console.
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express.static(path.resolve(__dirname, 'web', 'dist')));
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
+app.use(express.static(path.resolve(__dirname, 'web', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders }));
 app.use(headerMiddleware.addResponseHeaders);
 
 //====================================================
