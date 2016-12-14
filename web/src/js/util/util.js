@@ -1,6 +1,5 @@
 'use strict';
 
-const Q = require('q');
 const SVGInjector = require('svg-injector');
 
 /**
@@ -9,9 +8,7 @@ const SVGInjector = require('svg-injector');
  * @return a Promise.
  */
 export function svgInjectionPromise() {
-    const deferred = Q.defer();
-
-    SVGInjector(document.querySelectorAll('img.svg-inject'), { pngFallback: '/assets/images' }, deferred.resolve);
-
-    return deferred.promise;
+    return new Promise(resolve => {
+        SVGInjector(document.querySelectorAll('img.svg-inject'), { pngFallback: '/assets/images' }, resolve);
+    });
 }

@@ -1,11 +1,11 @@
 'use strict';
 
-const $ = require('jquery');
-const axios = require('axios');
-const Q = require('q');
+global.Promise = require('bluebird');
 
-// Models.
-import { Toshzo } from './models';
+const $ = require('jquery');
+
+// Services.
+import { Toshzo } from './services';
 
 // Pages.
 import { AccountsPage, AuthPage } from './pages';
@@ -13,31 +13,15 @@ import { AccountsPage, AuthPage } from './pages';
 // Utilities.
 import { Util } from './util';
 
-function getReferences() {
-    const deferred = Q.defer();
-
-    axios
-        .get('/api/reference')
-        .then(response => {
-            Toshzo.monzo.clientId = response.data.monzo.clientId;
-            Toshzo.monzo.redirectUri = response.data.monzo.redirectUri;
-
-            deferred.resolve();
-        })
-        .catch(deferred.reject);
-
-    return deferred.promise;
-}
-
 $(document).ready(() => {
     const $pageLoaderElement = $('#pageLoader');
     const promises = [];
 
     // Do svg injection.
     promises.push(Util.svgInjectionPromise());
-    promises.push(getReferences());
+    promises.push(Toshzo.getReferences());
 
-    Q
+    Promise
         .all(promises)
         .then(() => {
             const path = window.location.pathname.split('/')[1]; // Get the first level URL.
