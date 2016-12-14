@@ -8,7 +8,8 @@
   },
 
   "HEADERS": {
-    "TOSHL_TOKEN": "toshl-token"
+    "POWERED_BY": "X-Powered-By",
+    "TOSHL_TOKEN": "X-Toshl-Token"
   },
 
   "MONZO": {

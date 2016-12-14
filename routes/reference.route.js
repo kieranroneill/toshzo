@@ -5,8 +5,8 @@ const BaseRoute = require('./base.route');
 const config = require('../config/default.json');
 
 class Reference extends BaseRoute {
-    constructor(router) {
-        super(router);
+    constructor(auth, router) {
+        super(auth, router);
         this.registerRoutes();
     }
 

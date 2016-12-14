@@ -11,7 +11,7 @@ const errors = require('../../config/errors.json');
 
 const expect = chai.expect;
 
-describe('controllers/toshl', () => {
+describe('middleware/auth', () => {
     beforeEach(() => {
         this.request = {
             headers: {
