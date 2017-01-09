@@ -5,8 +5,8 @@ const BaseRoute = require('./base.route');
 const config = require('../config/default.json');
 
 class Reference extends BaseRoute {
-    constructor(router) {
-        super(router);
+    constructor(auth, router) {
+        super(auth, router);
         this.registerRoutes();
     }
 
@@ -16,8 +16,7 @@ class Reference extends BaseRoute {
             .get((request, response) => {
                 response.json({
                     monzo: {
-                        clientId: process.env.MONZO_CLIENT_ID,
-                        redirectUri: process.env.MONZO_REDIRECT_URI
+                        clientId: process.env.MONZO_CLIENT_ID
                     }
                 });
             });

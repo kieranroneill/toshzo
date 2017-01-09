@@ -10,8 +10,8 @@ const config = require('../config/default.json');
 const errors = require('../config/errors.json');
 
 class Teapot extends BaseRoute {
-    constructor(router) {
-        super(router);
+    constructor(auth, router) {
+        super(auth, router);
         this.registerRoutes();
     }
 

@@ -7,7 +7,8 @@ const util = require('../util/index').util;
 const errors = require('../config/errors.json');
 
 class BaseRoute {
-    constructor(router) {
+    constructor(auth, router) {
+        this.auth = auth;
         this.router = router;
     }
 

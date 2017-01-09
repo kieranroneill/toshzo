@@ -10,7 +10,7 @@ module.exports = (gulp, config, plugins) => {
         const stream = plugins
             .browserify({
                 entries: config.Paths.scripts.main,
-                debug: false // Build source maps
+                debug: isDevelopment // Build source maps
             })
             .transform(plugins.babelify)
             .bundle()
@@ -18,7 +18,10 @@ module.exports = (gulp, config, plugins) => {
             .pipe(plugins.vinylBuffer());
 
         if(isDevelopment) {
-            stream.pipe(plugins.livereload());
+            stream
+                .pipe(plugins.sourcemaps.init({ loadMaps: true }))
+                .pipe(plugins.sourcemaps.write('./'))
+                .pipe(plugins.livereload());
         }
         else {
             stream.pipe(plugins.uglify({ mangle: false, preserveComments: false }));

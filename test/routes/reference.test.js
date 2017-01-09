@@ -23,7 +23,6 @@ describe('/reference', () => {
 
                     expect(response.body).to.have.property('monzo');
                     expect(response.body.monzo).to.have.property('clientId');
-                    expect(response.body.monzo).to.have.property('redirectUri');
 
                     done();
                 });

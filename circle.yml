@@ -8,6 +8,8 @@ machine:
   environment:
     NODE_ENV: production
     SERVER_IP: 127.0.0.1
+    SUPER_SECRET: super_secret
+    MONZO_CLIENT_ID: THE_CAKE_IS_A_LIE
 
 dependencies:
   override:

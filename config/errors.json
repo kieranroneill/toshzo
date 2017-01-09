@@ -1,7 +1,11 @@
 {
-  "INVALID_MONZO_TOKEN": "Invalid Monzo access token",
   "INVALID_AUTHORIZATION_CODE": "Invalid Monzo authorization code.",
+  "INVALID_MONZO_TOKEN": "Invalid Monzo access token",
+  "INVALID_SUPER_SECRET": "Invalid super secret.",
+  "INVALID_TOSHL_TOKEN": "Invalid Toshl token.",
   "REQUIRED_AUTHORIZATION_CODE": "Monzo authorization code required.",
+  "REQUIRED_SUPER_SECRET": "Super secret is required.",
   "SERVER_ERROR": "Server error",
-  "TEAPOT_ERROR": "I am a little teapot short and stout!"
+  "TEAPOT_ERROR": "I am a little teapot short and stout!",
+  "TOO_MANY_REQUESTS": "Way too busy to handle that request."
 }

@@ -1,5 +1,15 @@
+// Modules.
+@import 'modules/color';
+
 // Overrides.
 @import 'overrides/materialize/preloader';
 
 // Fonts.
 @import 'fonts/material-icons';
+@import 'fonts/roboto';
+
+// Partials.
+@import 'partials/base';
+@import 'partials/footer';
+@import 'partials/loader';
+@import 'partials/page-loader';

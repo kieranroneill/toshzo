@@ -7,12 +7,16 @@ const dotenv = require('dotenv');
 const exphbs = require('express-handlebars');
 const express = require('express');
 const expressValidator = require('express-validator');
+const helmet = require('helmet');
 const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
 
-const auth = require('./middleware/index').auth;
+const authMiddleware = require('./middleware/index').auth;
+const headerMiddleware = require('./middleware/index').header;
+
+const util = require('./util/index').util;
 
 const config = require('./config/default.json');
 
@@ -35,26 +39,36 @@ dotenv.config();
 // Middleware.
 //====================================================
 
+app.use(helmet());
 app.use(morgan('dev')); // Log requests to console.
+app.engine('.hbs', hbs.engine);
+app.set('view engine', '.hbs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express.static(path.resolve(__dirname, 'web', 'dist')));
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
+app.use(express.static(path.resolve(__dirname, 'web', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders }));
+app.use(headerMiddleware.addResponseHeaders);
 
 //====================================================
 // Routes.
 //====================================================
 
-const router = new Router();
+const router = new Router(authMiddleware);
 
 app.use(config.ENDPOINTS.API, router.router);
 
 app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
-app.get(config.ROUTE.COMPLETE, auth.isAuthenticated, (request, response) => response.render('complete'));
 
-app.get('/', auth.isAuthenticated, (request, response) => response.render('index'));
+app.get(config.ROUTE.ACCOUNTS, authMiddleware.isAuthenticated, (request, response) => response.render('accounts'));
+
+app.get(config.ROUTE.COMPLETE, authMiddleware.isAuthenticated, (request, response) => response.render('complete'));
+
+app.get(config.ROUTE.SETUP, (request, response) => response.render('setup', {
+    clientId: process.env.MONZO_CLIENT_ID,
+    redirectUri: util.getMonzoRedirectUri(request)
+}));
+
+app.get('/', authMiddleware.isAuthenticated, (request, response) => response.redirect(config.ROUTE.ACCOUNTS));
 
 //====================================================
 // Errors...gotta catch 'em all.
@@ -62,6 +76,10 @@ app.get('/', auth.isAuthenticated, (request, response) => response.render('index
 
 app.use((error, request, response, next) => {
     if(error) {
+        if(error.status === httpCodes.UNAUTHORIZED) {
+            return response.redirect(config.ROUTE.AUTH);
+        }
+
         return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ error: error.error });
     }
 
