@@ -1,7 +1,7 @@
 {
   "name": "toshzo",
   "private": true,
-  "version": "1.0.0",
+  "version": "0.0.1",
   "main": "server.js",
   "description": "A middleware app that connects Monzo transactions to Toshi.",
   "repository": {
@@ -10,6 +10,7 @@
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
+    "code-analysis": "plato -r -t toshzo -d analysis server.js controllers middleware routes util web/src/js -e .eslintrc",
     "clean": "rm -rf node_modules/",
     "build": "gulp",
     "build:dev": "gulp --dev",
@@ -17,12 +18,13 @@
     "eslint": "eslint",
     "gulp": "gulp",
     "istanbul": "istanbul",
-    "lint": "eslint **/*.js test/**/*.js server.js",
+    "lint": "eslint .",
     "mocha": "mocha",
     "nodemon": "nodemon",
+    "plato": "plato",
     "postinstall": "(cp -n .env.example .env || true)",
     "start": "nodemon server.js",
-    "test": "istanbul cover _mocha -- ./test/**/*.test.js"
+    "test": "if test \"$NODE_ENV\" = \"production\"; then istanbul cover _mocha -- ./test/**/*.test.js --reporter mocha-junit-reporter; else istanbul cover _mocha -- ./test/**/*.test.js; fi"
   },
   "dependencies": {
     "axios": "^0.15.3",
@@ -47,6 +49,7 @@
     "jquery": "^3.1.1",
     "morgan": "^1.7.0",
     "path": "^0.12.7",
+    "plato": "^1.7.0",
     "q": "^1.4.1",
     "request": "^2.79.0",
     "run-sequence": "^1.2.2",
@@ -63,6 +66,7 @@
     "gulp-watch": "^4.3.11",
     "istanbul": "^0.4.5",
     "mocha": "^3.0.2",
+    "mocha-junit-reporter": "^1.12.1",
     "nodemon": "^1.11.0",
     "sinon": "^1.17.6",
     "supertest": "^1.1.0"

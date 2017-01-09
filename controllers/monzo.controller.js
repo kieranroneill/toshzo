@@ -11,32 +11,24 @@ const config = require('../config/default.json');
 const errors = require('../config/errors.json');
 
 module.exports = {
-    registerMonzoWebhook: () => {
-
-    },
-
-    checkMonzoWebhook: (accountId) => {
-
-    },
-
     getAccounts: () => {
         const deferred = Q.defer();
         const options = {
             url: config.MONZO.BASE + config.MONZO.ACCOUNTS,
-            method: 'GET',
             headers: {
                 Authorization: process.env.MONZO_ACCESS_TOKEN
             },
             json: true
         };
 
-        requestClient(options, (error, response, body) => {
-            if(error || response.statusCode !== httpCodes.OK) {
-                return deferred.reject(util.createError(response.statusCode, [errors.INVALID_MONZO_TOKEN]));
-            }
+        requestClient
+            .get(options, (error, response, body) => {
+                if(error || response.statusCode !== httpCodes.OK) {
+                    return deferred.reject(util.createError(response.statusCode, [errors.INVALID_MONZO_TOKEN]));
+                }
 
-            deferred.resolve(body.accounts);
-        });
+                deferred.resolve(body.accounts);
+            });
 
         return deferred
             .promise
