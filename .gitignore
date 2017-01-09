@@ -55,6 +55,7 @@ gen
 **coverage/
 **junit/
 **analysis/
+test-results.xml
 
 ### Build
 **dist/
