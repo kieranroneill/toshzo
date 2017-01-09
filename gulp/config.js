@@ -14,7 +14,9 @@ module.exports = {
             main: src + '/scss/main.scss',
             lib: src + '/lib/**/*.css',
             watch: src + '/scss/**/*.scss'
-        }
+        },
+        svgs: src + '/assets/svgs/**/*',
+        templates: './views/**/*.hbs'
     },
 
     Plugins: {

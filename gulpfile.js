@@ -9,9 +9,10 @@ require('./gulp/tasks/copy')(gulp, config, plugins);
 require('./gulp/tasks/clean')(gulp, config, plugins);
 require('./gulp/tasks/scripts')(gulp, config, plugins);
 require('./gulp/tasks/styles')(gulp, config, plugins);
+require('./gulp/tasks/svgs')(gulp, config, plugins);
 
 gulp.task('default', done => {
-    plugins.runSequence(['clean'], ['copy:fonts', 'scripts', 'styles'], done);
+    plugins.runSequence(['clean'], ['copy:fonts', 'svgs', 'scripts', 'styles'], done);
 
     if(plugins.util.env.watch) {
         const logger = new plugins.consologger();
@@ -27,6 +28,8 @@ gulp.task('default', done => {
             .on('change', onWatchChange);
         gulp.watch(config.Paths.styles.watch, ['styles'])
             .on('change', onWatchChange);
+        gulp.watch(config.Paths.templates)
+            .on('change', event => plugins.livereload.reload(event.path)); // Reload handlebars templates.
 
         logger.yellow('Watching for file changes... Use Ctrl+C to exit.').print();
     }

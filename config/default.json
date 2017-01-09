@@ -7,6 +7,11 @@
     "TEAPOT": "/teapot"
   },
 
+  "HEADERS": {
+    "POWERED_BY": "X-Powered-By",
+    "TOSHL_TOKEN": "X-Toshl-Token"
+  },
+
   "MONZO": {
     "ACCOUNTS": "/accounts",
     "BASE": "https://api.monzo.com",
@@ -19,6 +24,12 @@
 
   "ROUTE": {
     "AUTH": "/auth",
-    "COMPLETE": "/complete"
+    "ACCOUNTS": "/accounts",
+    "COMPLETE": "/complete",
+    "SETUP": "/setup"
+  },
+
+  "TOSHL": {
+    "ACCOUNTS": "/accounts"
   }
 }

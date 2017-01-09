@@ -11,8 +11,8 @@ const config = require('../config/default.json');
 const errors = require('../config/errors.json');
 
 class Monzo extends BaseRoute {
-    constructor(router) {
-        super(router);
+    constructor(auth, router) {
+        super(auth, router);
         this.registerRoutes();
     }
 
@@ -24,10 +24,10 @@ class Monzo extends BaseRoute {
         // /monzo/auth
         this.router
             .route(config.ENDPOINTS.MONZO + config.ENDPOINTS.AUTH)
-            .post((request, response, next) => {
+            .get((request, response, next) => {
                 let validationErrors, options;
 
-                request.checkBody('authorizationCode', errors.REQUIRED_AUTHORIZATION_CODE).notEmpty();
+                request.checkQuery('code', errors.REQUIRED_AUTHORIZATION_CODE).notEmpty();
 
                 validationErrors = request.validationErrors();
 
@@ -40,15 +40,12 @@ class Monzo extends BaseRoute {
 
                 options = {
                     url: config.MONZO.BASE + config.MONZO.TOKEN,
-                    headers: {
-                        Authorization: process.env.MONZO_ACCESS_TOKEN
-                    },
                     form: {
                         grant_type: 'authorization_code',
                         client_id: process.env.MONZO_CLIENT_ID,
                         client_secret: process.env.MONZO_CLIENT_SECRET,
-                        redirect_uri: process.env.MONZO_REDIRECT_URI,
-                        code: request.body.authorizationCode
+                        redirect_uri: util.getMonzoRedirectUri(request),
+                        code: request.query.code
                     },
                     json: true
                 };
@@ -56,14 +53,14 @@ class Monzo extends BaseRoute {
                 requestClient
                     .post(options, (error, result, body) => {
                         if(error || result.statusCode !== httpCodes.OK) {
-                            return next(util.createError(result.statusCode, [errors.INVALID_AUTHORIZATION_CODE]));
+                            return response.redirect(config.ROUTE.AUTH);
                         }
 
                         process.env.MONZO_ACCESS_TOKEN = body.access_token;
                         process.env.MONZO_REFRESH_TOKEN = body.refresh_token;
 
-                        // Redirect to complete.
-                        response.redirect(config.ROUTE.COMPLETE);
+                        // Redirect to account linking.
+                        response.redirect(config.ROUTE.ACCOUNTS);
                     });
             });
     }

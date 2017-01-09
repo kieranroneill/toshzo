@@ -7,12 +7,12 @@ const ReferenceRoute = require('./reference.route');
 const TeapotRoute = require('./teapot.route');
 
 class Router {
-    constructor() {
+    constructor(auth) {
         this.router = express.Router();
 
-        this.monzoRoute = new MonzoRoute(this.router);
-        this.referenceRoute = new ReferenceRoute(this.router);
-        this.teapotRoute = new TeapotRoute(this.router);
+        this.monzoRoute = new MonzoRoute(auth, this.router);
+        this.referenceRoute = new ReferenceRoute(auth, this.router);
+        this.teapotRoute = new TeapotRoute(auth, this.router);
     }
 }
 
