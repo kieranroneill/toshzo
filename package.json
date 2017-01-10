@@ -18,7 +18,7 @@
     "babel": "babel",
     "code-analysis": "plato -r -t toshzo -d analysis lib -e .eslintrc",
     "clean": "rm -rf node_modules/",
-    "build": "webpack --progress -p",
+    "build": "webpack --progress",
     "eslint": "eslint",
     "istanbul": "istanbul",
     "lint": "eslint .",
