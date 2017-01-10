@@ -16,7 +16,7 @@
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
     "babel": "babel",
-    "code-analysis": "plato -r -t toshzo -d analysis server.js controllers middleware routes util web/src/**/*.js* -e .eslintrc",
+    "code-analysis": "plato -r -t toshzo -d analysis server.js controllers middleware routes util -e .eslintrc",
     "clean": "rm -rf node_modules/",
     "build": "webpack",
     "eslint": "eslint",
