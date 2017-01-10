@@ -1,4 +1,6 @@
 {
+  "APP_TITLE": "Toshzo",
+
   "ENDPOINTS": {
     "API": "/api",
     "AUTH": "/auth",

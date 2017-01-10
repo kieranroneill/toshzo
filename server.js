@@ -4,7 +4,6 @@ process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-const exphbs = require('express-handlebars');
 const express = require('express');
 const expressValidator = require('express-validator');
 const helmet = require('helmet');
@@ -24,10 +23,6 @@ const Router = require('./routes/router');
 
 const app = express();
 const server = http.Server(app);
-const hbs = exphbs.create({
-    defaultLayout: 'main',
-    extname: '.hbs'
-});
 
 //====================================================
 // Configuration.
@@ -41,8 +36,6 @@ dotenv.config();
 
 app.use(helmet());
 app.use(morgan('dev')); // Log requests to console.
-app.engine('.hbs', hbs.engine);
-app.set('view engine', '.hbs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());

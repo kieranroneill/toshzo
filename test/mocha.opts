@@ -1,3 +1,6 @@
---require test/setup.js
+--compilers js:babel-core/register,jsx:babel-core/register
+--extensions js,jsx
+--require test/helper.js
 --recursive
 --timeout 15000
+--full-trace
