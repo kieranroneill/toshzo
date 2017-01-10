@@ -1,40 +1,32 @@
 'use strict';
 
-const chai = require('chai');
-const httpMocks = require('node-mocks-http');
-const sinon = require('sinon');
-
-const headerMiddleware = require('../../middleware/index').header;
-
-const config = require('../../config/default.json');
-
-const expect = chai.expect;
+import { headerMiddleware } from '../../middleware';
 
 describe('middleware/header', () => {
-    beforeEach(() => {
+    beforeEach(function() {
         this.response = httpMocks.createResponse();
 
-        this.nextSpy = sinon.spy();
+        this.nextSpy = spy();
     });
 
-    afterEach(() => {
+    afterEach(function() {
         delete this.response;
 
         this.nextSpy.reset();
     });
 
-    describe('addResponseHeaders()', () => {
-        it('should add a new "X-Powered-By" header', () => {
+    describe('addResponseHeaders()', function() {
+        it('should add a new "X-Powered-By" header', function() {
             headerMiddleware.addResponseHeaders({}, this.response, this.nextSpy);
 
             expect(this.response.getHeader(config.HEADERS.POWERED_BY)).to.equal('Unicorns!');
 
-            sinon.assert.calledWith(this.nextSpy);
+            assert.calledWith(this.nextSpy);
         });
     });
 
-    describe('addStaticResponseHeaders()', () => {
-        it('should add a new "X-Powered-By" header', () => {
+    describe('addStaticResponseHeaders()', function() {
+        it('should add a new "X-Powered-By" header', function() {
             headerMiddleware.addStaticResponseHeaders(this.response);
 
             expect(this.response.getHeader(config.HEADERS.POWERED_BY)).to.equal('Unicorns!');

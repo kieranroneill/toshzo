@@ -1,17 +1,10 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-
-const util = require('../../util/index').util;
-
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
+import { util } from '../../util';
 
 describe('util/util', () => {
-    describe('createMonzoError()', () => {
-        it('should return a default error if the code is unrecognised', () => {
+    describe('createMonzoError()', function() {
+        it('should return a default error if the code is unrecognised', function() {
             const result = util.createMonzoError('What is this??');
 
             expect(result).to.have.property('status')
@@ -21,7 +14,7 @@ describe('util/util', () => {
                 .to.include(errors.SERVER_ERROR);
         });
 
-        it('should return an error is unauthorized', () => {
+        it('should return an error is unauthorized', function() {
             const result = util.createMonzoError(httpCodes.UNAUTHORIZED);
 
             expect(result).to.have.property('status')
@@ -32,8 +25,8 @@ describe('util/util', () => {
         });
     });
 
-    describe('createToshlError()', () => {
-        it('should return a default error if the code is unrecognised', () => {
+    describe('createToshlError()', function() {
+        it('should return a default error if the code is unrecognised', function() {
             const result = util.createToshlError('What is this??');
 
             expect(result).to.have.property('status')
@@ -43,7 +36,7 @@ describe('util/util', () => {
                 .to.include(errors.SERVER_ERROR);
         });
 
-        it('should return an error is unauthorized', () => {
+        it('should return an error is unauthorized', function() {
             const result = util.createToshlError(httpCodes.UNAUTHORIZED);
 
             expect(result).to.have.property('status')
@@ -53,7 +46,7 @@ describe('util/util', () => {
                 .to.include(errors.INVALID_TOSHL_TOKEN);
         });
 
-        it('should return an error when there are too many requests', () => {
+        it('should return an error when there are too many requests', function() {
             const result = util.createToshlError(httpCodes.TOO_MANY_REQUESTS);
 
             expect(result).to.have.property('status')

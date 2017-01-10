@@ -1,18 +1,9 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const sinon = require('sinon');
-
-const authMiddleware = require('../../middleware/index').auth;
-
-const config = require('../../config/default.json');
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
+import { authMiddleware } from '../../middleware';
 
 describe('middleware/auth', () => {
-    beforeEach(() => {
+    beforeEach(function() {
         this.request = {
             headers: {
                 'host': 'localhost:1337',
@@ -26,17 +17,17 @@ describe('middleware/auth', () => {
             }
         };
 
-        this.nextSpy = sinon.spy();
+        this.nextSpy = spy();
     });
 
-    afterEach(() => {
+    afterEach(function() {
         delete this.request;
 
         this.nextSpy.reset();
     });
 
-    describe('isAuthenticated()', () => {
-        it('should fail if the super secret does not match', () => {
+    describe('isAuthenticated()', function() {
+        it('should fail if the super secret does not match', function() {
             let errorArgs;
 
             authMiddleware.isAuthenticated(this.request, {}, this.nextSpy);
@@ -52,13 +43,13 @@ describe('middleware/auth', () => {
                 .to.include(errors.INVALID_SUPER_SECRET);
         });
 
-        it('should succeed without errors', () => {
+        it('should succeed without errors', function() {
             // Add valid token to header.
             this.request.headers[config.HEADERS.TOSHL_TOKEN] = process.env.SUPER_SECRET;
 
             authMiddleware.isAuthenticated(this.request, {}, this.nextSpy);
 
-            sinon.assert.calledWith(this.nextSpy);
+            assert.calledWith(this.nextSpy);
         });
     });
 });

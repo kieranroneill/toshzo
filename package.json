@@ -1,16 +1,22 @@
 {
   "name": "toshzo",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.1.0",
   "main": "server.js",
   "description": "A middleware app that connects Monzo transactions to Toshl.",
+  "author": {
+    "name": "Kieran O'Neill",
+    "email": "kieran.oneill@element43.xyz",
+    "url": "http://element43.xyz"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kieranroneill/toshzo"
   },
   "license": "SEE LICENSE IN LICENSE.md",
   "scripts": {
-    "code-analysis": "plato -r -t toshzo -d analysis server.js controllers middleware routes util web/src/js -e .eslintrc",
+    "babel": "babel",
+    "code-analysis": "plato -r -t toshzo -d analysis server.js controllers middleware routes util web/src/**/*.js* -e .eslintrc",
     "clean": "rm -rf node_modules/",
     "build": "webpack",
     "eslint": "eslint",
@@ -20,7 +26,7 @@
     "plato": "plato",
     "postinstall": "(cp -n .env.example .env || true)",
     "start": "nodemon server.js",
-    "test": "if test \"$NODE_ENV\" = \"production\"; then istanbul cover _mocha -- ./test/**/*.test.js --reporter mocha-junit-reporter; else istanbul cover _mocha -- ./test/**/*.test.js; fi",
+    "test": "if test \"$NODE_ENV\" = \"production\"; then istanbul cover _mocha -- ./test/**/*.test.js ./web/src/**/*.spec.js --reporter mocha-junit-reporter; else istanbul cover _mocha -- ./test/**/*.test.js ./web/src/**/*.spec.js; fi",
     "webpack": "webpack"
   },
   "dependencies": {
@@ -62,7 +68,7 @@
     "enzyme": "^2.7.0",
     "eslint": "^3.8.1",
     "eslint-plugin-react": "^6.9.0",
-    "istanbul": "^0.4.5",
+    "istanbul": "^1.0.0-alpha.2",
     "jsdom": "^9.9.1",
     "mocha": "^3.0.2",
     "mocha-junit-reporter": "^1.12.1",

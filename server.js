@@ -12,8 +12,8 @@ const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
 
-const authMiddleware = require('./middleware/index').auth;
-const headerMiddleware = require('./middleware/index').header;
+const authMiddleware = require('./middleware/index').authMiddleware;
+const headerMiddleware = require('./middleware/index').headerMiddleware;
 
 const util = require('./util/index').util;
 

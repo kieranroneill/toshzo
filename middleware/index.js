@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    auth: require('./auth.middleware'),
+    authMiddleware: require('./auth.middleware'),
 
-    header: require('./header.middleware')
+    headerMiddleware: require('./header.middleware')
 };

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-    monzo: require('./monzo.controller'),
+    monzoController: require('./monzo.controller'),
 
-    toshl: require('./toshl.controller')
+    toshlController: require('./toshl.controller')
 };

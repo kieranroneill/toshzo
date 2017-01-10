@@ -1,33 +1,25 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const request = require('supertest');
-const requestClient = require('request');
-const sinon = require('sinon');
-
-const config = require('../../config/default.json');
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
 const route = config.ENDPOINTS.API + config.ENDPOINTS.MONZO;
 
-describe('/monzo', () => {
-    before(() => this.app = server.app);
-
-    beforeEach(() => {
-        this.requestClientPostStub = sinon.stub(requestClient, 'post');
+describe('/monzo', function() {
+    before(function() {
+        this.app = server.app;
     });
 
-    afterEach(() => {
-        this.requestClientPostStub.restore();
+    beforeEach(function() {
+        this.requestPostStub = stub(request, 'post');
     });
 
-    describe('creates a Monzo access token', () => {
-        it('should fail if the query parameters are missing', done => {
+    afterEach(function() {
+        this.requestPostStub.restore();
+    });
+
+    describe('creates a Monzo access token', function() {
+        it('should fail if the query parameters are missing', function(done) {
             const url = route + config.ENDPOINTS.AUTH;
 
-            request(this.app)
+            supertest(this.app)
                 .get(url)
                 .expect(httpCodes.BAD_REQUEST)
                 .end((error, response) => {
@@ -41,13 +33,13 @@ describe('/monzo', () => {
                 });
         });
 
-        it('should redirect to /auth if the authorisation code is invalid', done => {
+        it('should redirect to /auth if the authorisation code is invalid', function(done) {
             const url = route + config.ENDPOINTS.AUTH + '?code=invalid&state=' + process.env.SUPER_SECRET;
 
-            this.requestClientPostStub
+            this.requestPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
 
-            request(this.app)
+            supertest(this.app)
                 .get(url)
                 .expect(httpCodes.FOUND)
                 .end((error, response) => {
@@ -59,7 +51,7 @@ describe('/monzo', () => {
                 });
         });
 
-        it('should redirect to /complete if it was successful', done => {
+        it('should redirect to /complete if it was successful', function(done) {
             const url = route + config.ENDPOINTS.AUTH + '?code=valid&state=' + process.env.SUPER_SECRET;
             const responseBody = {
                 access_token: 'access_token',
@@ -70,10 +62,10 @@ describe('/monzo', () => {
                 user_id: 'user_id'
             };
 
-            this.requestClientPostStub
+            this.requestPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
-            request(this.app)
+            supertest(this.app)
                 .get(url)
                 .expect(httpCodes.FOUND)
                 .end((error, response) => {

@@ -1,34 +1,25 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const requestClient = require('request');
-const sinon = require('sinon');
-
-const toshlController = require('../../controllers/index').toshl;
-
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
+import { toshlController } from '../../controllers';
 
 describe('controllers/toshl', () => {
-    beforeEach(() => {
-        this.requestClientGetStub = sinon.stub(requestClient, 'get');
+    beforeEach(function() {
+        this.requestGetStub = stub(request, 'get');
     });
 
-    afterEach(() => {
-        this.requestClientGetStub.restore();
+    afterEach(function() {
+        this.requestGetStub.restore();
     });
 
-    describe('getToshlAccounts()', () => {
-        it('should fail if the access token is invalid', done => {
+    describe('getToshlAccounts()', function() {
+        it('should fail if the access token is invalid', function(done) {
             const accessToken = 'So terribly invalid';
             const responseBody = {
                 error_id: 'error.authorization.token_invalid',
                 description: 'Token is invalid.'
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             toshlController
@@ -45,13 +36,13 @@ describe('controllers/toshl', () => {
                 });
         });
 
-        it('should fail if there are too many requests to Toshl', done => {
+        it('should fail if there are too many requests to Toshl', function(done) {
             const accessToken = 'Adventure time!';
             const responseBody = {
                 description: 'Have we DDoS-ed?'
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.TOO_MANY_REQUESTS, body: responseBody }, responseBody);
 
             toshlController
@@ -68,7 +59,7 @@ describe('controllers/toshl', () => {
                 });
         });
 
-        it('should return the accounts if the access token is valid', done => {
+        it('should return the accounts if the access token is valid', function(done) {
             const accessToken = 'I am a valid token.... ftw!';
             const responseBody = [
                 {
@@ -87,7 +78,7 @@ describe('controllers/toshl', () => {
                 }
             ];
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             toshlController
@@ -100,7 +91,7 @@ describe('controllers/toshl', () => {
                 });
         });
 
-        it('should return only active account', done => {
+        it('should return only active account', function(done) {
             const accessToken = 'I am a valid token.... ftw!';
             const responseBody = [
                 {
@@ -133,7 +124,7 @@ describe('controllers/toshl', () => {
                 }
             ];
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             toshlController
