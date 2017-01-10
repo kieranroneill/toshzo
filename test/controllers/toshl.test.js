@@ -1,6 +1,6 @@
 'use strict';
 
-import { toshlController } from '../../controllers';
+import { toshlController } from '../../lib/controllers';
 
 describe('controllers/toshl', () => {
     beforeEach(function() {

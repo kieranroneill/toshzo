@@ -1,6 +1,6 @@
 'use strict';
 
-import { monzoController } from '../../controllers';
+import { monzoController } from '../../lib/controllers';
 
 describe('controllers/monzo', () => {
     const accountId = 'I am Groot';

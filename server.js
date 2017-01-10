@@ -3,6 +3,7 @@
 process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 
 const bodyParser = require('body-parser');
+const chokidar = require('chokidar');
 const dotenv = require('dotenv');
 const express = require('express');
 const expressValidator = require('express-validator');
@@ -11,24 +12,46 @@ const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
+const webpack = require('webpack');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 
-const authMiddleware = require('./middleware/index').authMiddleware;
-const headerMiddleware = require('./middleware/index').headerMiddleware;
+const authMiddleware = require('./lib/middleware/index').authMiddleware;
+const headerMiddleware = require('./lib/middleware/index').headerMiddleware;
 
-const util = require('./util/index').util;
+const util = require('./lib/util/index').util;
 
-const config = require('./config/default.json');
+const config = require('./lib/config/default.json');
+const webpackDevConfig = require('./webpack.dev.config');
 
-const Router = require('./routes/router');
+const Router = require('./lib/routes/router');
 
 const app = express();
 const server = http.Server(app);
+const router = new Router(authMiddleware);
+let watcher, webpackCompiler;
 
 //====================================================
 // Configuration.
 //====================================================
 
 dotenv.config();
+
+if(process.env.NODE_ENV !== 'production') {
+    watcher = chokidar.watch('./lib');
+
+    watcher.on('ready', () => {
+        watcher.on('all', () => {
+            Object
+                .keys(require.cache)
+                .forEach(id => {
+                    if (/[\/\\]lib[\/\\]/.test(id)) {
+                        delete require.cache[id];
+                    }
+                });
+        });
+    });
+}
 
 //====================================================
 // Middleware.
@@ -39,14 +62,34 @@ app.use(morgan('dev')); // Log requests to console.
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express.static(path.resolve(__dirname, 'web', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders }));
+app.use(express
+    .static(path.resolve(__dirname, 'public', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders })
+);
 app.use(headerMiddleware.addResponseHeaders);
+
+// Use hot reloading in development.
+if (process.env.NODE_ENV === 'development') {
+    webpackCompiler = webpack(webpackDevConfig);
+
+    app.use(webpackDevMiddleware(webpackCompiler, {
+        publicPath: webpackDevConfig.output.publicPath,
+        stats: {
+            'colors': true,
+            'chunks': false,
+            'errors-only': true
+        }
+    }));
+
+    /* eslint-disable no-console */
+    app.use(webpackHotMiddleware(webpackCompiler, {
+        log: console.log
+    }));
+    /* eslint-enable no-console */
+}
 
 //====================================================
 // Routes.
 //====================================================
-
-const router = new Router(authMiddleware);
 
 app.use(config.ENDPOINTS.API, router.router);
 
@@ -84,9 +127,11 @@ app.use((error, request, response, next) => {
 //====================================================
 
 server.listen(config.PORT, process.env.SERVER_IP, () => {
+    const addr = server.address();
+
     /* eslint-disable no-console */
     console.log('Environment: ' + process.env.NODE_ENV);
-    console.log('The unicorns are running free at ' + process.env.SERVER_IP + ':' + config.PORT);
+    console.log('The unicorns are running free at http://%s:%d', addr.address, addr.port);
     /* eslint-enable no-console */
 });
 

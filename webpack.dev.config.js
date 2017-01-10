@@ -5,6 +5,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 const config = require('./lib/config/default.json');
 
@@ -12,13 +13,20 @@ const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
 
 module.exports = {
-    devtool: 'cheap-module-source-map',
-    entry: path.resolve(srcPath, 'index.jsx'),
+    devServer: {
+        outputPath: 'http://localhost:' + config.PORT
+    },
+    devtool: 'source-map',
+    entry: [
+        path.resolve(srcPath, 'index.jsx'),
+        'webpack-hot-middleware/client',
+        'webpack/hot/dev-server'
+    ],
     module: {
         loaders: [
             {
                 test: /.jsx?$/,
-                loaders: ['babel-loader'],
+                loaders: ['react-hot', 'babel-loader'],
                 exclude: /node_modules/
             },
             {
@@ -28,8 +36,9 @@ module.exports = {
         ]
     },
     output: {
-        path: distPath,
-        filename: 'bundle.js'
+        filename: 'bundle.js',
+        path: '/',
+        publicPath: 'http://localhost:' + config.PORT + '/'
     },
     plugins: [
         new CopyWebpackPlugin([
@@ -45,15 +54,11 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: config.APP_TITLE,
-            minify: {
-                collapseWhitespace: true,
-                removeComments: true,
-                minifyJS: true,
-                minifyCSS: true
-            }
-        })
+            minify: false
+        }),
+        new webpack.HotModuleReplacementPlugin()
     ],
     resolve: {
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx', '.map']
     }
 };

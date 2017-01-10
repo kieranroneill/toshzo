@@ -1,6 +1,6 @@
 'use strict';
 
-import { util } from '../../util';
+import { util } from '../../lib/util';
 
 describe('util/util', () => {
     describe('createMonzoError()', function() {

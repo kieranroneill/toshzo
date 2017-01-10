@@ -1,6 +1,6 @@
 'use strict';
 
-import { headerMiddleware } from '../../middleware';
+import { headerMiddleware } from '../../lib/middleware';
 
 describe('middleware/header', () => {
     beforeEach(function() {

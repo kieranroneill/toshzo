@@ -10,8 +10,8 @@ import request from 'request';
 import { assert, spy, stub } from 'sinon';
 import supertest from 'supertest';
 
-import config from '../config/default.json';
-import errors from '../config/errors.json';
+import config from '../lib/config/default.json';
+import errors from '../lib/config/errors.json';
 import server from '../server.js';
 
 // General globals.

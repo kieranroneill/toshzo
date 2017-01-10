@@ -1,6 +1,6 @@
 'use strict';
 
-import { authMiddleware } from '../../middleware';
+import { authMiddleware } from '../../lib/middleware';
 
 describe('middleware/auth', () => {
     beforeEach(function() {
