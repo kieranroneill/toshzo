@@ -2,17 +2,19 @@
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
 
 const config = require('./config/default.json');
 
-const appPath = path.join(__dirname, 'web');
+const distPath = path.join(__dirname, 'web', 'dist');
+const srcPath = path.join(__dirname, 'web', 'src');
 
 module.exports = {
     devServer: {
-        contentBase: path.resolve(appPath, 'dist'),
+        contentBase: distPath,
         historyApiFallback: true,
         hot: true,
         inline: true,
@@ -22,10 +24,10 @@ module.exports = {
     },
     devtool: 'source-map',
     entry: [
-        path.resolve(appPath, 'src', 'index.jsx'),
+        path.resolve(srcPath, 'index.jsx'),
     ],
     output: {
-        path: path.resolve(appPath, 'dist'),
+        path: distPath,
         filename: 'bundle.js'
     },
     module: {
@@ -47,11 +49,15 @@ module.exports = {
     plugins: [
         new CopyWebpackPlugin([
             {
-                from: path.resolve(appPath, 'src', 'assets'),
-                to: path.resolve(appPath, 'dist', 'assets')
+                from: path.resolve(srcPath, 'assets'),
+                to: path.resolve(distPath, 'assets')
             }
         ]),
         new ExtractTextPlugin('styles.css'),
+        new FaviconsWebpackPlugin({
+            logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
+            title: config.APP_TITLE
+        }),
         new HtmlWebpackPlugin({
             title: config.APP_TITLE,
             minify: {}
