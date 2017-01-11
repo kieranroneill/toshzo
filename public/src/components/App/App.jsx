@@ -1,11 +1,12 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 import './App.scss';
 
 class App extends React.Component {
     render() {
         return (
-            <div>Hello World!</div>
+            <Link to="/about">About</Link>
         );
     }
 }

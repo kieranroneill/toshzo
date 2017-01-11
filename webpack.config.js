@@ -12,10 +12,19 @@ const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
 
 module.exports = {
+    resolve: {
+        extensions: ['', '.js', '.jsx', '.scss']
+    },
+
+    // Production specific.
     devtool: 'cheap-module-source-map',
     entry: path.resolve(srcPath, 'index.jsx'),
     module: {
         loaders: [
+            {
+                test: /\.hbs$/,
+                loader: 'handlebars'
+            },
             {
                 test: /.jsx?$/,
                 loaders: ['babel-loader'],
@@ -45,6 +54,8 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: config.APP_TITLE,
+            inject: 'body',
+            template: path.resolve(srcPath, 'index.hbs'),
             minify: {
                 collapseWhitespace: true,
                 removeComments: true,
@@ -52,8 +63,5 @@ module.exports = {
                 minifyCSS: true
             }
         })
-    ],
-    resolve: {
-        extensions: ['', '.js', '.jsx']
-    }
+    ]
 };
