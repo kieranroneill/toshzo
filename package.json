@@ -27,7 +27,7 @@
     "postinstall": "(cp -n .env.example .env || true)",
     "start": "babel-node server",
     "test": "NODE_ENV=test istanbul cover _mocha -- ./test/**/*.test.js ./public/src/**/*.spec.js",
-    "test:reporter": "NODE_ENV=test istanbul cover _mocha -- ./test/**/*.test.js ./public/src/**/*.spec.js --reporter mocha-junit-reporter",
+    "test:reporter": "istanbul cover _mocha -- ./test/**/*.test.js ./public/src/**/*.spec.js --reporter mocha-junit-reporter",
     "webpack": "webpack"
   },
   "dependencies": {

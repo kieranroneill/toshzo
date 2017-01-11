@@ -6,7 +6,7 @@ machine:
     version: 6.9.4
 
   environment:
-    NODE_ENV: production
+    NODE_ENV: test
     SERVER_IP: 127.0.0.1
     SUPER_SECRET: super_secret
     MONZO_CLIENT_ID: THE_CAKE_IS_A_LIE
