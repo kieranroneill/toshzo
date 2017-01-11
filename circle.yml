@@ -3,15 +3,18 @@ machine:
     Europe/London
 
   node:
-    version: 4.4.5
+    version: 6.9.4
 
   environment:
-    NODE_ENV: production
+    NODE_ENV: test
     SERVER_IP: 127.0.0.1
     SUPER_SECRET: super_secret
     MONZO_CLIENT_ID: THE_CAKE_IS_A_LIE
 
 dependencies:
+  pre:
+    - npm prune && npm update
+
   override:
     - npm install
     - npm run build
@@ -22,7 +25,7 @@ test:
 
   override:
     - npm run lint
-    - npm test:
+    - npm run test:reporter:
         environment:
           # Create JUnit style test data for the test summary section.
           MOCHA_FILE: $CIRCLE_TEST_REPORTS/junit/test-results.xml

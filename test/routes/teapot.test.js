@@ -1,21 +1,15 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const request = require('supertest');
-
-const config = require('../../config/default.json');
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
 const route = config.ENDPOINTS.API + config.ENDPOINTS.TEAPOT;
 
 describe('/teapot', () => {
-    before(() => this.app = server.app);
+    before(function() {
+        this.app = server.app;
+    });
 
-    describe('get the teapot', () => {
-        it('should fail with a teapot!', done => {
-            request(this.app)
+    describe('get the teapot', function() {
+        it('should fail with a teapot!', function(done) {
+            supertest(this.app)
                 .get(route)
                 .expect(httpCodes.IM_A_TEAPOT)
                 .end((error, response) => {

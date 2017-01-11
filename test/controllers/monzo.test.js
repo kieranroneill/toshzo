@@ -1,39 +1,30 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const requestClient = require('request');
-const sinon = require('sinon');
-
-const monzoController = require('../../controllers/index').monzo;
-
-const errors = require('../../config/errors.json');
-
-const expect = chai.expect;
+import { monzoController } from '../../lib/controllers';
 
 describe('controllers/monzo', () => {
     const accountId = 'I am Groot';
     const webhookUrl = 'webhookery';
 
-    beforeEach(() => {
-        this.requestClientGetStub = sinon.stub(requestClient, 'get');
-        this.requestClientPostStub = sinon.stub(requestClient, 'post');
+    beforeEach(function() {
+        this.requestGetStub = stub(request, 'get');
+        this.requestPostStub = stub(request, 'post');
     });
 
-    afterEach(() => {
-        this.requestClientGetStub.restore();
-        this.requestClientPostStub.restore();
+    afterEach(function() {
+        this.requestGetStub.restore();
+        this.requestPostStub.restore();
     });
 
-    describe('getMonzoAccounts()', () => {
-        it('should fail if the access token is invalid', done => {
+    describe('getMonzoAccounts()', function() {
+        it('should fail if the access token is invalid', function(done) {
             const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
@@ -50,7 +41,7 @@ describe('controllers/monzo', () => {
                 });
         });
 
-        it('should return the accounts if the access token is valid', done => {
+        it('should return the accounts if the access token is valid', function(done) {
             const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 accounts: [
@@ -62,7 +53,7 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
@@ -75,15 +66,15 @@ describe('controllers/monzo', () => {
         });
     });
 
-    describe('getWebhooks()', () => {
-        it('should fail if the access token is invalid', done => {
+    describe('getWebhooks()', function() {
+        it('should fail if the access token is invalid', function(done) {
             const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
@@ -100,7 +91,7 @@ describe('controllers/monzo', () => {
                 });
         });
 
-        it('should provide a list of filtered webhooks', done => {
+        it('should provide a list of filtered webhooks', function(done) {
             const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 webhooks: [
@@ -117,7 +108,7 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
@@ -130,7 +121,7 @@ describe('controllers/monzo', () => {
                 });
         });
 
-        it('should provide the list of webhooks', done => {
+        it('should provide the list of webhooks', function(done) {
             const accessToken = 'I am a valid token.... ftw!';
             const responseBody = {
                 webhooks: [
@@ -147,7 +138,7 @@ describe('controllers/monzo', () => {
                 ]
             };
 
-            this.requestClientGetStub
+            this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController
@@ -161,15 +152,15 @@ describe('controllers/monzo', () => {
         });
     });
 
-    describe('registerWebhooks()', () => {
-        it('should fail if the access token is invalid', done => {
+    describe('registerWebhooks()', function() {
+        it('should fail if the access token is invalid', function(done) {
             const accessToken = 'So terribly invalid.';
             const responseBody = {
                 code: 'unauthorized',
                 message: 'User authentication required'
             };
 
-            this.requestClientPostStub
+            this.requestPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED, body: responseBody }, responseBody);
 
             monzoController
@@ -186,7 +177,7 @@ describe('controllers/monzo', () => {
                 });
         });
 
-        it('should register the new webhook', done => {
+        it('should register the new webhook', function(done) {
             const accessToken = 'Oh yeah baby!!';
             const responseBody = {
                 webhook: {
@@ -196,7 +187,7 @@ describe('controllers/monzo', () => {
                 }
             };
 
-            this.requestClientPostStub
+            this.requestPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
             monzoController

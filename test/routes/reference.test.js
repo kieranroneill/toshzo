@@ -1,20 +1,15 @@
 'use strict';
 
-const chai = require('chai');
-const httpCodes = require('http-codes');
-const request = require('supertest');
-
-const config = require('../../config/default.json');
-
-const expect = chai.expect;
 const route = config.ENDPOINTS.API + config.ENDPOINTS.REFERENCE;
 
 describe('/reference', () => {
-    before(() => this.app = server.app);
+    before(function() {
+        this.app = server.app;
+    });
 
-    describe('get the references', () => {
-        it('should get the references', done => {
-            request(this.app)
+    describe('get the references', function() {
+        it('should get the references', function(done) {
+            supertest(this.app)
                 .get(route)
                 .expect(httpCodes.OK)
                 .end((error, response) => {
