@@ -37,7 +37,8 @@ let watcher, webpackCompiler;
 
 dotenv.config();
 
-if(process.env.NODE_ENV !== 'production') {
+// This is used to watch for file changes.
+if(process.env.NODE_ENV === 'development') {
     watcher = chokidar.watch('./lib');
 
     watcher.on('ready', () => {
@@ -58,7 +59,11 @@ if(process.env.NODE_ENV !== 'production') {
 //====================================================
 
 app.use(helmet());
-app.use(morgan('dev')); // Log requests to console.
+app.use(morgan(
+    ':remote-addr - :remote-user [:date[clf]]' +
+    '":method :url HTTP/:http-version" :status ' +
+    ':res[content-length] :response-time ms'
+));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
