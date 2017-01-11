@@ -12,6 +12,9 @@ machine:
     MONZO_CLIENT_ID: THE_CAKE_IS_A_LIE
 
 dependencies:
+  pre:
+    - npm prune && npm update
+
   override:
     - npm install
     - npm run build
