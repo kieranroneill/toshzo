@@ -14,7 +14,6 @@ machine:
 dependencies:
   override:
     - npm install
-    - npm install eslint eslint-plugin-react istanbul@1.0.0-alpha.2 -g
     - npm run build
 
 test:
