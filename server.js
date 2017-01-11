@@ -9,7 +9,6 @@ const express = require('express');
 const expressValidator = require('express-validator');
 const helmet = require('helmet');
 const http = require('http');
-const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
 const webpack = require('webpack');
@@ -18,8 +17,6 @@ const webpackHotMiddleware = require('webpack-hot-middleware');
 
 const authMiddleware = require('./lib/middleware/index').authMiddleware;
 const headerMiddleware = require('./lib/middleware/index').headerMiddleware;
-
-const util = require('./lib/util/index').util;
 
 const config = require('./lib/config/default.json');
 const webpackDevConfig = require('./webpack.dev.config');
@@ -59,20 +56,13 @@ if(process.env.NODE_ENV === 'development') {
 //====================================================
 
 app.use(helmet());
-app.use(morgan(
-    ':remote-addr - :remote-user [:date[clf]]' +
-    '":method :url HTTP/:http-version" :status ' +
-    ':res[content-length] :response-time ms'
-));
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
-app.use(express
-    .static(path.resolve(__dirname, 'public', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders })
-);
 app.use(headerMiddleware.addResponseHeaders);
 
-// Use hot reloading in development.
+// Use hot reloading in development; serve from memory.
 if (process.env.NODE_ENV === 'development') {
     webpackCompiler = webpack(webpackDevConfig);
 
@@ -91,6 +81,11 @@ if (process.env.NODE_ENV === 'development') {
     }));
     /* eslint-enable no-console */
 }
+else {
+    app.use(express
+        .static(path.resolve(__dirname, 'public', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders })
+    );
+}
 
 //====================================================
 // Routes.
@@ -98,18 +93,24 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(config.ENDPOINTS.API, router.router);
 
-app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
+app.get('*', (request, response) => {
+    if(process.env.NODE_ENV !== 'development') {
+        response.sendFile(path.resolve(__dirname, 'public', 'dist', 'index.html'));
+    }
+});
 
-app.get(config.ROUTE.ACCOUNTS, authMiddleware.isAuthenticated, (request, response) => response.render('accounts'));
-
-app.get(config.ROUTE.COMPLETE, authMiddleware.isAuthenticated, (request, response) => response.render('complete'));
-
-app.get(config.ROUTE.SETUP, (request, response) => response.render('setup', {
-    clientId: process.env.MONZO_CLIENT_ID,
-    redirectUri: util.getMonzoRedirectUri(request)
-}));
-
-app.get('/', authMiddleware.isAuthenticated, (request, response) => response.redirect(config.ROUTE.ACCOUNTS));
+// app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
+//
+// app.get(config.ROUTE.ACCOUNTS, authMiddleware.isAuthenticated, (request, response) => response.render('accounts'));
+//
+// app.get(config.ROUTE.COMPLETE, authMiddleware.isAuthenticated, (request, response) => response.render('complete'));
+//
+// app.get(config.ROUTE.SETUP, (request, response) => response.render('setup', {
+//     clientId: process.env.MONZO_CLIENT_ID,
+//     redirectUri: util.getMonzoRedirectUri(request)
+// }));
+//
+// app.get('/', authMiddleware.isAuthenticated, (request, response) => response.redirect(config.ROUTE.ACCOUNTS));
 
 //====================================================
 // Errors...gotta catch 'em all.

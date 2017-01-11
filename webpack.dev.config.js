@@ -13,17 +13,26 @@ const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
 
 module.exports = {
+    resolve: {
+        extensions: ['', '.js', '.jsx', '.scss']
+    },
+
+    // Development specific.
     devServer: {
         outputPath: 'http://localhost:' + config.PORT
     },
     devtool: 'source-map',
     entry: [
-        path.resolve(srcPath, 'index.jsx'),
         'webpack-hot-middleware/client',
-        'webpack/hot/dev-server'
+        'webpack/hot/dev-server',
+        path.resolve(srcPath, 'index.jsx')
     ],
     module: {
         loaders: [
+            {
+                test: /\.hbs$/,
+                loader: 'handlebars-loader'
+            },
             {
                 test: /.jsx?$/,
                 loaders: ['react-hot', 'babel-loader'],
@@ -54,11 +63,10 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: config.APP_TITLE,
+            inject: 'body',
+            template: path.resolve(srcPath, 'index.hbs'),
             minify: false
         }),
         new webpack.HotModuleReplacementPlugin()
-    ],
-    resolve: {
-        extensions: ['', '.js', '.jsx', '.map']
-    }
+    ]
 };
