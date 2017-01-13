@@ -1,14 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import './App.scss';
 
 class App extends React.Component {
     render() {
         return (
-            <Link to="/about">About</Link>
+            <main>
+                <MuiThemeProvider>
+                    {this.props.children}
+                </MuiThemeProvider>
+
+            </main>
         );
     }
 }
+
+App.propTypes = {
+    children: React.PropTypes.node
+};
 
 export default App;

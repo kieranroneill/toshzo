@@ -9,6 +9,7 @@ const express = require('express');
 const expressValidator = require('express-validator');
 const helmet = require('helmet');
 const http = require('http');
+const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
 const webpack = require('webpack');
