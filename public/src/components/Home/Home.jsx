@@ -13,7 +13,6 @@ class Home extends React.Component {
                 <CardActions>
                     <FlatButton
                         containerElement={<Link to="/about" />}
-                        linkButton={true}
                         label="About"/>
                 </CardActions>
             </Card>
