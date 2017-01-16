@@ -10,7 +10,6 @@ export function getReferences() {
 
         return axios
             .get(url)
-            .then(response => dispatch(_getReferencesSuccess(response.data))) // Dispatch response.
-            .catch(error => console.log(error));
+            .then(response => dispatch(_getReferencesSuccess(response.data)));
     };
 }
