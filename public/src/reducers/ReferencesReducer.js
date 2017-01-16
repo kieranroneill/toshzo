@@ -1,12 +1,7 @@
 import { ReferencesActions } from '../actions/index';
+import initialState from './state';
 
-const initialState = {
-    monzo: {
-        clientId: undefined
-    }
-};
-
-function ReferencesReducer(state = initialState, action) {
+function ReferencesReducer(state = initialState.references, action) {
     switch (action.type) {
         case ReferencesActions.GET_REFERENCES_SUCCESS:
             if(action.references) {
