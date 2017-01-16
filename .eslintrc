@@ -6,8 +6,10 @@
     },
     "extends": ["eslint:recommended", "plugin:react/recommended"],
     "globals": {
+        "axios": true,
         "assert": true,
         "config": true,
+        "configureMockStore": true,
         "errors": true,
         "expect": true,
         "httpCodes": true,
@@ -20,7 +22,8 @@
         "shallow": true,
         "spy": true,
         "stub": true,
-        "supertest": true
+        "supertest": true,
+        "thunk": true
     },
     "parser": "babel-eslint",
     "parserOptions": {
