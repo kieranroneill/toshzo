@@ -13,6 +13,8 @@ import request from 'request';
 import { assert, spy, stub } from 'sinon';
 import supertest from 'supertest';
 
+import 'sinon-as-promised';
+
 import config from '../lib/config/default.json';
 import errors from '../lib/config/errors.json';
 import server from '../server.js';

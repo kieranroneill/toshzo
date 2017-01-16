@@ -2,7 +2,7 @@ import ReferencesReducer from './ReferencesReducer';
 import { ReferencesActions } from '../actions/index';
 import initialState from './state';
 
-describe('events reducers', () => {
+describe('references reducers', () => {
     it('should return the initial state', () => {
         const state = ReferencesReducer(initialState.references, {});
 
