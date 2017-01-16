@@ -1,6 +1,9 @@
 import { Card, CardActions, CardHeader, FlatButton } from 'material-ui';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+
+import { ReferencesActions } from '../../actions/index';
 
 class Home extends React.Component {
     render() {
@@ -8,16 +11,24 @@ class Home extends React.Component {
             <Card>
                 <CardHeader
                     title="Without Avatar"
-                    subtitle="Subtitle"
+                    subtitle={this.props.references.monzo.clientId}
                 />
                 <CardActions>
                     <FlatButton
-                        containerElement={<Link to="/about" />}
-                        label="About"/>
+                        label="About"
+                        containerElement={<Link to="/about" />}/>
+                    <FlatButton
+                        label="Get References"
+                        onTouchTap={() => this.props.dispatch(ReferencesActions.getReferences())}/>
                 </CardActions>
             </Card>
         );
     }
 }
 
-export default Home;
+Home.propTypes = {
+    references: React.PropTypes.object,
+    dispatch: React.PropTypes.func.isRequired
+};
+
+export default connect(state => ({ references: state.ReferencesReducer }))(Home);

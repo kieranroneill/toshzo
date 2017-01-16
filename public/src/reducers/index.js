@@ -1,3 +1,1 @@
-/**
- * Created by koneill on 16/01/2017.
- */
+export ReferencesReducer from './ReferencesReducer';
