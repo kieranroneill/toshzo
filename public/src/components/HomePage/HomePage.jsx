@@ -27,8 +27,8 @@ class HomePage extends React.Component {
 }
 
 HomePage.propTypes = {
-    references: React.PropTypes.object,
-    dispatch: React.PropTypes.func.isRequired
+    dispatch: React.PropTypes.func,
+    references: React.PropTypes.object
 };
 
 export default connect(state => ({

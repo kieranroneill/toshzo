@@ -6,6 +6,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 const webpack = require('webpack');
+const WebpackNotifierPlugin = require('webpack-notifier');
 
 const config = require('./lib/config/default.json');
 
@@ -67,6 +68,11 @@ module.exports = {
             template: path.resolve(srcPath, 'index.hbs'),
             minify: false
         }),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new WebpackNotifierPlugin({
+            title: 'BOOM!!!',
+            contentImage: path.resolve(__dirname, 'unicorn.png'),
+            alwaysNotify: true
+        })
     ]
 };

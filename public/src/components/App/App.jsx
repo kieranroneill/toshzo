@@ -8,6 +8,8 @@ import './App.scss';
 import muiTheme from '../../config/theme';
 
 // Components.
+import Footer from '../Footer/Footer';
+import Header from '../Header/Header';
 import PageLoader from '../PageLoader/PageLoader';
 
 // Actions.
@@ -21,10 +23,14 @@ class App extends React.Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={ muiTheme }>
-                <main>
+                <div className="page grey lighten-3">
                     { this.props.loader ? <PageLoader /> : null }
-                    { this.props.children }
-                </main>
+                    <Header />
+                    <main>
+                        { this.props.children }
+                    </main>
+                    <Footer />
+                </div>
             </MuiThemeProvider>
         );
     }
