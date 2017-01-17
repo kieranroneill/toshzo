@@ -1,3 +1,8 @@
+main {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
 // Fixes the flicker of the svg on load.
 img.svg-inject {
   display: none;

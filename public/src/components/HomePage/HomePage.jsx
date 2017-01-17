@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 import { ReferencesActions } from '../../actions/index';
 
-class Home extends React.Component {
+class HomePage extends React.Component {
     render() {
         return (
             <Card>
@@ -26,9 +26,9 @@ class Home extends React.Component {
     }
 }
 
-Home.propTypes = {
+HomePage.propTypes = {
     references: React.PropTypes.object,
     dispatch: React.PropTypes.func.isRequired
 };
 
-export default connect(state => ({ references: state.ReferencesReducer }))(Home);
+export default connect(state => ({ references: state.ReferencesReducer }))(HomePage);

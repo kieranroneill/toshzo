@@ -2,14 +2,14 @@ import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 
 import App from './components/App/App';
-import About from './components/About/About';
-import Home from './components/Home/Home';
+import AboutPage from './components/AboutPage/AboutPage';
+import HomePage from './components/HomePage/HomePage';
 
 const Routes = props => (
     <Router {...props}>
         <Route path="/" component={App}>
-            <IndexRoute component={Home}/>
-            <Route path="about" component={About}/>
+            <IndexRoute component={HomePage}/>
+            <Route path="about" component={AboutPage}/>
         </Route>
     </Router>
 );

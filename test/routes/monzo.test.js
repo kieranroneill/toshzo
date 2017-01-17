@@ -34,7 +34,7 @@ describe('/monzo', function() {
         });
 
         it('should redirect to /auth if the authorisation code is invalid', function(done) {
-            const url = route + config.ENDPOINTS.AUTH + '?code=invalid&state=' + process.env.SUPER_SECRET;
+            const url = route + config.ENDPOINTS.AUTH + '?authorisationCode=invalid&state=' + process.env.SUPER_SECRET;
 
             this.requestPostStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
@@ -52,7 +52,7 @@ describe('/monzo', function() {
         });
 
         it('should redirect to /complete if it was successful', function(done) {
-            const url = route + config.ENDPOINTS.AUTH + '?code=valid&state=' + process.env.SUPER_SECRET;
+            const url = route + config.ENDPOINTS.AUTH + '?authorisationCode=valid&state=' + process.env.SUPER_SECRET;
             const responseBody = {
                 access_token: 'access_token',
                 client_id: 'client_id',

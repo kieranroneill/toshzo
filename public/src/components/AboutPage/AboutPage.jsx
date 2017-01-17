@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-class About extends React.Component {
+class AboutPage extends React.Component {
     render() {
         return (
             <Link to="/">Go Home</Link>
@@ -9,4 +9,4 @@ class About extends React.Component {
     }
 }
 
-export default About;
+export default AboutPage;
