@@ -1,5 +1,5 @@
 import { ReferencesActions } from '../actions/index';
-import initialState from '../state';
+import initialState from '../config/state';
 
 function ReferencesReducer(state = initialState.references, action) {
     switch (action.type) {

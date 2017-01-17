@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 
 import './App.scss';
 
+// Configuration.
+import muiTheme from '../../config/theme';
+
+// Components.
 import PageLoader from '../PageLoader/PageLoader';
 
+// Actions.
 import { LoaderActions } from '../../actions/index';
 
 class App extends React.Component {
@@ -15,7 +20,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            <MuiThemeProvider muiTheme={ muiTheme }>
                 <main>
                     { this.props.loader ? <PageLoader /> : null }
                     { this.props.children }

@@ -1,5 +1,5 @@
 import { LoaderActions } from '../actions/index';
-import initialState from '../state';
+import initialState from '../config/state';
 
 function LoaderReducer(state = initialState.loader, action) {
     switch (action.type) {

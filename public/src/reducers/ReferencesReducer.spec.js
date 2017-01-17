@@ -1,6 +1,6 @@
 import ReferencesReducer from './ReferencesReducer';
 import { ReferencesActions } from '../actions/index';
-import initialState from '../state';
+import initialState from '../config/state';
 
 describe('references reducers', () => {
     it('should return the initial state', () => {
