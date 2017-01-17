@@ -1,6 +1,6 @@
 import LoaderReducer from './LoaderReducer';
 import { LoaderActions } from '../actions/index';
-import initialState from './state';
+import initialState from '../state';
 
 describe('loader reducers', () => {
     it('should return the initial state', () => {

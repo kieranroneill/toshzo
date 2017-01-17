@@ -22,7 +22,7 @@ store.dispatch(ReferencesActions.getReferences());
 
 ReactDom.render(
     <Provider store={store}>
-        <Routes history={browserHistory} />
+        <Routes history={browserHistory} store={store} />
     </Provider>,
     document.getElementById('root')
 );

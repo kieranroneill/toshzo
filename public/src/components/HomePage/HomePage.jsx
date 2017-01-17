@@ -31,4 +31,6 @@ HomePage.propTypes = {
     dispatch: React.PropTypes.func.isRequired
 };
 
-export default connect(state => ({ references: state.ReferencesReducer }))(HomePage);
+export default connect(state => ({
+    references: state.references
+}))(HomePage);

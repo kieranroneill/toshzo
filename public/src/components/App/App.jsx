@@ -24,4 +24,6 @@ App.propTypes = {
     loader: React.PropTypes.bool,
 };
 
-export default connect(state => ({ loader: state.LoaderReducer }))(App);
+export default connect(state => ({
+    loader: state.loader
+}))(App);

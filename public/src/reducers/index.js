@@ -1,2 +1,9 @@
-export LoaderReducer from './LoaderReducer';
-export ReferencesReducer from './ReferencesReducer';
+import { combineReducers } from 'redux';
+
+import LoaderReducer from './LoaderReducer';
+import ReferencesReducer from './ReferencesReducer';
+
+export default combineReducers({
+    loader: LoaderReducer,
+    references: ReferencesReducer
+});
