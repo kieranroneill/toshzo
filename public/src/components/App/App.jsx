@@ -1,23 +1,27 @@
-import React from 'react';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import React from 'react';
+import { connect } from 'react-redux';
 
 import './App.scss';
+
+import PageLoader from '../PageLoader/PageLoader';
 
 class App extends React.Component {
     render() {
         return (
-            <main>
-                <MuiThemeProvider>
-                    {this.props.children}
-                </MuiThemeProvider>
-
-            </main>
+            <MuiThemeProvider>
+                <main>
+                    { this.props.loader ? <PageLoader /> : null }
+                    { this.props.children }
+                </main>
+            </MuiThemeProvider>
         );
     }
 }
 
 App.propTypes = {
-    children: React.PropTypes.node
+    children: React.PropTypes.node,
+    loader: React.PropTypes.bool,
 };
 
-export default App;
+export default connect(state => ({ loader: state.LoaderReducer }))(App);
