@@ -7,9 +7,9 @@ function LoaderReducer(state = initialState.loader, action) {
             return false;
         case LoaderActions.SHOW_LOADER:
             return true;
+        default:
+            return state;
     }
-
-    return state;
 }
 
 export default LoaderReducer;

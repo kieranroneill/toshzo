@@ -6,7 +6,13 @@ import './App.scss';
 
 import PageLoader from '../PageLoader/PageLoader';
 
+import { LoaderActions } from '../../actions/index';
+
 class App extends React.Component {
+    componentDidMount() {
+        this.props.dispatch(LoaderActions.hideLoader());
+    }
+
     render() {
         return (
             <MuiThemeProvider>
@@ -21,7 +27,8 @@ class App extends React.Component {
 
 App.propTypes = {
     children: React.PropTypes.node,
-    loader: React.PropTypes.bool,
+    dispatch: React.PropTypes.func,
+    loader: React.PropTypes.bool
 };
 
 export default connect(state => ({
