@@ -4,12 +4,24 @@ import { connect } from 'react-redux';
 
 import './Header.scss';
 
+// ActionCreators.
+import { ConfigActionCreators } from '../../action-creators/index';
+
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    onNavigationOpenClick() {
+        this.props.dispatch(ConfigActionCreators.toggleDrawer());
+    }
+
     render() {
         return (
             <header>
                 <AppBar
-                    title={ this.props.config.pageTitle } />
+                    title={ this.props.config.pageTitle }
+                    onLeftIconButtonTouchTap={ this.onNavigationOpenClick.bind(this) } />
 
             </header>
         );
@@ -17,9 +29,14 @@ class Header extends React.Component {
 }
 
 Header.propTypes = {
-    config: React.PropTypes.object
+    config: React.PropTypes.object,
+    dispatch: React.PropTypes.func
 };
 
-export default connect(state => ({
-    config: state.config
-}))(Header);
+function mapStateToProps(state) {
+    return {
+        config: state.config
+    };
+}
+
+export default connect(mapStateToProps)(Header);
