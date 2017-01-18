@@ -12,19 +12,19 @@ import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import PageLoader from '../PageLoader/PageLoader';
 
-// Actions.
-import { LoaderActionCreators } from '../../action-creators/index';
+// ActionCreators.
+import { ConfigActionCreators } from '../../action-creators/index';
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(LoaderActionCreators.hideLoader());
+    componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
     }
 
     render() {
         return (
             <MuiThemeProvider muiTheme={ muiTheme }>
                 <div className="page grey lighten-2">
-                    { this.props.config.isLoading ? <PageLoader /> : null }
+                    <PageLoader />
                     <Header />
                     <main>
                         { this.props.children }
@@ -34,14 +34,15 @@ class App extends React.Component {
             </MuiThemeProvider>
         );
     }
+
+    componentDidMount() {
+        this.props.dispatch(ConfigActionCreators.hideLoader());
+    }
 }
 
 App.propTypes = {
     children: React.PropTypes.node,
-    config: React.PropTypes.object,
     dispatch: React.PropTypes.func
 };
 
-export default connect(state => ({
-    config: state.config
-}))(App);
+export default connect()(App);

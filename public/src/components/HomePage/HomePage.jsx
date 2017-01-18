@@ -1,6 +1,10 @@
 import { Card, CardActions, CardHeader, FlatButton } from 'material-ui';
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
+
+// ActionCreators.
+import { ConfigActionCreators } from '../../action-creators/index';
 
 class HomePage extends React.Component {
     render() {
@@ -18,10 +22,14 @@ class HomePage extends React.Component {
             </Card>
         );
     }
+
+    componentDidMount() {
+        this.props.dispatch(ConfigActionCreators.setPageTitle('Home'));
+    }
 }
 
 HomePage.propTypes = {
     dispatch: React.PropTypes.func
 };
 
-export default HomePage;
+export default connect()(HomePage);

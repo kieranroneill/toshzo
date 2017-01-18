@@ -8,9 +8,8 @@ function ConfigReducer(state = ConfigState, action) {
 
     switch (action.type) {
         case ConfigActions.HIDE_LOADER:
-            return _.extendOwn(state, {
-                isLoading: false
-            });
+            return Object.assign({}, state, { isLoading: false });
+
         case ConfigActions.SET_PAGE_TITLE:
             pageTitle = state.pageTitle;
 
@@ -19,13 +18,11 @@ function ConfigReducer(state = ConfigState, action) {
                 pageTitle = action.value;
             }
 
-            return _.extendOwn(state, {
-                pageTitle: pageTitle
-            });
+            return Object.assign({}, state, { pageTitle: pageTitle });
+
         case ConfigActions.SHOW_LOADER:
-            return _.extendOwn(state, {
-                isLoading: true
-            });
+            return Object.assign({}, state, { isLoading: true });
+
         default:
             return state;
     }

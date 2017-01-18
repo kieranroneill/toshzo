@@ -4,7 +4,7 @@ import { combineReducers } from 'redux';
 import ConfigReducer from './ConfigReducer';
 
 /**
- * Combine the reducers and mapping them to lowercase.
+ * Combine the reducers and map them to lowercase.
  */
 export default combineReducers({
     config: ConfigReducer

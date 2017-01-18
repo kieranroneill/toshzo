@@ -1,4 +1,4 @@
 export default {
-    isLoading: true,
+    isLoading: false,
     pageTitle: 'Toshzo'
 };
