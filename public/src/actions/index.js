@@ -1,2 +1,1 @@
-export * as LoaderActions from './LoaderActions';
-export * as ReferencesActions from './ReferencesActions';
+export * as ConfigActions from './ConfigActions';

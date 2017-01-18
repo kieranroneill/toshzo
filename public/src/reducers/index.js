@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux';
 
-import LoaderReducer from './LoaderReducer';
-import ReferencesReducer from './ReferencesReducer';
+// Reducers.
+import ConfigReducer from './ConfigReducer';
 
+/**
+ * Combine the reducers and mapping them to lowercase.
+ */
 export default combineReducers({
-    loader: LoaderReducer,
-    references: ReferencesReducer
+    config: ConfigReducer
 });
