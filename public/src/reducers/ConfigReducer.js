@@ -23,6 +23,9 @@ function ConfigReducer(state = ConfigState, action) {
         case ConfigActions.SHOW_LOADER:
             return Object.assign({}, state, { isLoading: true });
 
+        case ConfigActions.TOGGLE_DRAWER:
+            return Object.assign({}, state, { isDrawerOpen: !state.isDrawerOpen });
+
         default:
             return state;
     }

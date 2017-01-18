@@ -20,4 +20,10 @@ describe('config actions', () => {
 
         expect(ConfigActionCreators.hideLoader()).to.deep.equal(expectedAction);
     });
+
+    it('should create an action to toggle the drawer', () => {
+        const expectedAction = { type: ConfigActions.TOGGLE_DRAWER };
+
+        expect(ConfigActionCreators.toggleDrawer()).to.deep.equal(expectedAction);
+    });
 });

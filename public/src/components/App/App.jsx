@@ -1,3 +1,4 @@
+import { Drawer } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -25,6 +26,7 @@ class App extends React.Component {
             <MuiThemeProvider muiTheme={ muiTheme }>
                 <div className="page grey lighten-2">
                     <PageLoader />
+                    <Drawer  />
                     <Header />
                     <main>
                         { this.props.children }
