@@ -7,6 +7,10 @@ import { Link } from 'react-router';
 import { ConfigActionCreators } from '../../action-creators/index';
 
 class HomePage extends React.Component {
+    componentDidMount() {
+        this.props.dispatch(ConfigActionCreators.setPageTitle('Home'));
+    }
+
     render() {
         return (
             <Card>
@@ -21,10 +25,6 @@ class HomePage extends React.Component {
                 </CardActions>
             </Card>
         );
-    }
-
-    componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.setPageTitle('Home'));
     }
 }
 

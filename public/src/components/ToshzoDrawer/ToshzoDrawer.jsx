@@ -1,8 +1,9 @@
-import { Divider, Drawer, IconButton, Toolbar, ToolbarGroup } from 'material-ui';
+import { Divider, Drawer, IconButton, MenuItem, Toolbar, ToolbarGroup } from 'material-ui';
 import { green300, grey500, white } from 'material-ui/styles/colors';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -40,6 +41,11 @@ class ToshzoDrawer extends React.Component {
                     </ToolbarGroup>
                 </Toolbar>
                 <Divider />
+                <MenuItem
+                    primaryText="About"
+                    linkButton
+                    containerElement={ <Link to="/about" /> }
+                    onTouchTap={ this.onNavigationCloseClick.bind(this) } />
             </Drawer>
         );
     }
