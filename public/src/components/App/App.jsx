@@ -14,18 +14,7 @@ import Header from '../Header/Header';
 import PageLoader from '../PageLoader/PageLoader';
 import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 
-// ActionCreators.
-import { ConfigActionCreators } from '../../action-creators/index';
-
 class App extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.hideLoader());
-    }
-
-    componentWillMount() {
-        this.props.dispatch(ConfigActionCreators.showLoader());
-    }
-
     render() {
         return (
             <MuiThemeProvider muiTheme={ muiTheme }>
@@ -38,8 +27,8 @@ class App extends React.Component {
                     </main>
                     <Footer />
                     <Snackbar
-                        message=""
-                        open="" />
+                        message={ this.props.config.snackBar.message }
+                        open={ this.props.config.snackBar.isOpen } />
                 </div>
             </MuiThemeProvider>
         );
@@ -48,7 +37,13 @@ class App extends React.Component {
 
 App.propTypes = {
     children: React.PropTypes.node,
+    config: React.PropTypes.object,
     dispatch: React.PropTypes.func
 };
 
-export default connect()(App);
+function mapStateToProps(state) {
+    return {
+        config: state.config
+    };
+}
+export default connect(mapStateToProps)(App);

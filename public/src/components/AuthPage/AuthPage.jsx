@@ -27,11 +27,20 @@ class AuthPage extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
+
+        if(this.state.monzoCode && this.state.superSecret) {
+            // TODO: verify secret is correct.
+            this.setState({ stepIndex: 1 });
+            this.props.dispatch(ConfigActionCreators.hideLoader());
+        }
+        else {
+            this.props.dispatch(ConfigActionCreators.hideLoader());
+        }
     }
 
-    // componentWillMount() {
-    //     this.props.dispatch(ConfigActionCreators.showLoader());
-    // }
+    componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
+    }
 
     getButtonLabel() {
         switch (this.state.stepIndex) {
