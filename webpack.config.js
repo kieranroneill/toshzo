@@ -41,12 +41,7 @@ module.exports = {
         filename: 'bundle.js'
     },
     plugins: [
-        new CopyWebpackPlugin([
-            {
-                from: path.resolve(srcPath, 'assets'),
-                to: path.resolve(distPath, 'assets')
-            }
-        ]),
+        new CopyWebpackPlugin([{ from: path.resolve(srcPath, 'assets'), to: path.resolve(distPath, 'assets') }]),
         new ExtractTextPlugin('styles.css'),
         new FaviconsWebpackPlugin({
             logo: path.resolve(srcPath, 'favicon', 'favicon.png'),

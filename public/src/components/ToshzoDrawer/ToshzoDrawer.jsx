@@ -43,7 +43,6 @@ class ToshzoDrawer extends React.Component {
                 <Divider />
                 <MenuItem
                     primaryText="About"
-                    linkButton
                     containerElement={ <Link to="/about" /> }
                     onTouchTap={ this.onNavigationCloseClick.bind(this) } />
             </Drawer>

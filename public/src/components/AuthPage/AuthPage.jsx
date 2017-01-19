@@ -12,26 +12,40 @@ const authMonzoContent = (
         <p>
             Firstly, we need to authorise your Monzo account to allow us access to read your transactions.
         </p>
+        <div className="auth-page__content__image">
+            <img src="assets/images/monzo_logo.png" alt="Monzo logo" />
+        </div>
         <p>
-            You will be redirected to Monzo.
+            You will be redirected to Monzo and asked to authorise Toshzo.
         </p>
-        <FlatButton
-            label="Authorise Monzo"
-            secondary={ true } />
     </div>
 
 );
 const authToshlContent = (
-    <p>
-        Ad group status is different than the statuses for campaigns, ads, and keywords, though the
-        statuses can affect each other. Ad groups are contained within a campaign, and each campaign can
-        have one or more ad groups. Within each ad group are ads, keywords, and bids.
-    </p>
+    <div className="auth-page__content">
+        <p>
+            Now that we have authorised Monzo, we need your permission to add your expenses to Toshl.
+        </p>
+        <div className="auth-page__content__image">
+            <img src="assets/images/toshl_logo.png" alt="Toshl logo" />
+        </div>
+        <p>
+            You will be redirected to Toshl and asked to authorise Toshzo.
+        </p>
+    </div>
 );
 const finishedContent = (
-    <p>
-        Finnished!!!
-    </p>
+    <div className="auth-page__content">
+        <p>
+            That's it folks!
+        </p>
+        <p>
+            We now have the necessary permissions to read your Monzo transactions and add them to Toshl.
+        </p>
+        <p>
+            Click "Finish" to customise how your expenses are added to Toshl.
+        </p>
+    </div>
 );
 
 class AuthPage extends React.Component {
@@ -46,6 +60,19 @@ class AuthPage extends React.Component {
 
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
+    }
+
+    getButtonLabel() {
+        switch (this.state.stepIndex) {
+            case 0:
+                return 'Authorise Monzo';
+            case 1:
+                return 'Authorise Toshl';
+            case 2:
+                return 'Finished';
+            default:
+                return 'Start Over';
+        }
     }
 
     getStepContent() {
@@ -90,13 +117,11 @@ class AuthPage extends React.Component {
                             <StepLabel>That's all folks!</StepLabel>
                         </Step>
                     </Stepper>
-                    <div className="auth-page__content__container">
-                        { this.getStepContent() }
-                    </div>
+                    { this.getStepContent() }
                     <div className="auth-page__actions">
                         <RaisedButton
-                            label={ (this.state.stepIndex === 2 ? 'Finish' : 'Next') }
-                            primary={ true }
+                            label={ this.getButtonLabel() }
+                            secondary={ true }
                             onTouchTap={ this.onNextStep.bind(this) } />
                     </div>
                 </div>
