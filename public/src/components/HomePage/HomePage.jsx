@@ -1,7 +1,6 @@
-import { Card, CardActions, CardHeader, FlatButton } from 'material-ui';
+import { Card, CardHeader } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -18,11 +17,6 @@ class HomePage extends React.Component {
                     title="Without Avatar"
                     subtitle="Wazzzzup"
                 />
-                <CardActions>
-                    <FlatButton
-                        label="About"
-                        containerElement={<Link to="/about" />}/>
-                </CardActions>
             </Card>
         );
     }

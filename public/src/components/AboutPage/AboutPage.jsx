@@ -12,7 +12,7 @@ class AboutPage extends React.Component {
 
     render() {
         return (
-            <Link to="/">Go Home</Link>
+            <Link to="auth">Auth</Link>
         );
     }
 }
