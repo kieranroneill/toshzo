@@ -1,3 +1,4 @@
+import { Snackbar } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -36,6 +37,9 @@ class App extends React.Component {
                         { this.props.children }
                     </main>
                     <Footer />
+                    <Snackbar
+                        message=""
+                        open="" />
                 </div>
             </MuiThemeProvider>
         );

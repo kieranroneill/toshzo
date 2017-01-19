@@ -1,4 +1,5 @@
-import { Card, RaisedButton, Step, Stepper, StepLabel } from 'material-ui';
+import _ from 'underscore';
+import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -7,54 +8,20 @@ import './AuthPage.scss';
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
-const authMonzoContent = (
-    <div className="auth-page__content">
-        <p>
-            Firstly, we need to authorise your Monzo account to allow us access to read your transactions.
-        </p>
-        <div className="auth-page__content__image">
-            <img src="assets/images/monzo_logo.png" alt="Monzo logo" />
-        </div>
-        <p>
-            You will be redirected to Monzo and asked to authorise Toshzo.
-        </p>
-    </div>
-
-);
-const authToshlContent = (
-    <div className="auth-page__content">
-        <p>
-            Now that we have authorised Monzo, we need your permission to add your expenses to Toshl.
-        </p>
-        <div className="auth-page__content__image">
-            <img src="assets/images/toshl_logo.png" alt="Toshl logo" />
-        </div>
-        <p>
-            You will be redirected to Toshl and asked to authorise Toshzo.
-        </p>
-    </div>
-);
-const finishedContent = (
-    <div className="auth-page__content">
-        <p>
-            That's it folks!
-        </p>
-        <p>
-            We now have the necessary permissions to read your Monzo transactions and add them to Toshl.
-        </p>
-        <p>
-            Click "Finish" to customise how your expenses are added to Toshl.
-        </p>
-    </div>
-);
-
 class AuthPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             finished: false,
-            stepIndex: 0
+            monzoCode: this.props.location.query.code,
+            snackBarConfig: {
+                isOpen: false,
+                message: 'Toshl token required'
+            },
+            stepIndex: 0,
+            superSecret: this.props.location.query.state,
+            toshlToken: ''
         };
     }
 
@@ -62,42 +29,93 @@ class AuthPage extends React.Component {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
     }
 
+    // componentWillMount() {
+    //     this.props.dispatch(ConfigActionCreators.showLoader());
+    // }
+
     getButtonLabel() {
         switch (this.state.stepIndex) {
             case 0:
                 return 'Authorise Monzo';
             case 1:
                 return 'Authorise Toshl';
-            case 2:
-                return 'Finished';
             default:
-                return 'Start Over';
+                return 'Finished';
         }
     }
 
     getStepContent() {
         switch (this.state.stepIndex) {
             case 0:
-                return authMonzoContent;
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            Firstly, we need to authorise your Monzo account to allow us access to read your transactions.
+                        </p>
+                        <div className="auth-page__content__image">
+                            <img src="assets/images/monzo_logo.png" alt="Monzo logo" />
+                        </div>
+                        <p>
+                            You will be redirected to Monzo and asked to authorise Toshzo.
+                        </p>
+                    </div>
+
+                );
             case 1:
-                return authToshlContent;
-            case 2:
-                return finishedContent;
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            Now that we have authorised Monzo, we need your permission to add your expenses to Toshl.
+                        </p>
+                        <div className="auth-page__content__image">
+                            <img src="assets/images/toshl_logo.png" alt="Toshl logo" />
+                        </div>
+                        <p>
+                            You will be redirected to Toshl and asked to authorise Toshzo.
+                        </p>
+                        <TextField
+                            value={ this.state.toshlToken }
+                            hintText="Enter your personal Toshl token"
+                            onChange={ this.onToshlTokenChange.bind(this) } />
+                    </div>
+                );
             default:
-                return 'You\'re a long way from home sonny jim!';
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            That's it folks!
+                        </p>
+                        <p>
+                            We now have the necessary permissions to read your Monzo transactions and add them to Toshl.
+                        </p>
+                        <p>
+                            Click "Finished" to customise how your expenses are added to Toshl.
+                        </p>
+                    </div>
+                );
         }
     }
 
-    onNextStep() {
-        const { stepIndex } = this.state;
+    onToshlTokenChange(event) {
+        this.setState({
+            toshlToken: event.target.value,
+        });
+    }
 
-        if(this.state.finished) {
-            return;
+    onNextStep() {
+        const { stepIndex, finished, toshlToken } = this.state;
+
+        if(finished) {
+            return this.props.router.push('about');
+        }
+
+        if(stepIndex === 1 && _.isEmpty(toshlToken)) {
+            return false;
         }
 
         this.setState({
-            stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2
+            stepIndex: (stepIndex + 1),
+            finished: (stepIndex >= 1)
         });
     }
 
@@ -112,9 +130,6 @@ class AuthPage extends React.Component {
                         </Step>
                         <Step>
                             <StepLabel>Authorise Toshl</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>That's all folks!</StepLabel>
                         </Step>
                     </Stepper>
                     { this.getStepContent() }
@@ -131,7 +146,9 @@ class AuthPage extends React.Component {
 }
 
 AuthPage.propTypes = {
-    dispatch: React.PropTypes.func
+    dispatch: React.PropTypes.func,
+    location: React.PropTypes.object,
+    router: React.PropTypes.object
 };
 
 export default connect()(AuthPage);

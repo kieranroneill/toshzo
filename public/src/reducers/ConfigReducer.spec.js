@@ -75,4 +75,26 @@ describe('config reducers', () => {
             expect(state.isDrawerOpen).to.be.false;
         });
     });
+
+    describe('when setting the snack bar', function() {
+        it('should not open the snack bar if the message is null', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.OPEN_SNACK_BAR, value: null });
+
+            expect(state.snackBar.isOpen).to.be.false;
+        });
+
+        it('should not open the snack bar if the message is an empty string', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.OPEN_SNACK_BAR, value: '' });
+
+            expect(state.snackBar.isOpen).to.be.false;
+        });
+
+        it('should open the snack bar with the required message', function() {
+            const message = 'Open sesame!';
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.OPEN_SNACK_BAR, value: message });
+
+            expect(state.snackBar.isOpen).to.be.true;
+            expect(state.snackBar.message).to.equal(message);
+        });
+    });
 });
