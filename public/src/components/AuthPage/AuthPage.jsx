@@ -120,7 +120,7 @@ class AuthPage extends React.Component {
 
         // If the Toshl personal token is empty, let them know!
         if(stepIndex === 1 && _.isEmpty(toshlToken)) {
-            return ConfigActionCreators.openSnackBar('Please enter your personal Toshl token');;
+            return this.props.dispatch(ConfigActionCreators.openSnackBar('Please enter your personal Toshl token'));
         }
 
         this.setState({

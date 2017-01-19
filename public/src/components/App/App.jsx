@@ -18,6 +18,10 @@ import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 import { ConfigActionCreators } from '../../action-creators/index';
 
 class App extends React.Component {
+    onSnackBarClose() {
+        this.props.dispatch(ConfigActionCreators.resetSnackBar());
+    }
+
     render() {
         return (
             <MuiThemeProvider muiTheme={ muiTheme }>
@@ -32,7 +36,8 @@ class App extends React.Component {
                     <Snackbar
                         message={ this.props.config.snackBar.message }
                         open={ this.props.config.snackBar.isOpen }
-                        onRequestClose={ ConfigActionCreators.resetSnackBar() } />
+                        autoHideDuration={ 3000 }
+                        onRequestClose={ this.onSnackBarClose.bind(this) } />
                 </div>
             </MuiThemeProvider>
         );

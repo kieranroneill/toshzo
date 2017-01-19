@@ -1,9 +1,9 @@
 import _ from 'underscore';
 
 import { ConfigActions } from '../actions/index';
-import { ConfigState } from '../states/index';
+import { ConfigState as initialConfigState } from '../states/index';
 
-function ConfigReducer(state = ConfigState, action) {
+function ConfigReducer(state = initialConfigState, action) {
     let pageTitle, snackBar;
 
     switch (action.type) {
@@ -22,7 +22,8 @@ function ConfigReducer(state = ConfigState, action) {
             return Object.assign({}, state, { snackBar: snackBar });
 
         case ConfigActions.RESET_SNACK_BAR:
-            return Object.assign({}, state, { snackBar: state.snackBar });
+            // Use the initial state.
+            return Object.assign({}, state, { snackBar: initialConfigState.snackBar });
 
         case ConfigActions.SET_PAGE_TITLE:
             pageTitle = state.pageTitle;
