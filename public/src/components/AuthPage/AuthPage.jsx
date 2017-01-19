@@ -1,4 +1,4 @@
-import { Card, FlatButton, RaisedButton, Step, Stepper, StepLabel } from 'material-ui';
+import { Card, RaisedButton, Step, Stepper, StepLabel } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 

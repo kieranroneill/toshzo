@@ -1,4 +1,4 @@
-import { Divider, Drawer, IconButton, MenuItem, Toolbar, ToolbarGroup } from 'material-ui';
+import { Divider, Drawer, IconButton, MenuItem, Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui';
 import { green300, grey500, white } from 'material-ui/styles/colors';
 import ContentClear from 'material-ui/svg-icons/content/clear';
 import React from 'react';
@@ -29,7 +29,9 @@ class ToshzoDrawer extends React.Component {
                 <Toolbar
                     style={ styles.toolbar }>
                     <ToolbarGroup
-                        firstChild={ true }/>
+                        firstChild={ true }>
+                        <ToolbarTitle style={{ paddingLeft: '1rem' }} text="Toshzo" />
+                    </ToolbarGroup>
                     <ToolbarGroup
                         lastChild={ true }>
                         <IconButton
