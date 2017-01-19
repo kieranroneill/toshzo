@@ -4,25 +4,20 @@ import { Provider } from 'react-redux';
 import { browserHistory } from 'react-router';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import configureStore from './store';
-import Routes from './routes';
-import { ReferencesActions } from './actions/index';
+import configureStore from './config/store';
+import Routes from './Routes';
 
 // Load CSS/SASS.
 import './stylesheets/index.scss';
 
 const store = configureStore();
 
-// Needed for onTouchTap
-// http://stackoverflow.com/a/34015469/988941
+// Needed for onTouchTap: http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
-
-// Grab the references.
-store.dispatch(ReferencesActions.getReferences());
 
 ReactDom.render(
     <Provider store={store}>
-        <Routes history={browserHistory} />
+        <Routes history={browserHistory} store={store} />
     </Provider>,
     document.getElementById('root')
 );

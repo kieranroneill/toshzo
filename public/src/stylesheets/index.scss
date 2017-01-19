@@ -1,3 +1,7 @@
+// Mixins.
+@import 'mixins/general';
+@import 'mixins/media-queries';
+
 // Modules.
 @import 'modules/color';
 
@@ -10,6 +14,4 @@
 
 // Partials.
 @import 'partials/base';
-@import 'partials/footer';
-@import 'partials/loader';
-@import 'partials/page-loader';
+@import 'partials/typography';
