@@ -1,4 +1,5 @@
-import { Card, FlatButton, RaisedButton, Step, Stepper, StepLabel } from 'material-ui';
+import _ from 'underscore';
+import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -7,70 +8,124 @@ import './AuthPage.scss';
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
-const authMonzoContent = (
-    <div className="auth-page__content">
-        <p>
-            Firstly, we need to authorise your Monzo account to allow us access to read your transactions.
-        </p>
-        <p>
-            You will be redirected to Monzo.
-        </p>
-        <FlatButton
-            label="Authorise Monzo"
-            secondary={ true } />
-    </div>
-
-);
-const authToshlContent = (
-    <p>
-        Ad group status is different than the statuses for campaigns, ads, and keywords, though the
-        statuses can affect each other. Ad groups are contained within a campaign, and each campaign can
-        have one or more ad groups. Within each ad group are ads, keywords, and bids.
-    </p>
-);
-const finishedContent = (
-    <p>
-        Finnished!!!
-    </p>
-);
-
 class AuthPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             finished: false,
-            stepIndex: 0
+            monzoCode: this.props.location.query.code,
+            snackBarConfig: {
+                isOpen: false,
+                message: 'Toshl token required'
+            },
+            stepIndex: 0,
+            superSecret: this.props.location.query.state,
+            toshlToken: ''
         };
     }
 
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
+
+        if(this.state.monzoCode && this.state.superSecret) {
+            // TODO: verify secret is correct.
+            this.setState({ stepIndex: 1 });
+            this.props.dispatch(ConfigActionCreators.hideLoader());
+        }
+        else {
+            this.props.dispatch(ConfigActionCreators.hideLoader());
+        }
+    }
+
+    componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
+    }
+
+    getButtonLabel() {
+        switch (this.state.stepIndex) {
+            case 0:
+                return 'Authorise Monzo';
+            case 1:
+                return 'Authorise Toshl';
+            default:
+                return 'Finished';
+        }
     }
 
     getStepContent() {
         switch (this.state.stepIndex) {
             case 0:
-                return authMonzoContent;
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            Firstly, we need to authorise your Monzo account to allow us access to read your transactions.
+                        </p>
+                        <div className="auth-page__content__image">
+                            <img src="assets/images/monzo_logo.png" alt="Monzo logo" />
+                        </div>
+                        <p>
+                            You will be redirected to Monzo and asked to authorise Toshzo.
+                        </p>
+                    </div>
+
+                );
             case 1:
-                return authToshlContent;
-            case 2:
-                return finishedContent;
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            Now that we have authorised Monzo, we need your permission to add your expenses to Toshl.
+                        </p>
+                        <div className="auth-page__content__image">
+                            <img src="assets/images/toshl_logo.png" alt="Toshl logo" />
+                        </div>
+                        <p>
+                            You will be redirected to Toshl and asked to authorise Toshzo.
+                        </p>
+                        <TextField
+                            value={ this.state.toshlToken }
+                            hintText="Enter your personal Toshl token"
+                            onChange={ this.onToshlTokenChange.bind(this) } />
+                    </div>
+                );
             default:
-                return 'You\'re a long way from home sonny jim!';
+                return (
+                    <div className="auth-page__content">
+                        <p>
+                            That's it folks!
+                        </p>
+                        <p>
+                            We now have the necessary permissions to read your Monzo transactions and add them to Toshl.
+                        </p>
+                        <p>
+                            Click "Finished" to customise how your expenses are added to Toshl.
+                        </p>
+                    </div>
+                );
         }
     }
 
-    onNextStep() {
-        const { stepIndex } = this.state;
+    onToshlTokenChange(event) {
+        this.setState({
+            toshlToken: event.target.value,
+        });
+    }
 
-        if(this.state.finished) {
-            return;
+    onNextStep() {
+        const { stepIndex, finished, toshlToken } = this.state;
+
+        if(finished) {
+            return this.props.router.push('about');
+        }
+
+        // If the Toshl personal token is empty, let them know!
+        if(stepIndex === 1 && _.isEmpty(toshlToken)) {
+            return this.props.dispatch(ConfigActionCreators.openSnackBar('Please enter your personal Toshl token'));
         }
 
         this.setState({
-            stepIndex: stepIndex + 1,
-            finished: stepIndex >= 2
+            stepIndex: (stepIndex + 1),
+            finished: (stepIndex >= 1)
         });
     }
 
@@ -86,17 +141,12 @@ class AuthPage extends React.Component {
                         <Step>
                             <StepLabel>Authorise Toshl</StepLabel>
                         </Step>
-                        <Step>
-                            <StepLabel>That's all folks!</StepLabel>
-                        </Step>
                     </Stepper>
-                    <div className="auth-page__content__container">
-                        { this.getStepContent() }
-                    </div>
+                    { this.getStepContent() }
                     <div className="auth-page__actions">
                         <RaisedButton
-                            label={ (this.state.stepIndex === 2 ? 'Finish' : 'Next') }
-                            primary={ true }
+                            label={ this.getButtonLabel() }
+                            secondary={ true }
                             onTouchTap={ this.onNextStep.bind(this) } />
                     </div>
                 </div>
@@ -106,7 +156,9 @@ class AuthPage extends React.Component {
 }
 
 AuthPage.propTypes = {
-    dispatch: React.PropTypes.func
+    dispatch: React.PropTypes.func,
+    location: React.PropTypes.object,
+    router: React.PropTypes.object
 };
 
 export default connect()(AuthPage);

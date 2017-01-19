@@ -16,6 +16,8 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
+const util = require('./lib/util/index').util;
+
 const authMiddleware = require('./lib/middleware/index').authMiddleware;
 const headerMiddleware = require('./lib/middleware/index').headerMiddleware;
 
@@ -27,6 +29,7 @@ const Router = require('./lib/routes/router');
 const app = express();
 const server = http.Server(app);
 const router = new Router(authMiddleware);
+const staticPath = path.resolve(__dirname, 'public', 'dist');
 let watcher, webpackCompiler;
 
 //====================================================
@@ -84,7 +87,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 else {
     app.use(express
-        .static(path.resolve(__dirname, 'public', 'dist'), { setHeaders: headerMiddleware.addStaticResponseHeaders })
+        .static(staticPath, { setHeaders: headerMiddleware.addStaticResponseHeaders })
     );
 }
 
@@ -92,26 +95,11 @@ else {
 // Routes.
 //====================================================
 
+// API routes.
 app.use(config.ENDPOINTS.API, router.router);
 
-app.get('*', (request, response) => {
-    if(process.env.NODE_ENV !== 'development') {
-        response.sendFile(path.resolve(__dirname, 'public', 'dist', 'index.html'));
-    }
-});
-
-// app.get(config.ROUTE.AUTH, (request, response) => response.render('auth'));
-//
-// app.get(config.ROUTE.ACCOUNTS, authMiddleware.isAuthenticated, (request, response) => response.render('accounts'));
-//
-// app.get(config.ROUTE.COMPLETE, authMiddleware.isAuthenticated, (request, response) => response.render('complete'));
-//
-// app.get(config.ROUTE.SETUP, (request, response) => response.render('setup', {
-//     clientId: process.env.MONZO_CLIENT_ID,
-//     redirectUri: util.getMonzoRedirectUri(request)
-// }));
-//
-// app.get('/', authMiddleware.isAuthenticated, (request, response) => response.redirect(config.ROUTE.ACCOUNTS));
+// Use client-side routing.
+app.get('*', (request, response) => response.sendFile(path.resolve(staticPath, 'index.html')));
 
 //====================================================
 // Errors...gotta catch 'em all.
@@ -119,10 +107,6 @@ app.get('*', (request, response) => {
 
 app.use((error, request, response, next) => {
     if(error) {
-        if(error.status === httpCodes.UNAUTHORIZED) {
-            return response.redirect(config.ROUTE.AUTH);
-        }
-
         return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ error: error.error });
     }
 
@@ -133,7 +117,7 @@ app.use((error, request, response, next) => {
 // Start server and open sockets.
 //====================================================
 
-server.listen(config.PORT, process.env.SERVER_IP, () => {
+server.listen((process.env.NODE_ENV === 'test' ? util.randomPort() : config.PORT), process.env.SERVER_IP, () => {
     const addr = server.address();
 
     /* eslint-disable no-console */

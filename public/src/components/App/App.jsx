@@ -1,3 +1,4 @@
+import { Snackbar } from 'material-ui';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -17,12 +18,8 @@ import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 import { ConfigActionCreators } from '../../action-creators/index';
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.hideLoader());
-    }
-
-    componentWillMount() {
-        this.props.dispatch(ConfigActionCreators.showLoader());
+    onSnackBarClose() {
+        this.props.dispatch(ConfigActionCreators.resetSnackBar());
     }
 
     render() {
@@ -36,6 +33,11 @@ class App extends React.Component {
                         { this.props.children }
                     </main>
                     <Footer />
+                    <Snackbar
+                        message={ this.props.config.snackBar.message }
+                        open={ this.props.config.snackBar.isOpen }
+                        autoHideDuration={ 3000 }
+                        onRequestClose={ this.onSnackBarClose.bind(this) } />
                 </div>
             </MuiThemeProvider>
         );
@@ -44,7 +46,13 @@ class App extends React.Component {
 
 App.propTypes = {
     children: React.PropTypes.node,
+    config: React.PropTypes.object,
     dispatch: React.PropTypes.func
 };
 
-export default connect()(App);
+function mapStateToProps(state) {
+    return {
+        config: state.config
+    };
+}
+export default connect(mapStateToProps)(App);
