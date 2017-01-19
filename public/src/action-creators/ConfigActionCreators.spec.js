@@ -33,4 +33,10 @@ describe('config actions', () => {
 
         expect(ConfigActionCreators.openSnackBar(message)).to.deep.equal(expectedAction);
     });
+
+    it('should create an action to reset the snack bar', () => {
+        const expectedAction = { type: ConfigActions.RESET_SNACK_BAR };
+
+        expect(ConfigActionCreators.resetSnackBar()).to.deep.equal(expectedAction);
+    });
 });

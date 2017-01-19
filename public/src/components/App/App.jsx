@@ -14,6 +14,9 @@ import Header from '../Header/Header';
 import PageLoader from '../PageLoader/PageLoader';
 import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 
+// ActionCreators.
+import { ConfigActionCreators } from '../../action-creators/index';
+
 class App extends React.Component {
     render() {
         return (
@@ -28,7 +31,8 @@ class App extends React.Component {
                     <Footer />
                     <Snackbar
                         message={ this.props.config.snackBar.message }
-                        open={ this.props.config.snackBar.isOpen } />
+                        open={ this.props.config.snackBar.isOpen }
+                        onRequestClose={ ConfigActionCreators.resetSnackBar() } />
                 </div>
             </MuiThemeProvider>
         );

@@ -7,10 +7,16 @@ describe('config reducers', () => {
         this.initialState = initialConfigState;
     });
 
-    it('should return the initial state', function() {
-        const state = ConfigReducer(this.initialState, {});
+    afterEach(function() {
+        delete this.initialState;
+    });
 
-        expect(state).to.equal(this.initialState);
+    describe('when checking the initial state', function() {
+        it('should return the initial state', function() {
+            const state = ConfigReducer(this.initialState, {});
+
+            expect(state).to.equal(this.initialState);
+        });
     });
 
     describe('when setting the page title', function() {
@@ -95,6 +101,13 @@ describe('config reducers', () => {
 
             expect(state.snackBar.isOpen).to.be.true;
             expect(state.snackBar.message).to.equal(message);
+        });
+
+        it('should reset to the initial state when the snack bar is reset', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.RESET_SNACK_BAR });
+
+            expect(state.snackBar.isOpen).to.be.false;
+            expect(state.snackBar.message).to.equal(this.initialState.snackBar.message);
         });
     });
 });

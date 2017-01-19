@@ -16,6 +16,8 @@ const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
+const util = require('./lib/util/index').util;
+
 const authMiddleware = require('./lib/middleware/index').authMiddleware;
 const headerMiddleware = require('./lib/middleware/index').headerMiddleware;
 
@@ -115,7 +117,7 @@ app.use((error, request, response, next) => {
 // Start server and open sockets.
 //====================================================
 
-server.listen(config.PORT, process.env.SERVER_IP, () => {
+server.listen((process.env.NODE_ENV === 'test' ? util.randomPort() : config.PORT), process.env.SERVER_IP, () => {
     const addr = server.address();
 
     /* eslint-disable no-console */

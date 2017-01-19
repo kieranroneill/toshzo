@@ -11,7 +11,7 @@ function ConfigReducer(state = ConfigState, action) {
             return Object.assign({}, state, { isLoading: false });
 
         case ConfigActions.OPEN_SNACK_BAR:
-            snackBar = state.snackBar;
+            snackBar = _.clone(state.snackBar); // Copy, don't reference!!!
 
             // Only non-empty strings to be used.
             if(!_.isEmpty(action.value) && _.isString(action.value)) {
@@ -20,6 +20,9 @@ function ConfigReducer(state = ConfigState, action) {
             }
 
             return Object.assign({}, state, { snackBar: snackBar });
+
+        case ConfigActions.RESET_SNACK_BAR:
+            return Object.assign({}, state, { snackBar: state.snackBar });
 
         case ConfigActions.SET_PAGE_TITLE:
             pageTitle = state.pageTitle;
