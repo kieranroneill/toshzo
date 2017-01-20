@@ -15,7 +15,7 @@ describe('config reducers', () => {
         it('should return the initial state', function() {
             const state = ConfigReducer(this.initialState, {});
 
-            expect(state).to.equal(this.initialState);
+            expect(state).to.deep.equal(this.initialState);
         });
     });
 

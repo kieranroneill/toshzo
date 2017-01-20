@@ -4,9 +4,11 @@
   "ENDPOINTS": {
     "API": "/api",
     "AUTH": "/auth",
+    "ME": "/me",
     "MONZO": "/monzo",
-    "REFERENCE": "/reference",
-    "TEAPOT": "/teapot"
+    "REFERENCES": "/references",
+    "TOKEN": "/token",
+    "VERIFY": "/verify"
   },
 
   "HEADERS": {

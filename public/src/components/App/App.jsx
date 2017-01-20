@@ -15,9 +15,22 @@ import PageLoader from '../PageLoader/PageLoader';
 import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 
 // ActionCreators.
-import { ConfigActionCreators } from '../../action-creators/index';
+import { ConfigActionCreators, ReferencesActionCreators } from '../../action-creators/index';
+
+// Services.
+import { ReferencesService } from '../../services/index';
 
 class App extends React.Component {
+    componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
+
+        // Get the references.
+        ReferencesService
+            .getReferences()
+            .then(result => this.props.dispatch(ReferencesActionCreators.setReferences(result)))
+            .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
+    }
+
     onSnackBarClose() {
         this.props.dispatch(ConfigActionCreators.resetSnackBar());
     }

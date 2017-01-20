@@ -3,7 +3,6 @@
 process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 
 const bodyParser = require('body-parser');
-const chokidar = require('chokidar');
 const dotenv = require('dotenv');
 const express = require('express');
 const expressValidator = require('express-validator');
@@ -12,6 +11,7 @@ const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
+const requestIp = require('request-ip');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -30,30 +30,13 @@ const app = express();
 const server = http.Server(app);
 const router = new Router(authMiddleware);
 const staticPath = path.resolve(__dirname, 'public', 'dist');
-let watcher, webpackCompiler;
+let webpackCompiler;
 
 //====================================================
 // Configuration.
 //====================================================
 
 dotenv.config();
-
-// This is used to watch for file changes.
-if(process.env.NODE_ENV === 'development') {
-    watcher = chokidar.watch('./lib');
-
-    watcher.on('ready', () => {
-        watcher.on('all', () => {
-            Object
-                .keys(require.cache)
-                .forEach(id => {
-                    if (/[\/\\]lib[\/\\]/.test(id)) {
-                        delete require.cache[id];
-                    }
-                });
-        });
-    });
-}
 
 //====================================================
 // Middleware.
@@ -65,6 +48,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(headerMiddleware.addResponseHeaders);
+app.use(requestIp.mw()); // Add client IPs to requests.
 
 // Use hot reloading in development; serve from memory.
 if (process.env.NODE_ENV === 'development') {
@@ -107,7 +91,7 @@ app.get('*', (request, response) => response.sendFile(path.resolve(staticPath, '
 
 app.use((error, request, response, next) => {
     if(error) {
-        return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ error: error.error });
+        return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ errors: error.errors });
     }
 
     next();

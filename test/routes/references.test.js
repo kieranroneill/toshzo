@@ -1,6 +1,6 @@
 'use strict';
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.REFERENCE;
+const route = config.ENDPOINTS.API + config.ENDPOINTS.REFERENCES;
 
 describe('/reference', () => {
     before(function() {

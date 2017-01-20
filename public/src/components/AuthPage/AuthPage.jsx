@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
-import React from 'react';
+;import React from 'react';
 import { connect } from 'react-redux';
 
 import './AuthPage.scss';
@@ -8,30 +8,58 @@ import './AuthPage.scss';
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
+// Services.
+import { MonzoService } from '../../services/index';
+
 class AuthPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
             finished: false,
-            monzoCode: this.props.location.query.code,
+            monzoAccessToken: this.props.location.query.code,
             snackBarConfig: {
                 isOpen: false,
                 message: 'Toshl token required'
             },
             stepIndex: 0,
-            superSecret: this.props.location.query.state,
+            stateToken: this.props.location.query.state,
             toshlToken: ''
         };
+    }
+
+    authoriseMonzo() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
+
+        return MonzoService
+            .getToken()
+            .then(result => {
+                const redirectUri = location.protocol + '//' +
+                    location.hostname +
+                    (location.port ? ':' + location.port : '') +
+                    '/auth';
+                let url = 'https://auth.getmondo.co.uk/?';
+
+                url += 'client_id=' + this.props.references.monzo.clientId;
+                url += '&redirect_uri=' + encodeURI(redirectUri);
+                url += '&response_type=code';
+                url += '&state=' + result.token;
+
+                // Navigate to Monzo for authorisation.
+                window.location.href = url;
+            })
+            .catch(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
     }
 
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
 
-        if(this.state.monzoCode && this.state.superSecret) {
-            // TODO: verify secret is correct.
-            this.setState({ stepIndex: 1 });
-            this.props.dispatch(ConfigActionCreators.hideLoader());
+        if(this.state.monzoAccessToken && this.state.stateToken) {
+            MonzoService
+                .verifyToken(this.state.stateToken, this.state.monzoAccessToken)
+                .then(() => this.setState({ stepIndex: 1 })) // Go to the Toshl page.
+                .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
+                .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
         }
         else {
             this.props.dispatch(ConfigActionCreators.hideLoader());
@@ -123,6 +151,11 @@ class AuthPage extends React.Component {
             return this.props.dispatch(ConfigActionCreators.openSnackBar('Please enter your personal Toshl token'));
         }
 
+        // If we are attempting to authorise Monzo.
+        if(stepIndex === 0) {
+            return this.authoriseMonzo();
+        }
+
         this.setState({
             stepIndex: (stepIndex + 1),
             finished: (stepIndex >= 1)
@@ -158,7 +191,14 @@ class AuthPage extends React.Component {
 AuthPage.propTypes = {
     dispatch: React.PropTypes.func,
     location: React.PropTypes.object,
+    references: React.PropTypes.object,
     router: React.PropTypes.object
 };
 
-export default connect()(AuthPage);
+function mapStateToProps(state) {
+    return {
+        references: state.references
+    };
+}
+
+export default connect(mapStateToProps)(AuthPage);
