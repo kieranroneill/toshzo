@@ -1,6 +1,5 @@
 import _ from 'underscore';
 import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
-import Promise from 'bluebird';
 ;import React from 'react';
 import { connect } from 'react-redux';
 
@@ -41,16 +40,15 @@ class AuthPage extends React.Component {
                     '/auth';
                 let url = 'https://auth.getmondo.co.uk/?';
 
-                url += 'client_id=';
+                url += 'client_id=' + this.props.references.monzo.clientId;
                 url += '&redirect_uri=' + encodeURI(redirectUri);
                 url += '&response_type=code';
                 url += '&state=' + result.token;
 
-                console.log(url);
-
-                //window.location.href = url;
+                // Navigate to Monzo for authorisation.
+                window.location.href = url;
             })
-            .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
+            .catch(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
     }
 
     componentDidMount() {
@@ -191,7 +189,14 @@ class AuthPage extends React.Component {
 AuthPage.propTypes = {
     dispatch: React.PropTypes.func,
     location: React.PropTypes.object,
+    references: React.PropTypes.object,
     router: React.PropTypes.object
 };
 
-export default connect()(AuthPage);
+function mapStateToProps(state) {
+    return {
+        references: state.references
+    };
+}
+
+export default connect(mapStateToProps)(AuthPage);

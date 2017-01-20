@@ -1,11 +1,11 @@
 import BaseService from './BaseService';
 
-const route = '/api/reference';
+const route = '/api/references';
 
-class MonzoService {
+class ReferencesService {
     static getReferences() {
         return BaseService.httpGet(route);
     }
 }
 
-export default MonzoService;
+export default ReferencesService;

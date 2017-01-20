@@ -8,6 +8,6 @@ import ReferencesReducer from './ReferencesReducer';
  * Combine the reducers and map them to lowercase.
  */
 export default combineReducers({
-    config: ReferencesReducer,
+    config: ConfigReducer,
     references: ReferencesReducer
 });

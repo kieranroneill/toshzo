@@ -1,9 +1,9 @@
 import _ from 'underscore';
 
 import { ReferencesActions } from '../actions/index';
-import { ReferenceState as initialReferenceState } from '../states/index';
+import { ReferencesState as initialReferencesState } from '../states/index';
 
-function ReferencesReducer(state = initialReferenceState, action) {
+function ReferencesReducer(state = initialReferencesState, action) {
     let references, keys;
 
     switch (action.type) {
