@@ -220,9 +220,9 @@ describe('/monzo', function() {
 
         it('should succeed if the both tokens are valid', function(done) {
             const responseBody = {
-                user: {
-                    id: 'a monzo user id'
-                }
+                authenticated: true,
+                client_id: 'hello dave',
+                user_id: 'yay, I am you!'
             };
             let url = route + config.ENDPOINTS.TOKEN + '?';
 
