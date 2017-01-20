@@ -34,6 +34,8 @@
   },
 
   "TOSHL": {
-    "ACCOUNTS": "/accounts"
+    "BASE": "https://api.toshl.com",
+    "ACCOUNTS": "/accounts",
+    "ME": "me"
   }
 }
