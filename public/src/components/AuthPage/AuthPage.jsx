@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
-import Promise from 'bluebird'
+import Promise from 'bluebird';
 ;import React from 'react';
 import { connect } from 'react-redux';
 
@@ -30,11 +30,27 @@ class AuthPage extends React.Component {
     }
 
     authoriseMonzo() {
+        this.props.dispatch(ConfigActionCreators.showLoader());
+
         return MonzoService
             .getToken()
             .then(result => {
-                console.log(result);
-            });
+                const redirectUri = location.protocol + '//' +
+                    location.hostname +
+                    (location.port ? ':' + location.port : '') +
+                    '/auth';
+                let url = 'https://auth.getmondo.co.uk/?';
+
+                url += 'client_id=';
+                url += '&redirect_uri=' + encodeURI(redirectUri);
+                url += '&response_type=code';
+                url += '&state=' + result.token;
+
+                console.log(url);
+
+                //window.location.href = url;
+            })
+            .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
     }
 
     componentDidMount() {
@@ -125,7 +141,6 @@ class AuthPage extends React.Component {
 
     onNextStep() {
         const { stepIndex, finished, toshlToken } = this.state;
-        let promise = Promise.resolve();
 
         if(finished) {
             return this.props.router.push('about');
