@@ -6,7 +6,7 @@
     "AUTH": "/auth",
     "MONZO": "/monzo",
     "REFERENCE": "/reference",
-    "TEAPOT": "/teapot"
+    "TOKEN": "/token"
   },
 
   "HEADERS": {

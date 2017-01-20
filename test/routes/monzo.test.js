@@ -77,4 +77,22 @@ describe('/monzo', function() {
                 });
         });
     });
+
+    describe('gets a state token', function() {
+        it('should return a token used for Monzo authorisation', function(done) {
+            const url = route + config.ENDPOINTS.TOKEN;
+
+            supertest(this.app)
+                .get(url)
+                .expect(httpCodes.OK)
+                .end((error, response) => {
+                    expect(error).to.equal(null);
+                    expect(response.body).to.be.an('object');
+                    expect(response.body).to.have.property('token')
+                        .to.be.an('string');
+
+                    done();
+                });
+        });
+    });
 });
