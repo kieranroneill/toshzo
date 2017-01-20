@@ -1,12 +1,16 @@
 import _ from 'underscore';
 import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
-import React from 'react';
+import Promise from 'bluebird'
+;import React from 'react';
 import { connect } from 'react-redux';
 
 import './AuthPage.scss';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
+
+// Services.
+import { MonzoService } from '../../services/index';
 
 class AuthPage extends React.Component {
     constructor(props) {
@@ -23,6 +27,14 @@ class AuthPage extends React.Component {
             superSecret: this.props.location.query.state,
             toshlToken: ''
         };
+    }
+
+    authoriseMonzo() {
+        return MonzoService
+            .getToken()
+            .then(result => {
+                console.log(result);
+            });
     }
 
     componentDidMount() {
@@ -113,6 +125,7 @@ class AuthPage extends React.Component {
 
     onNextStep() {
         const { stepIndex, finished, toshlToken } = this.state;
+        let promise = Promise.resolve();
 
         if(finished) {
             return this.props.router.push('about');
@@ -121,6 +134,11 @@ class AuthPage extends React.Component {
         // If the Toshl personal token is empty, let them know!
         if(stepIndex === 1 && _.isEmpty(toshlToken)) {
             return this.props.dispatch(ConfigActionCreators.openSnackBar('Please enter your personal Toshl token'));
+        }
+
+        // If we are attempting to authorise Monzo.
+        if(stepIndex === 0) {
+            return this.authoriseMonzo();
         }
 
         this.setState({

@@ -3,7 +3,6 @@
 process.env.NODE_ENV = (process.env.NODE_ENV || 'development');
 
 const bodyParser = require('body-parser');
-const chokidar = require('chokidar');
 const dotenv = require('dotenv');
 const express = require('express');
 const expressValidator = require('express-validator');
@@ -31,30 +30,13 @@ const app = express();
 const server = http.Server(app);
 const router = new Router(authMiddleware);
 const staticPath = path.resolve(__dirname, 'public', 'dist');
-let watcher, webpackCompiler;
+let webpackCompiler;
 
 //====================================================
 // Configuration.
 //====================================================
 
 dotenv.config();
-
-// This is used to watch for file changes.
-if(process.env.NODE_ENV === 'development') {
-    watcher = chokidar.watch('./lib');
-
-    watcher.on('ready', () => {
-        watcher.on('all', () => {
-            Object
-                .keys(require.cache)
-                .forEach(id => {
-                    if (/[\/\\]lib[\/\\]/.test(id)) {
-                        delete require.cache[id];
-                    }
-                });
-        });
-    });
-}
 
 //====================================================
 // Middleware.
