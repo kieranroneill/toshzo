@@ -7,6 +7,7 @@
   "REQUIRED_AUTHORIZATION_CODE": "Monzo authorization code required.",
   "REQUIRED_STATE_TOKEN": "State token is required.",
   "REQUIRED_MONZO_TOKEN": "Monzo access token is required.",
+  "REQUIRED_TOSHL_TOKEN": "Toshl personal token is required.",
   "SERVER_ERROR": "Server error",
   "TEAPOT_ERROR": "I am a little teapot short and stout!",
   "TOKEN_HAS_EXPIRED": "Token has expired.",
