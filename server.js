@@ -107,7 +107,7 @@ app.get('*', (request, response) => response.sendFile(path.resolve(staticPath, '
 
 app.use((error, request, response, next) => {
     if(error) {
-        return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ error: error.error });
+        return response.status(error.status || httpCodes.INTERNAL_SERVER_ERROR).json({ errors: error.errors });
     }
 
     next();

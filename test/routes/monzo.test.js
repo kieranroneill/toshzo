@@ -25,7 +25,7 @@ describe('/monzo', function() {
                 .end((error, response) => {
                     expect(error).to.equal(null);
                     expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('error')
+                    expect(response.body).to.have.property('errors')
                         .to.be.an('array')
                         .to.include(errors.REQUIRED_AUTHORIZATION_CODE);
 
