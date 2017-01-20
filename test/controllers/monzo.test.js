@@ -1,9 +1,15 @@
 'use strict';
 
+import httpCodes from 'http-codes';
+import jwt from 'jsonwebtoken';
+import Promise from 'bluebird';
+
 import { monzoController } from '../../lib/controllers';
+import errors from '../../lib/config/errors.json';
 
 describe('controllers/monzo', () => {
     const accountId = 'I am Groot';
+    const clientIp = 'http://i.am.a.client';
     const webhookUrl = 'webhookery';
 
     beforeEach(function() {
@@ -33,7 +39,7 @@ describe('controllers/monzo', () => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
                         .to.equal(httpCodes.UNAUTHORIZED);
-                    expect(error).to.have.property('error')
+                    expect(error).to.have.property('errors')
                         .to.be.an('array')
                         .to.include(errors.INVALID_MONZO_TOKEN);
 
@@ -66,6 +72,53 @@ describe('controllers/monzo', () => {
         });
     });
 
+    describe('getStateToken()', () => {
+        it('should return an error if the token secret is incorrect', function(done) {
+            const token = monzoController.getStateToken('http://127.0.0.1');
+
+            jwt.verify(token, 'this is not the correct secret', error => {
+                expect(error.name).to.equal('JsonWebTokenError');
+
+                done();
+            });
+        });
+
+        it('should return a token signed with the client IP address', function(done) {
+            const token = monzoController.getStateToken(clientIp);
+
+            jwt.verify(token, process.env.SUPER_SECRET, (error, decoded) => {
+                expect(error).to.be.null;
+                expect(decoded).to.have.property('clientIp');
+                expect(decoded.clientIp).to.equal(clientIp);
+
+
+                done();
+            });
+        });
+
+        it('should return a token that expires in the default time', function(done) {
+            const token = monzoController.getStateToken(clientIp);
+
+            jwt.verify(token, process.env.SUPER_SECRET, (error, decoded) => {
+                expect(error).to.be.null;
+                expect(decoded.exp - decoded.iat).to.equal(30); // Default time difference should be 30 secs.
+
+                done();
+            });
+        });
+
+        it('should return a token that expires in a specified time', function(done) {
+            const token = monzoController.getStateToken(clientIp, 300);
+
+            jwt.verify(token, process.env.SUPER_SECRET, (error, decoded) => {
+                expect(error).to.be.null;
+                expect(decoded.exp - decoded.iat).to.equal(300);
+
+                done();
+            });
+        });
+    });
+
     describe('getWebhooks()', function() {
         it('should fail if the access token is invalid', function(done) {
             const accessToken = 'So terribly invalid.';
@@ -83,7 +136,7 @@ describe('controllers/monzo', () => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
                         .to.equal(httpCodes.UNAUTHORIZED);
-                    expect(error).to.have.property('error')
+                    expect(error).to.have.property('errors')
                         .to.be.an('array')
                         .to.include(errors.INVALID_MONZO_TOKEN);
 
@@ -169,7 +222,7 @@ describe('controllers/monzo', () => {
                     expect(error).to.be.an('object');
                     expect(error).to.have.property('status')
                         .to.equal(httpCodes.UNAUTHORIZED);
-                    expect(error).to.have.property('error')
+                    expect(error).to.have.property('errors')
                         .to.be.an('array')
                         .to.include(errors.INVALID_MONZO_TOKEN);
 
@@ -204,6 +257,51 @@ describe('controllers/monzo', () => {
 
                     done();
                 });
+        });
+    });
+
+    describe('verifyStateToken()', function() {
+        it('should fail if the token has expired', function(done) {
+            const token = monzoController.getStateToken(clientIp, 1);
+
+            Promise
+                .delay(2000) // Delay for 2 seconds.
+                .then(() => monzoController.verifyStateToken(clientIp, token))
+                .catch(error => {
+                    expect(error).to.be.an('object');
+                    expect(error).to.have.property('status')
+                        .to.equal(httpCodes.UNAUTHORIZED);
+                    expect(error).to.have.property('errors')
+                        .to.be.an('array')
+                        .to.include(errors.TOKEN_HAS_EXPIRED);
+
+                    done();
+                });
+        });
+
+        it('should fail if the client IP address is incorrect', function(done) {
+            const token = monzoController.getStateToken(clientIp);
+
+            monzoController
+                .verifyStateToken('not the correct IP', token)
+                .catch(error => {
+                    expect(error).to.be.an('object');
+                    expect(error).to.have.property('status')
+                        .to.equal(httpCodes.UNAUTHORIZED);
+                    expect(error).to.have.property('errors')
+                        .to.be.an('array')
+                        .to.include(errors.INVALID_CLIENT);
+
+                    done();
+                });
+        });
+
+        it('should succeed if the token is valid', function(done) {
+            const token = monzoController.getStateToken(clientIp);
+
+            monzoController
+                .verifyStateToken(clientIp, token)
+                .then(done);
         });
     });
 });
