@@ -17,13 +17,13 @@ class AuthPage extends React.Component {
 
         this.state = {
             finished: false,
-            monzoCode: this.props.location.query.code,
+            monzoAccessToken: this.props.location.query.code,
             snackBarConfig: {
                 isOpen: false,
                 message: 'Toshl token required'
             },
             stepIndex: 0,
-            superSecret: this.props.location.query.state,
+            stateToken: this.props.location.query.state,
             toshlToken: ''
         };
     }
@@ -54,10 +54,12 @@ class AuthPage extends React.Component {
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
 
-        if(this.state.monzoCode && this.state.superSecret) {
-            // TODO: verify secret is correct.
-            this.setState({ stepIndex: 1 });
-            this.props.dispatch(ConfigActionCreators.hideLoader());
+        if(this.state.monzoAccessToken && this.state.stateToken) {
+            MonzoService
+                .verifyToken(this.state.stateToken, this.state.monzoAccessToken)
+                .then(() => this.setState({ stepIndex: 1 })) // Go to the Toshl page.
+                .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
+                .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
         }
         else {
             this.props.dispatch(ConfigActionCreators.hideLoader());
