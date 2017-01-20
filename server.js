@@ -12,6 +12,7 @@ const http = require('http');
 const httpCodes = require('http-codes');
 const morgan = require('morgan');
 const path = require('path');
+const requestIp = require('request-ip');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
@@ -65,6 +66,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(expressValidator());
 app.use(headerMiddleware.addResponseHeaders);
+app.use(requestIp.mw()); // Add client IPs to requests.
 
 // Use hot reloading in development; serve from memory.
 if (process.env.NODE_ENV === 'development') {
