@@ -3,27 +3,19 @@ import BaseService from './BaseService';
 const route = '/api/monzo';
 
 class MonzoService {
-    static auth(authorisationCode) {
-        let url = route + '/auth';
-
-        url += '?authorisationCode=' + authorisationCode;
-
-        return BaseService.httpGet(url);
-    }
-
-    static getToken() {
-        let url = route + '/token';
+    static getStateToken() {
+        let url = route + '/token/state';
 
         return BaseService.httpPost(url, {});
     }
 
-    static verifyToken(stateToken, accessToken) {
-        let url = route + '/token';
+    static getAccessToken(stateToken, authorisationCode) {
+        let url = route + '/token/access';
 
-        url += '?stateToken=' + stateToken;
-        url += '&accessToken=' + accessToken;
+        url += '?token=' + stateToken;
+        url += '&code=' + authorisationCode;
 
-        return BaseService.httpGet(url);
+        return BaseService.httpPost(url, {});
     }
 }
 

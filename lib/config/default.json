@@ -2,12 +2,14 @@
   "APP_TITLE": "Toshzo",
 
   "ENDPOINTS": {
+    "ACCESS": "/access",
     "API": "/api",
-    "AUTH": "/auth",
     "ME": "/me",
     "MONZO": "/monzo",
     "REFERENCES": "/references",
+    "STATE": "/state",
     "TOKEN": "/token",
+    "TOSHL": "/toshl",
     "VERIFY": "/verify"
   },
 
@@ -26,14 +28,15 @@
 
   "PORT": "1337",
 
-  "ROUTE": {
-    "AUTH": "/auth",
-    "ACCOUNTS": "/accounts",
-    "COMPLETE": "/complete",
-    "SETUP": "/setup"
+  "ROUTES": {
+    "ABOUT": "/about",
+    "ACCOUNT": "/account",
+    "AUTH": "/auth"
   },
 
   "TOSHL": {
-    "ACCOUNTS": "/accounts"
+    "BASE": "https://api.toshl.com",
+    "ACCOUNTS": "/accounts",
+    "ME": "/me"
   }
 }
