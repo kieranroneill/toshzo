@@ -10,240 +10,182 @@ describe('/monzo', function() {
     });
 
     beforeEach(function() {
-        this.requestGetStub = stub(request, 'get');
         this.requestPostStub = stub(request, 'post');
         this.verifyStateTokenStub = stub(monzoController, 'verifyStateToken');
     });
 
     afterEach(function() {
-        this.requestGetStub.restore();
         this.requestPostStub.restore();
         this.verifyStateTokenStub.restore();
     });
 
-    describe('creates a Monzo access token', function() {
-        it('should fail if the query parameters are missing', function(done) {
-            const url = route + config.ENDPOINTS.AUTH;
+    describe('/token', function() {
+        describe('/state', function() {
+            it('should return a state token', function(done) {
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.STATE;
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.BAD_REQUEST)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('errors')
-                        .to.be.an('array')
-                        .to.include(errors.REQUIRED_AUTHORIZATION_CODE);
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.OK)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('token')
+                            .to.be.an('string');
 
-                    done();
-                });
+                        done();
+                    });
+            });
         });
 
-        it('should redirect to /auth if the authorisation code is invalid', function(done) {
-            const url = route + config.ENDPOINTS.AUTH + '?authorisationCode=invalid&state=' + process.env.SUPER_SECRET;
+        describe('/access', function() {
+            it('should fail if the query parameters are missing', function(done) {
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-            this.requestPostStub
-                .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.BAD_REQUEST)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('errors')
+                            .to.be.an('array')
+                            .to.include(errors.REQUIRED_STATE_TOKEN)
+                            .to.include(errors.REQUIRED_AUTHORISATION_CODE);
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.FOUND)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.redirect).to.be.true;
-                    expect(response.headers.location).to.equal(config.ROUTE.AUTH);
+                        done();
+                    });
+            });
 
-                    done();
-                });
-        });
+            it('should fail if the token is invalid', function(done) {
+                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-        it('should redirect to /complete if it was successful', function(done) {
-            const url = route + config.ENDPOINTS.AUTH + '?authorisationCode=valid&state=' + process.env.SUPER_SECRET;
-            const responseBody = {
-                access_token: 'access_token',
-                client_id: 'client_id',
-                expires_in: 21600,
-                refresh_token: 'refresh_token',
-                token_type: 'Bearer',
-                user_id: 'user_id'
-            };
+                url += '?token=not_a_valid_token';
+                url += '&code=respect_my_authoritaa';
 
-            this.requestPostStub
-                .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
+                this.verifyStateTokenStub.restore();
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.FOUND)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.redirect).to.be.true;
-                    expect(response.headers.location).to.equal(config.ROUTE.ACCOUNTS);
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.UNAUTHORIZED)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('errors')
+                            .to.be.an('array')
+                            .to.include(errors.INVALID_STATE_TOKEN);
 
-                    done();
-                });
-        });
-    });
+                        done();
+                    });
+            });
 
-    describe('creates a Monzo state token', function() {
-        it('should return a token used for Monzo authorisation', function(done) {
-            const url = route + config.ENDPOINTS.TOKEN;
+            it('should fail if the token has expired', function(done) {
+                const token = monzoController.createStateToken('', 1);
+                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-            supertest(this.app)
-                .post(url)
-                .expect(httpCodes.OK)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('token')
-                        .to.be.an('string');
+                url += '?token=' + token;
+                url += '&code=respect_my_authoritaa';
 
-                    done();
-                });
-        });
-    });
+                this.verifyStateTokenStub.restore();
 
-    describe('checks the validity of the Monzo access token', function() {
-        it('should fail if the query parameters are missing', function(done) {
-            const url = route + config.ENDPOINTS.TOKEN;
+                // Delay for 2 seconds.
+                Promise
+                    .delay(2000)
+                    .then(() => {
+                        supertest(this.app)
+                            .post(url)
+                            .expect(httpCodes.UNAUTHORIZED)
+                            .end((error, response) => {
+                                expect(error).to.equal(null);
+                                expect(response.body).to.be.an('object');
+                                expect(response.body).to.have.property('errors')
+                                    .to.be.an('array')
+                                    .to.include(errors.TOKEN_HAS_EXPIRED);
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.BAD_REQUEST)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('errors')
-                        .to.be.an('array')
-                        .to.include(errors.REQUIRED_STATE_TOKEN)
-                        .to.include(errors.REQUIRED_MONZO_TOKEN);
+                                done();
+                            });
+                    });
+            });
 
-                    done();
-                });
-        });
+            it('should fail if the client IP addresses do not match', function(done) {
+                const token = monzoController.createStateToken('not the localhost');
+                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-        it('should fail if the token is invalid', function(done) {
-            let url = route + config.ENDPOINTS.TOKEN + '?';
+                url += '?token=' + token;
+                url += '&code=respect_my_authoritaa';
 
-            url += 'accessToken=a_token_yeah&';
-            url += 'stateToken=not_a_valid_token';
+                this.verifyStateTokenStub.restore();
 
-            this.verifyStateTokenStub.restore();
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.UNAUTHORIZED)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('errors')
+                            .to.be.an('array')
+                            .to.include(errors.INVALID_CLIENT);
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.UNAUTHORIZED)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('errors')
-                        .to.be.an('array')
-                        .to.include(errors.INVALID_STATE_TOKEN);
+                        done();
+                    });
+            });
 
-                    done();
-                });
-        });
+            it('should fail if the Monzo authorisation code is invalid', function(done) {
+                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-        it('should fail if the token has expired', function(done) {
-            const token = monzoController.getStateToken('', 1);
-            let url = route + config.ENDPOINTS.TOKEN + '?';
+                url += '?token=valid_token';
+                url += '&code=invalid_code';
 
-            url += 'accessToken=a_token_yeah&';
-            url += 'stateToken=' + token;
+                this.verifyStateTokenStub.resolves();
+                this.requestPostStub
+                    .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
 
-            this.verifyStateTokenStub.restore();
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.UNAUTHORIZED)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('errors')
+                            .to.be.an('array')
+                            .to.include(errors.INVALID_MONZO_TOKEN);
 
-            // Delay for 2 seconds.
-            Promise
-                .delay(2000)
-                .then(() => {
-                    supertest(this.app)
-                        .get(url)
-                        .expect(httpCodes.UNAUTHORIZED)
-                        .end((error, response) => {
-                            expect(error).to.equal(null);
-                            expect(response.body).to.be.an('object');
-                            expect(response.body).to.have.property('errors')
-                                .to.be.an('array')
-                                .to.include(errors.TOKEN_HAS_EXPIRED);
+                        done();
+                    });
+            });
 
-                            done();
-                        });
-                });
-        });
+            it('should return a Monzo access token', function(done) {
+                const responseBody = {
+                    access_token: 'Oh what a lovely token',
+                    client_id: 'hello dave',
+                    expires_in: 21600,
+                    refresh_token: 'refresh_token',
+                    token_type: 'Bearer',
+                    user_id: 'yay, I am you!'
+                };
+                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
-        it('should fail if the client IP addresses do not match', function(done) {
-            const token = monzoController.getStateToken('not the localhost');
-            let url = route + config.ENDPOINTS.TOKEN + '?';
+                url += '?token=valid_token';
+                url += '&code=valid_code';
 
-            url += 'accessToken=a_token_yeah&';
-            url += 'stateToken=' + token;
+                this.verifyStateTokenStub.resolves();
+                this.requestPostStub
+                    .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
 
-            this.verifyStateTokenStub.restore();
+                supertest(this.app)
+                    .post(url)
+                    .expect(httpCodes.OK)
+                    .end((error, response) => {
+                        expect(error).to.equal(null);
+                        expect(response.body).to.be.an('object');
+                        expect(response.body).to.have.property('token');
+                        expect(response.body.token)
+                            .to.be.a('string')
+                            .to.equal(responseBody.access_token);
 
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.UNAUTHORIZED)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('errors')
-                        .to.be.an('array')
-                        .to.include(errors.INVALID_CLIENT);
-
-                    done();
-                });
-        });
-
-        it('should fail if the Monzo access token is invalid', function(done) {
-            let url = route + config.ENDPOINTS.TOKEN + '?';
-
-            url += 'accessToken=invalid_token&';
-            url += 'stateToken=valid_token';
-
-            this.verifyStateTokenStub.resolves();
-            this.requestGetStub
-                .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
-
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.UNAUTHORIZED)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('errors')
-                        .to.be.an('array')
-                        .to.include(errors.INVALID_MONZO_TOKEN);
-
-                    done();
-                });
-        });
-
-        it('should succeed if the both tokens are valid', function(done) {
-            const responseBody = {
-                authenticated: true,
-                client_id: 'hello dave',
-                user_id: 'yay, I am you!'
-            };
-            let url = route + config.ENDPOINTS.TOKEN + '?';
-
-            url += 'accessToken=valid_token&';
-            url += 'stateToken=valid_token';
-
-            this.verifyStateTokenStub.resolves();
-            this.requestGetStub
-                .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);
-
-            supertest(this.app)
-                .get(url)
-                .expect(httpCodes.OK)
-                .end((error, response) => {
-                    expect(error).to.equal(null);
-                    expect(response.body).to.be.an('object');
-                    expect(response.body).to.have.property('user');
-                    expect(response.body.user).to.have.property('id');
-
-                    done();
-                });
+                        done();
+                    });
+            });
         });
     });
 });

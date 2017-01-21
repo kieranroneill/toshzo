@@ -7,7 +7,7 @@ class ToshlService {
     static verifyToken(personalToken) {
         let url = route + '/token';
 
-        url += '?personalToken=' + personalToken;
+        url += '?token=' + personalToken;
 
         return BaseService.httpGet(url);
     }

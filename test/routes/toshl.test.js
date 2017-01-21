@@ -15,7 +15,7 @@ describe('/toshl', () => {
         this.requestGetStub.restore();
     });
 
-    describe('checks the validity of the Toshl personal token', function() {
+    describe('/token', function() {
         it('should fail if the query parameters are missing', function(done) {
             const url = route + config.ENDPOINTS.TOKEN;
 
@@ -34,9 +34,9 @@ describe('/toshl', () => {
         });
 
         it('should fail if the Toshl personal token is invalid', function(done) {
-            let url = route + config.ENDPOINTS.TOKEN + '?';
+            let url = route + config.ENDPOINTS.TOKEN;
 
-            url += 'personalToken=invalid_token';
+            url += '?token=invalid_token';
 
             this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.UNAUTHORIZED });
@@ -65,9 +65,9 @@ describe('/toshl', () => {
                     main: 'GBP'
                 }
             };
-            let url = route + config.ENDPOINTS.TOKEN + '?';
+            let url = route + config.ENDPOINTS.TOKEN;
 
-            url += 'personalToken=valid_token';
+            url += '?token=valid_token';
 
             this.requestGetStub
                 .callsArgWith(1, null, { statusCode: httpCodes.OK, body: responseBody }, responseBody);

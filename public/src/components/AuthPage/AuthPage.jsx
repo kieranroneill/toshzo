@@ -1,6 +1,6 @@
 import _ from 'underscore';
 import { Card, RaisedButton, Step, Stepper, StepLabel, TextField } from 'material-ui';
-;import React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import './AuthPage.scss';
@@ -17,7 +17,7 @@ class AuthPage extends React.Component {
 
         this.state = {
             finished: false,
-            monzoAccessToken: this.props.location.query.code,
+            monzoAuthorisationCode: this.props.location.query.code,
             snackBarConfig: {
                 isOpen: false,
                 message: 'Toshl token required'
@@ -32,7 +32,7 @@ class AuthPage extends React.Component {
         this.props.dispatch(ConfigActionCreators.showLoader());
 
         return MonzoService
-            .getToken()
+            .getStateToken()
             .then(result => {
                 const redirectUri = location.protocol + '//' +
                     location.hostname +
@@ -64,9 +64,10 @@ class AuthPage extends React.Component {
     componentDidMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
 
-        if(this.state.monzoAccessToken && this.state.stateToken) {
+        // Handle a Monzo redirection.
+        if(this.state.monzoAuthorisationCode && this.state.stateToken) {
             MonzoService
-                .verifyToken(this.state.stateToken, this.state.monzoAccessToken)
+                .getAccessToken(this.state.stateToken, this.state.monzoAuthorisationCode)
                 .then(() => this.setState({ stepIndex: 1, finished: false })) // Go to the Toshl page.
                 .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
                 .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
@@ -121,7 +122,7 @@ class AuthPage extends React.Component {
                             You will be redirected to Toshl and asked to authorise Toshzo.
                         </p>
                         <TextField
-                            value={ this.state.toshlToken }
+                            value={ this.state.toshlPersonalToken }
                             hintText="Enter your personal Toshl token"
                             onChange={ this.onToshlTokenChange.bind(this) } />
                     </div>
