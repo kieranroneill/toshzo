@@ -180,7 +180,7 @@ class AuthPage extends React.Component {
             return this.authoriseMonzo();
         }
 
-        this.props.dispatch(ConfigActionCreators.openSnackBar('Hmm... Somthing fishy is going on'));
+        this.props.dispatch(ConfigActionCreators.openSnackBar('Hmm... Something fishy is going on'));
     }
 
     render() {

@@ -9,7 +9,7 @@
         "axios": true,
         "assert": true,
         "config": true,
-        "configureMockStore": true,
+        "mockStore": true,
         "errors": true,
         "expect": true,
         "httpCodes": true,

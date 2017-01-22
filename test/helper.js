@@ -1,8 +1,5 @@
-'use strict';
-
 import axios from 'axios';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
 import httpCodes from 'http-codes';
 import httpMocks from 'node-mocks-http';
 import { jsdom } from 'jsdom';
@@ -36,12 +33,10 @@ global.supertest = supertest;
 
 // Client globals.
 global.axios = axios;
-global.configureMockStore = configureMockStore;
+global.mockStore = configureMockStore([]);
 global.document = jsdom('<!doctype html><html><body></body></html>');
-global.mount = mount;
 global.navigator = { userAgent: 'node.js' };
 global.React = React;
-global.shallow = shallow;
 global.thunk = thunk;
 global.window = document.defaultView;
 
