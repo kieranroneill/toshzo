@@ -62,8 +62,6 @@ class AuthPage extends React.Component {
     }
 
     componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
-
         // Handle a Monzo redirection.
         if(this.state.monzoAuthorisationCode && this.state.stateToken) {
             MonzoService
@@ -78,6 +76,7 @@ class AuthPage extends React.Component {
     }
 
     componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
         this.props.dispatch(ConfigActionCreators.showLoader());
     }
 

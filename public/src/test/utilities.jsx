@@ -1,41 +1,33 @@
-import { mount, shallow } from 'enzyme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import { Provider } from 'react-redux';
-import { createMemoryHistory, Router, Route } from 'react-router';
-import injectTapEventPlugin from 'react-tap-event-plugin';
+import configureMockStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-/**
- * Initialises a component ready for testing.
- * @param component the component to initialise.
- * @param location the location of the component.
- * @return returns a wrapped component.
- */
-function intitialiseTestComponent(component, location = '/') {
+import { ConfigState, ReferencesState } from '../states/index';
+
+const mockStore = configureMockStore([ thunk ]);
+const muiTheme = getMuiTheme({ userAgent: 'all' });
+
+export function createProps(props) {
+    return {
+        location: {
+            query: {}
+        },
+        ...props
+    };
+}
+
+export function createStore() {
     const store = {
-        references: {}
+        references: ReferencesState,
+        config: ConfigState
     };
 
-    // Enable onTouchTap()
-    injectTapEventPlugin();
-
-    return (
-        <Provider store={ mockStore(store) }>
-            <MuiThemeProvider muiTheme={ getMuiTheme({ userAgent: 'all' }) }>
-                <Router history={ createMemoryHistory(location) } store={ mockStore(store) }>
-                    <Route path={ location } component={ component } />
-                </Router>
-            </MuiThemeProvider>
-        </Provider>
-    );
+    return mockStore(store);
 }
 
-export function mountTestComponent(component, location) {
-    return mount(intitialiseTestComponent(component, location))
-        .find(component); // Return the child component.
-}
-
-export function shallowTestComponent(component, location) {
-    return shallow(intitialiseTestComponent(component, location))
-        .find(component);
+export function getContext() {
+    return {
+        context: { muiTheme },
+        childContextTypes: { muiTheme: React.PropTypes.object }
+    };
 }

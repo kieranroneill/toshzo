@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { expect } from 'chai';
+import { mount, shallow } from 'enzyme';
 import httpCodes from 'http-codes';
 import httpMocks from 'node-mocks-http';
 import { jsdom } from 'jsdom';
 import React from 'react';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import request from 'request';
 import { assert, spy, stub } from 'sinon';
 import supertest from 'supertest';
@@ -15,6 +15,9 @@ import 'sinon-as-promised';
 import config from '../lib/config/default.json';
 import errors from '../lib/config/errors.json';
 import server from '../server.js';
+
+// Enable onTouchTap()
+injectTapEventPlugin();
 
 // General globals.
 global.assert = assert;
@@ -33,11 +36,11 @@ global.supertest = supertest;
 
 // Client globals.
 global.axios = axios;
-global.mockStore = configureMockStore([]);
 global.document = jsdom('<!doctype html><html><body></body></html>');
+global.mount = mount;
 global.navigator = { userAgent: 'node.js' };
 global.React = React;
-global.thunk = thunk;
+global.shallow = shallow;
 global.window = document.defaultView;
 
 Object
