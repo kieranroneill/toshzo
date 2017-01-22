@@ -7,15 +7,10 @@ import { ConfigState, ReferencesState } from '../states/index';
 const mockStore = configureMockStore([ thunk ]);
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 
-export function createProps(props) {
-    return {
-        location: {
-            query: {}
-        },
-        ...props
-    };
-}
-
+/**
+ * Creates a mocked Redux store for testing.
+ * @return a mocked Redux store.
+ */
 export function createStore() {
     const store = {
         references: ReferencesState,
@@ -25,6 +20,10 @@ export function createStore() {
     return mockStore(store);
 }
 
+/**
+ * Returns a context used for Enzyme mounting.
+ * @return a context relevant to the app.
+ */
 export function getContext() {
     return {
         context: { muiTheme },

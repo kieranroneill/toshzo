@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Promise from 'bluebird';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import httpCodes from 'http-codes';
@@ -8,9 +9,8 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import request from 'request';
 import { assert, spy, stub } from 'sinon';
+import sinonAsPromised from 'sinon-as-promised';
 import supertest from 'supertest';
-
-import 'sinon-as-promised';
 
 import config from '../lib/config/default.json';
 import errors from '../lib/config/errors.json';
@@ -18,6 +18,9 @@ import server from '../server.js';
 
 // Enable onTouchTap()
 injectTapEventPlugin();
+
+// Use bluebird promises.
+sinonAsPromised(Promise);
 
 // General globals.
 global.assert = assert;
