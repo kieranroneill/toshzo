@@ -110,18 +110,61 @@ describe('<AuthPage />', () => {
         });
     });
 
+    describe('when the onNextStepClick() is invoked', function() {
+        it('should attempt to authorise Monzo if we are at the first step', function() {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+            const authoriseMonzoStub = stub(instance, 'authoriseMonzo');
+
+            instance.onNextStepClick();
+
+            assert.calledOnce(authoriseMonzoStub);
+        });
+
+        it('should show snack bar if we are on the Toshl step and the personal token is empty', function() {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+
+            instance.setState({ stepIndex: 1 }); // Set to Toshl auth step.
+            instance.onNextStepClick();
+
+            assert.calledWith(
+                instance.props.dispatch,
+                ConfigActionCreators.openSnackBar('Please enter your personal Toshl token')
+            );
+        });
+
+        it('should attempt to authorise Toshl if we are at the second step', function() {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+            const authoriseToshlStub = stub(instance, 'authoriseToshl');
+
+            instance.setState({ stepIndex: 1, toshlPersonalToken: 'a token, yay!!!' }); // Set to Toshl auth step and fill in the code.
+            instance.onNextStepClick();
+
+            assert.calledOnce(authoriseToshlStub);
+        });
+
+        it('should attempt change route if we have finished', function() {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+
+            instance.setState({ finished: true }); // Set the stepper to finished.
+            instance.onNextStepClick();
+
+            assert.calledWith(instance.props.router.push, 'about');
+        });
+    });
+
     describe('when a user attempts to authorise Monzo', function() {
-        // it('should have', function() {
-        //     const wrapper = shallowWithContext(<AuthPageTest { ...this.props } />);
-        //     const nextButtonWrapper = wrapper
-        //         .find('.auth-page__actions')
-        //         .find(RaisedButton);
-        //     const props = nextButtonWrapper.props();
-        //     //const onTouchTapSpy = spy(props, 'onTouchTap');
-        //
-        //     nextButtonWrapper.simulate('touchTap');
-        //
-        //     assert.calledOnce(onTouchTapSpy);
-        // });
+        it('should attempt to authorise Monzo', function() {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+            const authoriseMonzoStub = stub(instance, 'authoriseMonzo');
+
+            instance.onNextStepClick();
+
+            assert.calledOnce(authoriseMonzoStub);
+        });
     });
 });

@@ -23,10 +23,13 @@ export function createStore() {
 
 export function getDefaultProps() {
     return {
+        dispatch: stub(),
         location: {
             query: {}
         },
-        dispatch: stub()
+        router: {
+            push: stub()
+        }
     };
 }
 
