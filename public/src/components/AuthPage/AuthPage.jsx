@@ -33,20 +33,20 @@ class AuthPage extends React.Component {
 
         return MonzoService
             .getStateToken()
+            .bind(this)
             .then(result => {
-                const redirectUri = location.protocol + '//' +
-                    location.hostname +
-                    (location.port ? ':' + location.port : '') +
+                const redirectUri = window.location.protocol + '//' +
+                    window.location.hostname +
+                    (window.location.port ? ':' + window.location.port : '') +
                     '/auth';
-                let url = 'https://auth.getmondo.co.uk/?';
-
-                url += 'client_id=' + this.props.references.monzo.clientId;
-                url += '&redirect_uri=' + encodeURI(redirectUri);
-                url += '&response_type=code';
-                url += '&state=' + result.token;
+                const monzoAuthUri = AuthPage.createMonzoAuthUri(
+                    this.props.references.monzo.clientId,
+                    result.token,
+                    redirectUri
+                );
 
                 // Navigate to Monzo for authorisation.
-                window.location.href = url;
+                window.location.assign(monzoAuthUri);
             })
             .catch(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
     }
@@ -56,6 +56,7 @@ class AuthPage extends React.Component {
 
         return ToshlService
             .verifyToken(this.state.toshlPersonalToken)
+            .bind(this)
             .then(() => this.incrementStep())
             .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
             .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
@@ -66,6 +67,7 @@ class AuthPage extends React.Component {
         if(this.state.monzoAuthorisationCode && this.state.stateToken) {
             MonzoService
                 .getAccessToken(this.state.stateToken, this.state.monzoAuthorisationCode)
+                .bind(this)
                 .then(() => this.setState({ stepIndex: 1, finished: false })) // Go to the Toshl page.
                 .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
                 .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
@@ -78,6 +80,17 @@ class AuthPage extends React.Component {
     componentWillMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
         this.props.dispatch(ConfigActionCreators.showLoader());
+    }
+
+    static createMonzoAuthUri(clientId, stateToken, redirectUri) {
+        let url = 'https://auth.getmondo.co.uk/?';
+
+        url += 'client_id=' + clientId;
+        url += '&redirect_uri=' + encodeURI(redirectUri);
+        url += '&response_type=code';
+        url += '&state=' + stateToken;
+
+        return url;
     }
 
     getButtonLabel() {

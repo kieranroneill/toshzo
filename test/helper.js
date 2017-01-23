@@ -7,7 +7,7 @@ import { jsdom } from 'jsdom';
 import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import request from 'request';
-import { assert, spy, stub } from 'sinon';
+import { assert, mock, spy, stub } from 'sinon';
 import sinonAsPromised from 'sinon-as-promised';
 import supertest from 'supertest';
 
@@ -26,6 +26,7 @@ global.assert = assert;
 global.config = config;
 global.errors = errors;
 global.expect = expect;
+global.mock = mock;
 global.should = should;
 global.spy = spy;
 global.stub = stub;

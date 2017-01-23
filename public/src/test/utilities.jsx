@@ -1,27 +1,16 @@
 import { mount, shallow } from 'enzyme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import configureMockStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
 
 import { ConfigState, ReferencesState } from '../states/index';
 
-const mockStore = configureMockStore([ thunk ]);
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 
-/**
- * Creates a mocked Redux store for testing.
- * @return a mocked Redux store.
- */
-export function createStore() {
+export function getDefaultProps() {
     const store = {
         references: ReferencesState,
         config: ConfigState
     };
 
-    return mockStore(store);
-}
-
-export function getDefaultProps() {
     return {
         dispatch: stub(),
         location: {
@@ -29,7 +18,8 @@ export function getDefaultProps() {
         },
         router: {
             push: stub()
-        }
+        },
+        ...store
     };
 }
 

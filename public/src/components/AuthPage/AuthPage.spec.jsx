@@ -16,12 +16,14 @@ describe('<AuthPage />', () => {
         this.props = getDefaultProps();
 
         this.getAccessTokenStub = stub(MonzoService, 'getAccessToken');
+        this.getStateTokenStub = stub(MonzoService, 'getStateToken');
     });
 
     afterEach(function() {
         delete this.props;
 
         this.getAccessTokenStub.restore();
+        this.getStateTokenStub.restore();
     });
 
     describe('before component loads', function() {
@@ -157,14 +159,45 @@ describe('<AuthPage />', () => {
     });
 
     describe('when a user attempts to authorise Monzo', function() {
-        it('should attempt to authorise Monzo', function() {
+        it('should hide the loader if there is an error getting the state token', function(done) {
             const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
                 .instance();
-            const authoriseMonzoStub = stub(instance, 'authoriseMonzo');
 
-            instance.onNextStepClick();
+            this.getStateTokenStub.rejects();
 
-            assert.calledOnce(authoriseMonzoStub);
+            instance
+                .authoriseMonzo()
+                .then(() => {
+                    assert.calledWith(instance.props.dispatch, ConfigActionCreators.hideLoader());
+
+                    done();
+                });
+        });
+
+        it('should redirect to the Monzo authorisation page', function(done) {
+            const redirectUri = window.location.protocol + '//' +
+                window.location.hostname +
+                (window.location.port ? ':' + window.location.port : '') +
+                '/auth';
+            const stateToken = 'a valid token from the abyss';
+            const clientId = 'clients...clients...clients';
+            const monzoAuthUri = AuthPageTest.createMonzoAuthUri(clientId, stateToken, redirectUri);
+            const locationAssignStub = stub(window.location, 'assign');
+            let instance;
+
+            this.props.references.monzo.clientId = clientId;
+            this.getStateTokenStub.resolves({ token: stateToken });
+
+            instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+
+            instance
+                .authoriseMonzo()
+                .then(() => {
+                    assert.calledWith(locationAssignStub, monzoAuthUri);
+
+                    done();
+                });
         });
     });
 });
