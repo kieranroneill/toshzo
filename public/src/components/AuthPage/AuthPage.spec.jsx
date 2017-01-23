@@ -1,5 +1,8 @@
 import { RaisedButton } from 'material-ui';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // Services.
 import { MonzoService, ToshlService } from '../../services/index';
 
@@ -43,7 +46,7 @@ describe('<AuthPage />', () => {
             expect(instance.state.snackBarConfig).to.have.property('isOpen');
             expect(instance.state.snackBarConfig).to.have.property('message');
             expect(instance.state.snackBarConfig.isOpen).to.be.false;
-            expect(instance.state.snackBarConfig.message).to.equal('Toshl token required');
+            expect(instance.state.snackBarConfig.message).to.equal(strings.snackBarMessages.TOSHL_TOKEN_REQUIRED);
 
             expect(instance.state).to.have.property('stepIndex');
             expect(instance.state.stepIndex).to.equal(0);

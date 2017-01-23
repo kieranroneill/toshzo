@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 
 import './AuthPage.scss';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
@@ -20,7 +23,7 @@ class AuthPage extends React.Component {
             monzoAuthorisationCode: this.props.location.query.code,
             snackBarConfig: {
                 isOpen: false,
-                message: 'Toshl token required'
+                message: strings.snackBarMessages.TOSHL_TOKEN_REQUIRED
             },
             stepIndex: 0,
             stateToken: this.props.location.query.state,
