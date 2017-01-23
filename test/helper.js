@@ -1,7 +1,6 @@
 import axios from 'axios';
 import Promise from 'bluebird';
 import { expect, should } from 'chai';
-import { mount, shallow } from 'enzyme';
 import httpCodes from 'http-codes';
 import httpMocks from 'node-mocks-http';
 import { jsdom } from 'jsdom';
@@ -41,10 +40,8 @@ global.supertest = supertest;
 // Client globals.
 global.axios = axios;
 global.document = jsdom('<!doctype html><html><body></body></html>');
-global.mount = mount;
 global.navigator = { userAgent: 'node.js' };
 global.React = React;
-global.shallow = shallow;
 global.window = document.defaultView;
 
 Object

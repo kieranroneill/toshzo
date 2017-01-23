@@ -1,3 +1,4 @@
+import { mount, shallow } from 'enzyme';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -20,17 +21,6 @@ export function createStore() {
     return mockStore(store);
 }
 
-/**
- * Returns a context used for Enzyme mounting.
- * @return a context relevant to the app.
- */
-export function getContext() {
-    return {
-        context: { muiTheme },
-        childContextTypes: { muiTheme: React.PropTypes.object }
-    };
-}
-
 export function getDefaultProps() {
     return {
         location: {
@@ -38,4 +28,26 @@ export function getDefaultProps() {
         },
         dispatch: stub()
     };
+}
+
+/**
+ * Fully renders a node with context.
+ * @return the mounted node.
+ */
+export function mountWithContext(node) {
+    return mount(node, {
+        context: { muiTheme },
+        childContextTypes: { muiTheme: React.PropTypes.object }
+    });
+}
+
+/**
+ * Shallow renders a node with context.
+ * @return the mounted node.
+ */
+export function shallowWithContext(node) {
+    return shallow(node, {
+        context: { muiTheme },
+        childContextTypes: { muiTheme: React.PropTypes.object }
+    });
 }
