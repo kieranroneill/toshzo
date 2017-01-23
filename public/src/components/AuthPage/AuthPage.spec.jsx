@@ -1,7 +1,7 @@
 import { RaisedButton } from 'material-ui';
 
 // Services.
-import { MonzoService } from '../../services/index';
+import { MonzoService, ToshlService } from '../../services/index';
 
 // ActionCreators
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -17,6 +17,7 @@ describe('<AuthPage />', () => {
 
         this.getAccessTokenStub = stub(MonzoService, 'getAccessToken');
         this.getStateTokenStub = stub(MonzoService, 'getStateToken');
+        this.verifyTokenStub = stub(ToshlService, 'verifyToken');
     });
 
     afterEach(function() {
@@ -24,6 +25,7 @@ describe('<AuthPage />', () => {
 
         this.getAccessTokenStub.restore();
         this.getStateTokenStub.restore();
+        this.verifyTokenStub.restore();
     });
 
     describe('before component loads', function() {
@@ -195,6 +197,50 @@ describe('<AuthPage />', () => {
                 .authoriseMonzo()
                 .then(() => {
                     assert.calledWith(locationAssignStub, monzoAuthUri);
+
+                    done();
+                });
+        });
+    });
+
+    describe('when a user attempts to authorise Toshl', function() {
+        it('should fail if the personal token is invalid', function(done) {
+            const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+            this.verifyTokenStub.rejects({ status: httpCodes.UNAUTHORIZED, errors: [errors.INVALID_TOSHL_TOKEN] });
+
+            instance
+                .authoriseToshl()
+                .then(() => {
+                    assert.calledWith(
+                        instance.props.dispatch,
+                        ConfigActionCreators.openSnackBar(errors.INVALID_TOSHL_TOKEN)
+                    );
+                    expect(instance.props.dispatch.lastCall.args[0]).to.deep.equal(ConfigActionCreators.hideLoader());
+
+                    done();
+                });
+        });
+
+        it('should go to the last step if the Toshl personal token is valid', function(done) {
+            let instance;
+
+            this.props.location.query = {
+                code: 'a really long string',
+                state: 'a really really long string'
+            };
+            this.getAccessTokenStub.resolves();
+            this.verifyTokenStub.resolves();
+
+            instance = mountWithContext(<AuthPageTest { ...this.props } />)
+                .instance();
+
+            instance
+                .authoriseToshl()
+                .then(() => {
+                    expect(instance.state.finished).to.be.true;
+                    expect(instance.state.stepIndex).to.equal(2);
+                    expect(instance.props.dispatch.lastCall.args[0]).to.deep.equal(ConfigActionCreators.hideLoader());
 
                     done();
                 });
