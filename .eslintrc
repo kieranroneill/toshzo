@@ -9,21 +9,18 @@
         "axios": true,
         "assert": true,
         "config": true,
-        "configureMockStore": true,
         "errors": true,
         "expect": true,
         "httpCodes": true,
         "httpMocks": true,
-        "mount": true,
+        "mock": true,
         "Promise": true,
         "React": true,
         "request": true,
         "server": true,
-        "shallow": true,
         "spy": true,
         "stub": true,
-        "supertest": true,
-        "thunk": true
+        "supertest": true
     },
     "parser": "babel-eslint",
     "parserOptions": {

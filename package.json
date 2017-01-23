@@ -26,8 +26,8 @@
     "plato": "plato",
     "postinstall": "(cp -n .env.example .env || true)",
     "start": "babel-node server",
-    "test": "NODE_ENV=test istanbul cover _mocha -- ./test/**/*.test.js ./lib/**/*.spec.js ./public/src/**/*.spec.js",
-    "test:reporter": "istanbul cover _mocha -- ./test/**/*.test.js  ./lib/**/*.spec.js ./public/src/**/*.spec.js --reporter mocha-junit-reporter",
+    "test": "NODE_ENV=test istanbul cover _mocha -- ./test/**/*.test.js ./lib/**/*.spec.js ./public/src/**/*.spec.js ./public/src/**/*.spec.jsx",
+    "test:reporter": "istanbul cover _mocha -- ./test/**/*.test.js  ./lib/**/*.spec.js ./public/src/**/*.spec.js ./public/src/**/*.spec.jsx --reporter mocha-junit-reporter",
     "webpack": "webpack"
   },
   "dependencies": {
@@ -50,6 +50,7 @@
     "helmet": "^3.1.0",
     "html-webpack-plugin": "^2.26.0",
     "http-codes": "^1.0.0",
+    "ignore-styles": "^5.0.1",
     "jsonwebtoken": "^7.2.1",
     "material-ui": "^0.16.6",
     "morgan": "^1.7.0",
