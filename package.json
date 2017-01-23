@@ -31,6 +31,7 @@
     "webpack": "webpack"
   },
   "dependencies": {
+    "autoprefixer": "^6.7.0",
     "axios": "^0.15.3",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
@@ -58,6 +59,7 @@
     "node-sass": "^4.2.0",
     "path": "^0.12.7",
     "plato": "^1.7.0",
+    "postcss-loader": "^1.2.2",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
