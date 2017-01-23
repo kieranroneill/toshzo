@@ -1,6 +1,9 @@
 import BaseService from './BaseService';
 
-const route = '/api/references';
+// Strings.
+import strings from '../config/strings.json';
+
+const route = strings.endpoints.API + strings.endpoints.REFERENCES;
 
 class ReferencesService {
     static getReferences() {

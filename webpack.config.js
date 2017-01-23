@@ -26,6 +26,10 @@ module.exports = {
                 loader: 'handlebars'
             },
             {
+                test: /\.json$/,
+                loader: 'json-loader'
+            },
+            {
                 test: /.jsx?$/,
                 loaders: ['babel-loader'],
                 exclude: /node_modules/

@@ -4,6 +4,9 @@ import React from 'react';
 
 import './Footer.scss';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // Components.
 import GitHubSvgIcon from '../GitHubSvgIcon/GitHubSvgIcon';
 
@@ -27,9 +30,9 @@ class Footer extends React.Component {
                     <div className="footer__item">Made with &hearts; by Kieran O'Neill</div>
                     <div className="footer__item">
                         <IconButton
-                            href="https://github.com/kieranroneill/toshzo"
+                            href={ strings.links.GITHUB_SOURCE }
                             target="_blank"
-                            tooltip="Free as in speech!"
+                            tooltip={ strings.tooltipMessages.FREE_AS_IN_SPEECH }
                             tooltipPosition="bottom-center"
                             style={ styles.button }
                             iconStyle={ styles.icon }>

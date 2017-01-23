@@ -1,0 +1,50 @@
+{
+  "APP_TITLE": "Toshzo",
+
+  "buttonLabels": {
+    "AUTHORISE_MONZO": "Authorise Monzo",
+    "AUTHORISE_TOSHL": "Authorise Toshl",
+    "FINISHED": "Finished"
+  },
+
+  "endpoints": {
+    "ACCESS": "/access",
+    "API": "/api",
+    "MONZO": "/monzo",
+    "REFERENCES": "/references",
+    "STATE": "/state",
+    "TOKEN": "/token",
+    "TOSHL": "/toshl"
+  },
+
+  "labels": {
+    "AUTHORISE_MONZO": "Authorise Monzo",
+    "AUTHORISE_TOSHL": "Authorise Toshl"
+  },
+
+  "links": {
+    "GITHUB_SOURCE": "https://github.com/kieranroneill/toshzo"
+  },
+
+  "pageTitles": {
+    "ABOUT": "About",
+    "ACCOUNTS": "Accounts",
+    "AUTHORISE": "Authorise"
+  },
+
+  "routes": {
+    "ABOUT": "about",
+    "ACCOUNTS": "accounts",
+    "AUTH": "auth"
+  },
+
+  "snackBarMessages": {
+    "ENTER_TOSHL_TOKEN": "Please enter your personal Toshl token",
+    "SOMETHING_IS_WRONG": "Hmm... Something fishy is going on",
+    "TOSHL_TOKEN_REQUIRED": "Toshl token required"
+  },
+
+  "tooltipMessages": {
+    "FREE_AS_IN_SPEECH": "Free as in speech!"
+  }
+}
