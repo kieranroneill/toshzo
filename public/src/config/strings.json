@@ -17,13 +17,24 @@
     "TOSHL": "/toshl"
   },
 
+  "labels": {
+    "AUTHORISE_MONZO": "Authorise Monzo",
+    "AUTHORISE_TOSHL": "Authorise Toshl"
+  },
+
+  "links": {
+    "GITHUB_SOURCE": "https://github.com/kieranroneill/toshzo"
+  },
+
   "pageTitles": {
+    "ABOUT": "About",
     "ACCOUNTS": "Accounts",
     "AUTHORISE": "Authorise"
   },
 
   "routes": {
     "ABOUT": "about",
+    "ACCOUNTS": "accounts",
     "AUTH": "auth"
   },
 
@@ -33,8 +44,7 @@
     "TOSHL_TOKEN_REQUIRED": "Toshl token required"
   },
 
-  "labels": {
-    "AUTHORISE_MONZO": "Authorise Monzo",
-    "AUTHORISE_TOSHL": "Authorise Toshl"
+  "tooltipMessages": {
+    "FREE_AS_IN_SPEECH": "Free as in speech!"
   }
 }

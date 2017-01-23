@@ -35,6 +35,10 @@ module.exports = {
                 loader: 'handlebars-loader'
             },
             {
+                test: /\.json$/,
+                loader: 'json-loader'
+            },
+            {
                 test: /.jsx?$/,
                 loaders: ['react-hot', 'babel-loader'],
                 exclude: /node_modules/

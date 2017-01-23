@@ -5,6 +5,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
@@ -30,7 +33,7 @@ class ToshzoDrawer extends React.Component {
                     style={ styles.toolbar }>
                     <ToolbarGroup
                         firstChild={ true }>
-                        <ToolbarTitle style={{ paddingLeft: '1rem' }} text="Toshzo" />
+                        <ToolbarTitle style={{ paddingLeft: '1rem' }} text={ strings.APP_TITLE } />
                     </ToolbarGroup>
                     <ToolbarGroup
                         lastChild={ true }>
@@ -44,8 +47,8 @@ class ToshzoDrawer extends React.Component {
                 </Toolbar>
                 <Divider />
                 <MenuItem
-                    primaryText="About"
-                    containerElement={ <Link to="/about" /> }
+                    primaryText={ strings.pageTitles.ABOUT }
+                    containerElement={ <Link to={ strings.routes.ABOUT  } /> }
                     onTouchTap={ this.onNavigationCloseClick.bind(this) } />
             </Drawer>
         );

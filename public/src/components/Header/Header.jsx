@@ -5,6 +5,9 @@ import { connect } from 'react-redux';
 
 import './Header.scss';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // Components.
 import GitHubSvgIcon from '../GitHubSvgIcon/GitHubSvgIcon';
 
@@ -23,9 +26,9 @@ const styles = {
 };
 const iconElementRight = (
     <IconButton
-        href="https://github.com/kieranroneill/toshzo"
+        href={ strings.links.GITHUB_SOURCE }
         target="_blank"
-        tooltip="Free as in speech!"
+        tooltip={ strings.tooltipMessages.FREE_AS_IN_SPEECH }
         tooltipPosition="bottom-left"
         style={ styles.button }
         iconStyle={ styles.iconRight }>
