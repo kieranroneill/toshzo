@@ -81,10 +81,9 @@ describe('<AuthPage />', () => {
         });
 
         it('should set the page title', function() {
-            const expectedPageTitle = 'Authorise';
             const wrapper = mountWithContext(<AuthPageTest { ...this.props } />);
 
-            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(expectedPageTitle));
+            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(strings.pageTitles.AUTHORISE));
         });
     });
 
@@ -100,7 +99,7 @@ describe('<AuthPage />', () => {
                 .find('.auth-page__actions')
                 .find(RaisedButton);
 
-            expect(wrapper.props().label).to.equal('Authorise Monzo');
+            expect(wrapper.props().label).to.equal(strings.buttonLabels.AUTHORISE_MONZO);
         });
 
         it('should attempt to get an access token if the required query parameters are present', function() {
@@ -137,7 +136,7 @@ describe('<AuthPage />', () => {
 
             assert.calledWith(
                 instance.props.dispatch,
-                ConfigActionCreators.openSnackBar('Please enter your personal Toshl token')
+                ConfigActionCreators.openSnackBar(strings.snackBarMessages.ENTER_TOSHL_TOKEN)
             );
         });
 
@@ -159,7 +158,7 @@ describe('<AuthPage />', () => {
             instance.setState({ finished: true }); // Set the stepper to finished.
             instance.onNextStepClick();
 
-            assert.calledWith(instance.props.router.push, 'about');
+            assert.calledWith(instance.props.router.push, strings.routes.ABOUT);
         });
     });
 

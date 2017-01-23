@@ -1,5 +1,40 @@
 {
+  "APP_TITLE": "Toshzo",
+
+  "buttonLabels": {
+    "AUTHORISE_MONZO": "Authorise Monzo",
+    "AUTHORISE_TOSHL": "Authorise Toshl",
+    "FINISHED": "Finished"
+  },
+
+  "endpoints": {
+    "ACCESS": "/access",
+    "API": "/api",
+    "MONZO": "/monzo",
+    "REFERENCES": "/references",
+    "STATE": "/state",
+    "TOKEN": "/token",
+    "TOSHL": "/toshl"
+  },
+
+  "pageTitles": {
+    "ACCOUNTS": "Accounts",
+    "AUTHORISE": "Authorise"
+  },
+
+  "routes": {
+    "ABOUT": "about",
+    "AUTH": "auth"
+  },
+
   "snackBarMessages": {
+    "ENTER_TOSHL_TOKEN": "Please enter your personal Toshl token",
+    "SOMETHING_IS_WRONG": "Hmm... Something fishy is going on",
     "TOSHL_TOKEN_REQUIRED": "Toshl token required"
+  },
+
+  "labels": {
+    "AUTHORISE_MONZO": "Authorise Monzo",
+    "AUTHORISE_TOSHL": "Authorise Toshl"
   }
 }

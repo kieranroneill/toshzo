@@ -1,11 +1,14 @@
 import BaseService from './BaseService';
 
-const route = '/api/toshl';
+// Strings.
+import strings from '../config/strings.json';
+
+const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
 class ToshlService {
 
     static verifyToken(personalToken) {
-        let url = route + '/token';
+        let url = route + strings.endpoints.TOKEN;
 
         url += '?token=' + personalToken;
 

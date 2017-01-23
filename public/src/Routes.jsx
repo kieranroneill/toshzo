@@ -6,12 +6,15 @@ import AboutPage from './components/AboutPage/AboutPage';
 import AuthPage from './components/AuthPage/AuthPage';
 import HomePage from './components/HomePage/HomePage';
 
+// Strings.
+import strings from './config/strings.json';
+
 const Routes = props => (
     <Router {...props}>
         <Route path="/" component={ App }>
             <IndexRoute component={ HomePage } />
-            <Route path="about" component={ AboutPage } />
-            <Route path="auth" component={ AuthPage } />
+            <Route path={ strings.routes.ABOUT } component={ AboutPage } />
+            <Route path={ strings.routes.AUTH } component={ AuthPage } />
         </Route>
     </Router>
 );

@@ -41,7 +41,7 @@ class AuthPage extends React.Component {
                 const redirectUri = window.location.protocol + '//' +
                     window.location.hostname +
                     (window.location.port ? ':' + window.location.port : '') +
-                    '/auth';
+                    '/' + strings.routes.AUTH;
                 const monzoAuthUri = AuthPage.createMonzoAuthUri(
                     this.props.references.monzo.clientId,
                     result.token,
@@ -81,7 +81,7 @@ class AuthPage extends React.Component {
     }
 
     componentWillMount() {
-        this.props.dispatch(ConfigActionCreators.setPageTitle('Authorise'));
+        this.props.dispatch(ConfigActionCreators.setPageTitle(strings.pageTitles.AUTHORISE));
         this.props.dispatch(ConfigActionCreators.showLoader());
     }
 
@@ -99,11 +99,11 @@ class AuthPage extends React.Component {
     getButtonLabel() {
         switch (this.state.stepIndex) {
             case 0:
-                return 'Authorise Monzo';
+                return strings.buttonLabels.AUTHORISE_MONZO;
             case 1:
-                return 'Authorise Toshl';
+                return strings.buttonLabels.AUTHORISE_TOSHL;
             default:
-                return 'Finished';
+                return strings.buttonLabels.FINISHED;
         }
     }
 
@@ -176,14 +176,14 @@ class AuthPage extends React.Component {
 
     onNextStepClick() {
         if(this.state.finished) {
-            return this.props.router.push('about');
+            return this.props.router.push(strings.routes.ABOUT);
         }
 
 
         if(this.state.stepIndex === 1) {
             // If the Toshl personal token is empty, let them know!
             if(_.isEmpty(this.state.toshlPersonalToken)) {
-                return this.props.dispatch(ConfigActionCreators.openSnackBar('Please enter your personal Toshl token'));
+                return this.props.dispatch(ConfigActionCreators.openSnackBar(strings.snackBarMessages.ENTER_TOSHL_TOKEN));
             }
 
             // Attempt to authorise Toshl.
@@ -195,7 +195,7 @@ class AuthPage extends React.Component {
             return this.authoriseMonzo();
         }
 
-        this.props.dispatch(ConfigActionCreators.openSnackBar('Hmm... Something fishy is going on'));
+        this.props.dispatch(ConfigActionCreators.openSnackBar(strings.snackBarMessages.SOMETHING_IS_WRONG));
     }
 
     render() {
@@ -205,10 +205,10 @@ class AuthPage extends React.Component {
                     <h2>Welcome to Toshzo!</h2>
                     <Stepper activeStep={ this.state.stepIndex }>
                         <Step>
-                            <StepLabel>Authorise Monzo</StepLabel>
+                            <StepLabel>{ strings.labels.AUTHORISE_MONZO }</StepLabel>
                         </Step>
                         <Step>
-                            <StepLabel>Authorise Toshl</StepLabel>
+                            <StepLabel>{ strings.labels.AUTHORISE_TOSHL }</StepLabel>
                         </Step>
                     </Stepper>
                     { this.getStepContent() }
