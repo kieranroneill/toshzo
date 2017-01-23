@@ -222,3 +222,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(AuthPage);
+export { AuthPage as AuthPageTest }; // Export for testing.

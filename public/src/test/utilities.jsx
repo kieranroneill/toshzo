@@ -30,3 +30,12 @@ export function getContext() {
         childContextTypes: { muiTheme: React.PropTypes.object }
     };
 }
+
+export function getDefaultProps() {
+    return {
+        location: {
+            query: {}
+        },
+        dispatch: stub()
+    };
+}

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Promise from 'bluebird';
-import { expect } from 'chai';
+import { expect, should } from 'chai';
 import { mount, shallow } from 'enzyme';
 import httpCodes from 'http-codes';
 import httpMocks from 'node-mocks-http';
@@ -16,17 +16,18 @@ import config from '../lib/config/default.json';
 import errors from '../lib/config/errors.json';
 import server from '../server.js';
 
-// Enable onTouchTap()
-injectTapEventPlugin();
-
 // Use bluebird promises.
 sinonAsPromised(Promise);
+
+// Enable onTouchTap()
+injectTapEventPlugin();
 
 // General globals.
 global.assert = assert;
 global.config = config;
 global.errors = errors;
 global.expect = expect;
+global.should = should;
 global.spy = spy;
 global.stub = stub;
 

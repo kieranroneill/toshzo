@@ -1,63 +1,76 @@
+import { RaisedButton } from 'material-ui';
+
+// Services.
+import { MonzoService } from '../../services/index';
+
+// ActionCreators
 import { ConfigActionCreators } from '../../action-creators/index';
 
-import { createStore, getContext } from '../../test/utilities';
+// Components.
+import { AuthPageTest } from './AuthPage';
 
-import AuthPage from './AuthPage';
-
-import { MonzoService, ToshlService } from '../../services/index';
+import { getContext, getDefaultProps } from '../../test/utilities';
 
 describe('<AuthPage />', () => {
-    const store = createStore();
-    const props = {
-        location: {
-            query: {}
-        }
-    };
-
     beforeEach(function() {
+        this.props = getDefaultProps();
+
         this.getAccessTokenStub = stub(MonzoService, 'getAccessToken');
-        this.storeDispatchSpy = spy(store, 'dispatch');
     });
 
     afterEach(function() {
+        delete this.props;
+
         this.getAccessTokenStub.restore();
-        this.storeDispatchSpy.restore();
     });
 
     describe('before component loads', function() {
         it('should hide the loader before the component is mounted', function() {
-            mount(<AuthPage store={ store } { ...props } />, getContext());
+            const wrapper = mount(<AuthPageTest { ...this.props } />, getContext());
 
-            assert.calledWith(this.storeDispatchSpy, ConfigActionCreators.showLoader());
+            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.showLoader());
         });
 
         it('should set the page title', function() {
             const expectedPageTitle = 'Authorise';
+            const wrapper = mount(<AuthPageTest { ...this.props } />, getContext());
 
-            mount(<AuthPage store={ store } { ...props } />, getContext());
-
-            assert.calledWith(this.storeDispatchSpy, ConfigActionCreators.setPageTitle(expectedPageTitle));
+            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(expectedPageTitle));
         });
     });
 
     describe('after component loads', function() {
         it('should not attempt to get an access token if the required query parameters are missing', function() {
-            mount(<AuthPage store={ store } { ...props } />, getContext());
+            mount(<AuthPageTest { ...this.props } />, getContext());
 
             assert.notCalled(this.getAccessTokenStub);
         });
 
         it('should attempt to get an access token if the required query parameters are present', function() {
-            props.location.query = {
+            this.props.location.query = {
                 state: 'a weirdly long string of randomness...or is it?',
                 code: 'an authorisation code'
             };
 
             this.getAccessTokenStub.resolves();
 
-            mount(<AuthPage store={ store } { ...props } />, getContext());
+            mount(<AuthPageTest { ...this.props } />, getContext());
 
-            assert.calledWith(this.getAccessTokenStub, props.location.query.state, props.location.query.code);
+            assert.calledWith(this.getAccessTokenStub, this.props.location.query.state, this.props.location.query.code);
+        });
+    });
+
+    describe('when a user attempts to authorise Monzo', function() {
+        it('should trigger the onNextStepClick() action', function() {
+            const wrapper = shallow(<AuthPageTest { ...this.props } />, getContext());
+            const nextButtonWrapper = wrapper
+                .find('.auth-page__actions')
+                .find(RaisedButton);
+            const onTouchTapSpy = spy(nextButtonWrapper.node.props, 'onTouchTap');
+
+            nextButtonWrapper.simulate('touchTap');
+
+            assert.calledOnce(onTouchTapSpy);
         });
     });
 });
