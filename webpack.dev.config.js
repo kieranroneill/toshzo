@@ -1,5 +1,6 @@
 'use strict';
 
+const autoprefixer = require('autoprefixer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -31,6 +32,10 @@ module.exports = {
     module: {
         loaders: [
             {
+                test: /\.css$/,
+                loaders: ['style', 'css']
+            },
+            {
                 test: /\.hbs$/,
                 loader: 'handlebars-loader'
             },
@@ -45,7 +50,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css', 'sass']
+                loaders: ['style', 'css', 'postcss', 'sass']
             }
         ]
     },
@@ -73,5 +78,10 @@ module.exports = {
             contentImage: path.resolve(__dirname, 'unicorn.png'),
             alwaysNotify: true
         })
-    ]
+    ],
+    postcss: () => {
+        return [autoprefixer({
+            browsers: ['last 3 versions']
+        })];
+    }
 };
