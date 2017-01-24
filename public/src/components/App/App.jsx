@@ -69,3 +69,4 @@ function mapStateToProps(state) {
     };
 }
 export default connect(mapStateToProps)(App);
+export { App as AppTest }; // Export for testing.
