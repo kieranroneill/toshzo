@@ -5,6 +5,13 @@ import { ConfigState, ReferencesState } from '../states/index';
 
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 
+function getContext() {
+    return {
+        context: { muiTheme },
+        childContextTypes: { muiTheme: React.PropTypes.object }
+    };
+}
+
 export function getDefaultProps() {
     const store = {
         references: ReferencesState,
@@ -28,10 +35,7 @@ export function getDefaultProps() {
  * @return the mounted node.
  */
 export function mountWithContext(node) {
-    return mount(node, {
-        context: { muiTheme },
-        childContextTypes: { muiTheme: React.PropTypes.object }
-    });
+    return mount(node, getContext());
 }
 
 /**
@@ -39,8 +43,5 @@ export function mountWithContext(node) {
  * @return the mounted node.
  */
 export function shallowWithContext(node) {
-    return shallow(node, {
-        context: { muiTheme },
-        childContextTypes: { muiTheme: React.PropTypes.object }
-    });
+    return shallow(node, getContext());
 }
