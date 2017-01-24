@@ -67,3 +67,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(ToshzoDrawer);
+export { ToshzoDrawer as ToshzoDrawerTest }; // Export for testing.

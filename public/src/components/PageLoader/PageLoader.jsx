@@ -9,7 +9,7 @@ class PageLoader extends React.Component {
         return (
             <div className={'page-loader__outer white ' + (this.props.config.isLoading ? 'show' : 'hidden')}>
                 <div className="page-loader__inner">
-                    <CircularProgress size={60} />
+                    <CircularProgress size={ 60 } />
                 </div>
             </div>
         );
@@ -27,3 +27,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(PageLoader);
+export { PageLoader as PageLoaderTest }; // Export for testing.
