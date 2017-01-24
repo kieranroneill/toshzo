@@ -2,12 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
+// Strings.
+import strings from '../../config/strings.json';
+
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
 class AboutPage extends React.Component {
-    componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.setPageTitle('About'));
+    componentWillMount() {
+        this.props.dispatch(ConfigActionCreators.setPageTitle(strings.pageTitles.ABOUT));
     }
 
     render() {
@@ -22,3 +25,5 @@ AboutPage.propTypes = {
 };
 
 export default connect()(AboutPage);
+export { AboutPage as AboutPageTest }; // Export for testing.
+
