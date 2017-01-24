@@ -70,3 +70,4 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Header);
+export { Header as HeaderTest }; // Export for testing.

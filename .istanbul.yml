@@ -1,4 +1,4 @@
 instrumentation:
     root: .
     extensions: ['.js', '.jsx']
-    excludes: ['*.spec.js', '*.test.js', 'webpack.*.js']
+    excludes: ['index.js', '*.spec.js', '*.test.js', 'webpack.*.js']
