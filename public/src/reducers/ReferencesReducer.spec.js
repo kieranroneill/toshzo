@@ -2,7 +2,7 @@ import ReferencesReducer from './ReferencesReducer';
 import { ReferencesActions } from '../actions/index';
 import { ReferencesState as initialReferencesState } from '../states/index';
 
-describe('config reducers', () => {
+describe('references reducers', () => {
     beforeEach(function() {
         this.initialState = initialReferencesState;
     });
@@ -39,6 +39,7 @@ describe('config reducers', () => {
             });
 
             expect(state).to.have.property('monzo');
+            expect(state.monzo).to.deep.equal(references.monzo);
             expect(state).to.not.have.property('unknown');
         });
     });

@@ -11,6 +11,7 @@
     "ACCESS": "/access",
     "API": "/api",
     "MONZO": "/monzo",
+    "INFO": "/info",
     "REFERENCES": "/references",
     "STATE": "/state",
     "TOKEN": "/token",
