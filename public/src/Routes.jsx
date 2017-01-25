@@ -1,3 +1,4 @@
+import Promise from 'bluebird';
 import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 
@@ -7,20 +8,30 @@ import AboutPage from './components/AboutPage/AboutPage';
 import AuthPage from './components/AuthPage/AuthPage';
 import HomePage from './components/HomePage/HomePage';
 
-import { InfoService } from './services/index';
+// Services.
+import { InfoService, ReferencesService } from './services/index';
+
+// ActionCreators.
+import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
 // Strings.
 import strings from './config/strings.json';
 
 function onAppEnter(props, nextState, replace, callback) {
-    InfoService
-        .getInfo()
-        .then(result => {
+    const promises = [
+        InfoService.getInfo(),
+        ReferencesService.getReferences()
+    ];
+
+    // Get app dependencies.
+    Promise
+        .all(promises)
+        .spread((info, references) => {
+            props.store.dispatch(InfoActionCreators.setInfo(info));
+            props.store.dispatch(ReferencesActionCreators.setReferences(references));
+
             callback();
-        })
-        .catch(() => {
-            callback();
-        });
+        }); // TODO: Add redirection to 500 page on rejection.
 }
 
 const Routes = props => (
