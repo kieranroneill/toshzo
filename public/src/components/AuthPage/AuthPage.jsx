@@ -201,7 +201,7 @@ class AuthPage extends React.Component {
     render() {
         return (
             <Card>
-                <div className="auth-page__container">
+                <div className="auth-page__container container">
                     <h2>Welcome to Toshzo!</h2>
                     <Stepper activeStep={ this.state.stepIndex }>
                         <Step>
