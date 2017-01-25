@@ -27,12 +27,6 @@
 
   "PORT": "1337",
 
-  "ROUTES": {
-    "ABOUT": "/about",
-    "ACCOUNT": "/account",
-    "AUTH": "/auth"
-  },
-
   "TOSHL": {
     "BASE": "https://api.toshl.com",
     "ACCOUNTS": "/accounts",

@@ -6,6 +6,13 @@ import strings from '../config/strings.json';
 const route = strings.endpoints.API + strings.endpoints.MONZO;
 
 class MonzoService {
+    static createMonzoRedirectUri() {
+        return window.location.protocol + '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '') +
+            '/' + strings.routes.AUTH;
+    }
+
     static getStateToken() {
         let url = route + strings.endpoints.TOKEN + strings.endpoints.STATE;
 
@@ -13,12 +20,14 @@ class MonzoService {
     }
 
     static getAccessToken(stateToken, authorisationCode) {
-        let url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
+        const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
+        const body = {
+            code: authorisationCode,
+            redirectUri: MonzoService.createMonzoRedirectUri(),
+            token: stateToken
+        };
 
-        url += '?token=' + stateToken;
-        url += '&code=' + authorisationCode;
-
-        return BaseService.httpPost(url, {});
+        return BaseService.httpPost(url, body);
     }
 }
 
