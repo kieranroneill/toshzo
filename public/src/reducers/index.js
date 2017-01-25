@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 
 // Reducers.
 import ConfigReducer from './ConfigReducer';
+import InfoReducer from './InfoReducer';
 import ReferencesReducer from './ReferencesReducer';
 
 /**
@@ -9,5 +10,6 @@ import ReferencesReducer from './ReferencesReducer';
  */
 export default combineReducers({
     config: ConfigReducer,
+    info: InfoReducer,
     references: ReferencesReducer
 });

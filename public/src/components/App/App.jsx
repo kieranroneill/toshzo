@@ -15,20 +15,11 @@ import PageLoader from '../PageLoader/PageLoader';
 import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
 
 // ActionCreators.
-import { ConfigActionCreators, ReferencesActionCreators } from '../../action-creators/index';
-
-// Services.
-import { ReferencesService } from '../../services/index';
+import { ConfigActionCreators } from '../../action-creators/index';
 
 class App extends React.Component {
-    componentWillMount() {
-        this.props.dispatch(ConfigActionCreators.showLoader());
-
-        // Get the references.
-        ReferencesService
-            .getReferences()
-            .then(result => this.props.dispatch(ReferencesActionCreators.setReferences(result)))
-            .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
+    componentDidMount() {
+        this.props.dispatch(ConfigActionCreators.hideLoader());
     }
 
     onSnackBarClose() {

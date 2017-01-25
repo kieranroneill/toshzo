@@ -38,14 +38,10 @@ class AuthPage extends React.Component {
             .getStateToken()
             .bind(this)
             .then(result => {
-                const redirectUri = window.location.protocol + '//' +
-                    window.location.hostname +
-                    (window.location.port ? ':' + window.location.port : '') +
-                    '/' + strings.routes.AUTH;
                 const monzoAuthUri = AuthPage.createMonzoAuthUri(
                     this.props.references.monzo.clientId,
                     result.token,
-                    redirectUri
+                    MonzoService.createMonzoRedirectUri()
                 );
 
                 // Navigate to Monzo for authorisation.
@@ -201,7 +197,7 @@ class AuthPage extends React.Component {
     render() {
         return (
             <Card>
-                <div className="auth-page__container">
+                <div className="auth-page__container container">
                     <h2>Welcome to Toshzo!</h2>
                     <Stepper activeStep={ this.state.stepIndex }>
                         <Step>

@@ -57,12 +57,14 @@ class ToshzoDrawer extends React.Component {
 
 ToshzoDrawer.propTypes = {
     config: React.PropTypes.object,
-    dispatch: React.PropTypes.func
+    dispatch: React.PropTypes.func,
+    info: React.PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        config: state.config
+        config: state.config,
+        info: state.info
     };
 }
 
