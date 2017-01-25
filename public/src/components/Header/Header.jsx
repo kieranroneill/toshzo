@@ -24,21 +24,24 @@ const styles = {
         height: 24
     }
 };
-const iconElementRight = (
-    <IconButton
-        href={ strings.links.GITHUB_SOURCE }
-        target="_blank"
-        tooltip={ strings.tooltipMessages.FREE_AS_IN_SPEECH }
-        tooltipPosition="bottom-left"
-        style={ styles.button }
-        iconStyle={ styles.iconRight }>
-        <GitHubSvgIcon color={ white } hoverColor={ green300 } viewBox="0 0 16 16"  />
-    </IconButton>
-);
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
+    }
+
+    getIconElementRight() {
+        return (
+            <IconButton
+                href={ this.props.info.source }
+                target="_blank"
+                tooltip={ strings.tooltipMessages.FREE_AS_IN_SPEECH }
+                tooltipPosition="bottom-left"
+                style={ styles.button }
+                iconStyle={ styles.iconRight }>
+                <GitHubSvgIcon color={ white } hoverColor={ green300 } viewBox="0 0 16 16"  />
+            </IconButton>
+        );
     }
 
     onNavigationOpenClick() {
@@ -50,7 +53,7 @@ class Header extends React.Component {
             <header>
                 <AppBar
                     title={ this.props.config.pageTitle }
-                    iconElementRight={ iconElementRight }
+                    iconElementRight={ this.getIconElementRight() }
                     onLeftIconButtonTouchTap={ this.onNavigationOpenClick.bind(this) } />
 
             </header>
@@ -60,12 +63,14 @@ class Header extends React.Component {
 
 Header.propTypes = {
     config: React.PropTypes.object,
-    dispatch: React.PropTypes.func
+    dispatch: React.PropTypes.func,
+    info: React.PropTypes.object
 };
 
 function mapStateToProps(state) {
     return {
-        config: state.config
+        config: state.config,
+        info: state.info
     };
 }
 

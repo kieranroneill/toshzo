@@ -1,6 +1,7 @@
 import { IconButton } from 'material-ui';
 import { green300 } from 'material-ui/styles/colors';
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './Footer.scss';
 
@@ -27,10 +28,10 @@ class Footer extends React.Component {
         return (
             <footer>
                 <div className="footer__container">
-                    <div className="footer__item">Made with &hearts; by Kieran O'Neill</div>
+                    <div className="footer__item">Made with &hearts; by { this.props.info.author }</div>
                     <div className="footer__item">
                         <IconButton
-                            href={ strings.links.GITHUB_SOURCE }
+                            href={ this.props.info.source }
                             target="_blank"
                             tooltip={ strings.tooltipMessages.FREE_AS_IN_SPEECH }
                             tooltipPosition="bottom-center"
@@ -45,4 +46,15 @@ class Footer extends React.Component {
     }
 }
 
-export default Footer;
+Footer.propTypes = {
+    info: React.PropTypes.object
+};
+
+function mapStateToProps(state) {
+    return {
+        info: state.info
+    };
+}
+
+export default connect(mapStateToProps)(Footer);
+export { Footer as FooterTest }; // Export for testing.
