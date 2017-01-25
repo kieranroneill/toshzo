@@ -4,13 +4,12 @@
   "ENDPOINTS": {
     "ACCESS": "/access",
     "API": "/api",
-    "ME": "/me",
+    "INFO": "/info",
     "MONZO": "/monzo",
     "REFERENCES": "/references",
     "STATE": "/state",
     "TOKEN": "/token",
-    "TOSHL": "/toshl",
-    "VERIFY": "/verify"
+    "TOSHL": "/toshl"
   },
 
   "HEADERS": {
