@@ -7,6 +7,7 @@ import App from './components/App/App';
 import AboutPage from './components/AboutPage/AboutPage';
 import AuthPage from './components/AuthPage/AuthPage';
 import HomePage from './components/HomePage/HomePage';
+import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
 // Services.
 import { InfoService, ReferencesService } from './services/index';
@@ -41,6 +42,7 @@ const Routes = props => (
             <Route path={ strings.routes.ABOUT } component={ AboutPage } />
             <Route path={ strings.routes.AUTH } component={ AuthPage } />
         </Route>
+        <Route path="*" component={ NotFoundPage } />
     </Router>
 );
 
