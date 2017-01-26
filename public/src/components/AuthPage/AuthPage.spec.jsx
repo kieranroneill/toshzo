@@ -4,7 +4,7 @@ import { RaisedButton } from 'material-ui';
 import strings from '../../config/strings.json';
 
 // Services.
-import { MonzoService, ToshlService } from '../../services/index';
+import { MonzoService, SessionService, ToshlService } from '../../services/index';
 
 // ActionCreators
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -18,6 +18,7 @@ describe('<AuthPage />', () => {
     beforeEach(function() {
         this.props = getDefaultProps();
 
+        this.createSessionTokenStub = stub(SessionService, 'createSessionToken');
         this.getAccessTokenStub = stub(MonzoService, 'getAccessToken');
         this.getStateTokenStub = stub(MonzoService, 'getStateToken');
         this.verifyTokenStub = stub(ToshlService, 'verifyToken');
@@ -26,6 +27,7 @@ describe('<AuthPage />', () => {
     afterEach(function() {
         delete this.props;
 
+        this.createSessionTokenStub.restore();
         this.getAccessTokenStub.restore();
         this.getStateTokenStub.restore();
         this.verifyTokenStub.restore();
@@ -39,8 +41,11 @@ describe('<AuthPage />', () => {
             expect(instance.state).to.have.property('finished');
             expect(instance.state.finished).to.be.false;
 
-            expect(instance.state).to.have.property('monzoAuthorisationCode');
-            expect(instance.state.monzoAuthorisationCode).to.be.undefined;
+            expect(instance.state).to.have.property('monzo');
+            expect(instance.state.monzo).to.have.property('authorisationCode');
+            expect(instance.state.monzo.authorisationCode).to.be.empty;
+            expect(instance.state.monzo).to.have.property('accessToken');
+            expect(instance.state.accessToken).to.be.empty;
 
             expect(instance.state).to.have.property('snackBarConfig');
             expect(instance.state.snackBarConfig).to.have.property('isOpen');
@@ -52,10 +57,11 @@ describe('<AuthPage />', () => {
             expect(instance.state.stepIndex).to.equal(0);
 
             expect(instance.state).to.have.property('stateToken');
-            expect(instance.state.stateToken).to.be.undefined;
+            expect(instance.state.stateToken).to.be.empty;
 
-            expect(instance.state).to.have.property('toshlPersonalToken');
-            expect(instance.state.toshlPersonalToken).to.be.empty;
+            expect(instance.state).to.have.property('toshl');
+            expect(instance.state.toshl).to.have.property('personalToken');
+            expect(instance.state.toshl.personalToken).to.be.empty;
         });
 
         it('should set the authorisation code and the state token if the URL parameters are available', function() {
@@ -65,12 +71,12 @@ describe('<AuthPage />', () => {
                 code: 'a really long string',
                 state: 'a really really long string'
             };
-            this.getAccessTokenStub.resolves();
+            this.getAccessTokenStub.resolves({ token: 'got my golden ticket' });
 
             instance = shallowWithContext(<AuthPageTest { ...this.props } />)
                 .instance();
 
-            expect(instance.state.monzoAuthorisationCode).to.equal(this.props.location.query.code);
+            expect(instance.state.monzo.authorisationCode).to.equal(this.props.location.query.code);
             expect(instance.state.stateToken).to.equal(this.props.location.query.state);
         });
 
@@ -108,7 +114,7 @@ describe('<AuthPage />', () => {
                 code: 'an authorisation code'
             };
 
-            this.getAccessTokenStub.resolves();
+            this.getAccessTokenStub.resolves({ token: 'got my golden ticket' });
 
             mountWithContext(<AuthPageTest { ...this.props } />);
 
@@ -145,20 +151,39 @@ describe('<AuthPage />', () => {
                 .instance();
             const authoriseToshlStub = stub(instance, 'authoriseToshl');
 
-            instance.setState({ stepIndex: 1, toshlPersonalToken: 'a token, yay!!!' }); // Set to Toshl auth step and fill in the code.
+            instance.setState({ stepIndex: 1, toshl: { personalToken: 'a token, yay!!!' } }); // Set to Toshl auth step and fill in the code.
             instance.onNextStepClick();
 
             assert.calledOnce(authoriseToshlStub);
         });
 
-        it('should attempt change route if we have finished', function() {
+        it('should create a session token and change route', function(done) {
+            const sessionToken = 'a session token, yaya!!!!';
+            const monzoAccessToken = 'i am monzo...hear me scream!';
+            const toshlPersonalToken = 'this just got personal';
             const instance = shallowWithContext(<AuthPageTest { ...this.props } />)
                 .instance();
 
-            instance.setState({ finished: true }); // Set the stepper to finished.
-            instance.onNextStepClick();
+            this.createSessionTokenStub.resolves({ token: sessionToken });
 
-            assert.calledWith(instance.props.router.push, strings.routes.ABOUT);
+            instance.setState({
+                finished: true, // Set the stepper to finished.
+                monzo: { ...instance.state.monzo, accessToken: monzoAccessToken },
+                toshl: { ...instance.state.toshl, personalToken: toshlPersonalToken }
+            });
+
+            instance
+                .onNextStepClick()
+                .then(() => {
+                    assert.calledWith(this.createSessionTokenStub, monzoAccessToken, toshlPersonalToken);
+                    assert.calledWith(
+                        instance.props.dispatch,
+                        ConfigActionCreators.setSessionToken(sessionToken)
+                    );
+                    assert.calledWith(instance.props.router.push, strings.routes.DASHBOARD);
+
+                    done();
+                });
         });
     });
 
@@ -231,7 +256,7 @@ describe('<AuthPage />', () => {
                 code: 'a really long string',
                 state: 'a really really long string'
             };
-            this.getAccessTokenStub.resolves();
+            this.getAccessTokenStub.resolves({ token: 'got my golden ticket' });
             this.verifyTokenStub.resolves();
 
             instance = mountWithContext(<AuthPageTest { ...this.props } />)

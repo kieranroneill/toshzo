@@ -32,7 +32,8 @@
   "pageTitles": {
     "ABOUT": "About",
     "ACCOUNTS": "Accounts",
-    "AUTHORISE": "Authorise"
+    "AUTHORISE": "Authorise",
+    "DASHBOARD": "Dashboard"
   },
 
   "routes": {
