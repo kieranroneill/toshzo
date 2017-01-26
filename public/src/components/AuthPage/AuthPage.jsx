@@ -30,7 +30,9 @@ class AuthPage extends React.Component {
             },
             stepIndex: 0,
             stateToken: this.props.location.query.state,
-            toshlPersonalToken: ''
+            toshl: {
+                personalToken: ''
+            }
         };
     }
 
@@ -57,7 +59,7 @@ class AuthPage extends React.Component {
         this.props.dispatch(ConfigActionCreators.showLoader());
 
         return ToshlService
-            .verifyToken(this.state.toshlPersonalToken)
+            .verifyToken(this.state.toshl.personalToken)
             .bind(this)
             .then(() => this.incrementStep())
             .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
@@ -70,7 +72,11 @@ class AuthPage extends React.Component {
             MonzoService
                 .getAccessToken(this.state.stateToken, this.state.monzo.authorisationCode)
                 .bind(this)
-                .then(() => this.setState({ stepIndex: 1, finished: false })) // Go to the Toshl page.
+                .then(result => this.setState({
+                    monzo: { ...this.state.monzo, accessToken: result.token },
+                    stepIndex: 1, // Go to the Toshl page.
+                    finished: false
+                }))
                 .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.
                 .finally(() => this.props.dispatch(ConfigActionCreators.hideLoader()));
         }
@@ -136,7 +142,7 @@ class AuthPage extends React.Component {
                             You will be redirected to Toshl and asked to authorise Toshzo.
                         </p>
                         <TextField
-                            value={ this.state.toshlPersonalToken }
+                            value={ this.state.toshl.personalToken }
                             hintText="Enter your personal Toshl token"
                             onChange={ this.onToshlTokenChange.bind(this) } />
                     </div>
@@ -168,20 +174,28 @@ class AuthPage extends React.Component {
     }
 
     onToshlTokenChange(event) {
-        this.setState({
-            toshlPersonalToken: event.target.value,
-        });
+        this.setState({ toshl: { ...this.state.toshl, personalToken: event.target.value } });
     }
 
     onNextStepClick() {
         if(this.state.finished) {
-            return this.props.router.push(strings.routes.ABOUT);
-        }
+            this.props.dispatch(ConfigActionCreators.showLoader());
 
+            return SessionService
+                .createSessionToken(this.state.monzo.accessToken, this.state.toshl.personalToken)
+                .then(result => {
+                    this.props.dispatch(ConfigActionCreators.setSessionToken(result.token));
+                    this.props.router.push(strings.routes.DASHBOARD);
+                })
+                .catch(error => {
+                    this.props.dispatch(ConfigActionCreators.hideLoader());
+                    this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]));
+                });
+        }
 
         if(this.state.stepIndex === 1) {
             // If the Toshl personal token is empty, let them know!
-            if(_.isEmpty(this.state.toshlPersonalToken)) {
+            if(_.isEmpty(this.state.toshl.personalToken)) {
                 return this.props.dispatch(ConfigActionCreators.openSnackBar(strings.snackBarMessages.ENTER_TOSHL_TOKEN));
             }
 

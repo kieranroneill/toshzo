@@ -5,11 +5,11 @@ import strings from '../../config/strings.json';
 import { ConfigActionCreators } from '../../action-creators/index';
 
 // Components.
-import { AboutPageTest } from './AboutPage';
+import { DashboardPageTest } from './DashboardPage';
 
 import { getDefaultProps, mountWithContext } from '../../test/utilities';
 
-describe('<AboutPage />', () => {
+describe('<DashboardPage />', () => {
     beforeEach(function() {
         this.props = getDefaultProps();
     });
@@ -20,9 +20,9 @@ describe('<AboutPage />', () => {
 
     describe('before component loads', function() {
         it('should set the page title', function() {
-            const wrapper = mountWithContext(<AboutPageTest { ...this.props } />);
+            const wrapper = mountWithContext(<DashboardPageTest { ...this.props } />);
 
-            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(strings.pageTitles.ABOUT));
+            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(strings.pageTitles.DASHBOARD));
         });
     });
 });

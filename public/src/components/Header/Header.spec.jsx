@@ -11,7 +11,7 @@ import { HeaderTest } from './Header';
 
 import { getDefaultProps, shallowWithContext } from '../../test/utilities';
 
-describe('<HeaderTest />', () => {
+describe('<Header />', () => {
     beforeEach(function() {
         this.props = getDefaultProps();
     });

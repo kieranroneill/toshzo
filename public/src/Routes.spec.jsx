@@ -9,6 +9,7 @@ import strings from './config/strings.json';
 import AboutPage from './components/AboutPage/AboutPage';
 import App from './components/App/App';
 import AuthPage from './components/AuthPage/AuthPage';
+import DashboardPage from './components/DashboardPage/DashboardPage';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
@@ -82,6 +83,7 @@ describe('<Routes />', () => {
             expect(pathMap['/'].component).to.equal(App);
             expect(pathMap[strings.routes.ABOUT].component).to.equal(AboutPage);
             expect(pathMap[strings.routes.AUTH].component).to.equal(AuthPage);
+            expect(pathMap[strings.routes.DASHBOARD].component).to.equal(DashboardPage);
             expect(pathMap[strings.routes.ERROR].component).to.equal(ErrorPage);
             expect(pathMap['*'].component).to.equal(NotFoundPage);
         });
