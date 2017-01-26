@@ -39,8 +39,11 @@ describe('<AuthPage />', () => {
             expect(instance.state).to.have.property('finished');
             expect(instance.state.finished).to.be.false;
 
-            expect(instance.state).to.have.property('monzoAuthorisationCode');
-            expect(instance.state.monzoAuthorisationCode).to.be.undefined;
+            expect(instance.state).to.have.property('monzo');
+            expect(instance.state.monzo).to.have.property('authorisationCode');
+            expect(instance.state.monzo.authorisationCode).to.be.empty;
+            expect(instance.state.monzo).to.have.property('accessToken');
+            expect(instance.state.accessToken).to.be.empty;
 
             expect(instance.state).to.have.property('snackBarConfig');
             expect(instance.state.snackBarConfig).to.have.property('isOpen');
@@ -52,7 +55,7 @@ describe('<AuthPage />', () => {
             expect(instance.state.stepIndex).to.equal(0);
 
             expect(instance.state).to.have.property('stateToken');
-            expect(instance.state.stateToken).to.be.undefined;
+            expect(instance.state.stateToken).to.be.empty;
 
             expect(instance.state).to.have.property('toshlPersonalToken');
             expect(instance.state.toshlPersonalToken).to.be.empty;
@@ -70,7 +73,7 @@ describe('<AuthPage />', () => {
             instance = shallowWithContext(<AuthPageTest { ...this.props } />)
                 .instance();
 
-            expect(instance.state.monzoAuthorisationCode).to.equal(this.props.location.query.code);
+            expect(instance.state.monzo.authorisationCode).to.equal(this.props.location.query.code);
             expect(instance.state.stateToken).to.equal(this.props.location.query.state);
         });
 

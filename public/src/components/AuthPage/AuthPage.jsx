@@ -12,7 +12,7 @@ import strings from '../../config/strings.json';
 import { ConfigActionCreators } from '../../action-creators/index';
 
 // Services.
-import { MonzoService, ToshlService } from '../../services/index';
+import { MonzoService, SessionService, ToshlService } from '../../services/index';
 
 class AuthPage extends React.Component {
     constructor(props) {
@@ -20,7 +20,10 @@ class AuthPage extends React.Component {
 
         this.state = {
             finished: false,
-            monzoAuthorisationCode: this.props.location.query.code,
+            monzo: {
+                authorisationCode: this.props.location.query.code,
+                accessToken: null
+            },
             snackBarConfig: {
                 isOpen: false,
                 message: strings.snackBarMessages.TOSHL_TOKEN_REQUIRED
@@ -63,9 +66,9 @@ class AuthPage extends React.Component {
 
     componentDidMount() {
         // Handle a Monzo redirection.
-        if(this.state.monzoAuthorisationCode && this.state.stateToken) {
+        if(this.state.monzo.authorisationCode && this.state.stateToken) {
             MonzoService
-                .getAccessToken(this.state.stateToken, this.state.monzoAuthorisationCode)
+                .getAccessToken(this.state.stateToken, this.state.monzo.authorisationCode)
                 .bind(this)
                 .then(() => this.setState({ stepIndex: 1, finished: false })) // Go to the Toshl page.
                 .catch(error => this.props.dispatch(ConfigActionCreators.openSnackBar(error.errors[0]))) // Show the first error.

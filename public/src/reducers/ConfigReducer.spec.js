@@ -46,6 +46,33 @@ describe('config reducers', () => {
         });
     });
 
+    describe('when setting the session token', function() {
+        it('should use the default state if the session token is null', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.SET_SESSION_TOKEN, value: null });
+
+            expect(state.sessionToken).to.equal(this.initialState.sessionToken);
+        });
+
+        it('should use the default state if the session token is not a string', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.SET_SESSION_TOKEN, value: 42 });
+
+            expect(state.sessionToken).to.equal(this.initialState.sessionToken);
+        });
+
+        it('should use the default state if the page title is an empty string', function() {
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.SET_SESSION_TOKEN, value: '' });
+
+            expect(state.sessionToken).to.equal(this.initialState.sessionToken);
+        });
+
+        it('should change the page title to the specified string', function() {
+            const token = 'Please please add me!!!';
+            const state = ConfigReducer(this.initialState, { type: ConfigActions.SET_SESSION_TOKEN, value: token });
+
+            expect(state.sessionToken).to.equal(token);
+        });
+    });
+
     describe('when actioning the page loader', function() {
         it('should return false when the loader is hidden', function() {
             const state = ConfigReducer(this.initialState, { type: ConfigActions.HIDE_LOADER });

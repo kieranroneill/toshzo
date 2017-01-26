@@ -4,7 +4,7 @@ import { ConfigActions } from '../actions/index';
 import { ConfigState as initialConfigState } from '../states/index';
 
 function ConfigReducer(state = initialConfigState, action) {
-    let pageTitle, snackBar;
+    let pageTitle, sessionToken, snackBar;
 
     switch (action.type) {
         case ConfigActions.HIDE_LOADER:
@@ -34,6 +34,16 @@ function ConfigReducer(state = initialConfigState, action) {
             }
 
             return Object.assign({}, state, { pageTitle: pageTitle });
+
+        case ConfigActions.SET_SESSION_TOKEN:
+            sessionToken = state.sessionToken;
+
+            // Only non-empty strings to be used.
+            if(!_.isEmpty(action.value) && _.isString(action.value)) {
+                sessionToken = action.value;
+            }
+
+            return Object.assign({}, state, { sessionToken: sessionToken });
 
         case ConfigActions.SHOW_LOADER:
             return Object.assign({}, state, { isLoading: true });
