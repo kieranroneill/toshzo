@@ -41,7 +41,8 @@
     "ACCOUNTS": "accounts",
     "AUTH": "auth",
     "DASHBOARD": "dashboard",
-    "ERROR": "error"
+    "ERROR": "error",
+    "TEAPOT": "teapot"
   },
 
   "snackBarMessages": {
