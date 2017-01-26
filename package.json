@@ -21,7 +21,7 @@
     "build": "webpack",
     "eslint": "eslint",
     "istanbul": "istanbul",
-    "lint": "eslint .",
+    "lint": "eslint --ext .js --ext .jsx .",
     "mocha": "mocha",
     "plato": "plato",
     "postinstall": "(cp -n .env.example .env || true)",
