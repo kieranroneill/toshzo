@@ -1,6 +1,6 @@
 import { Route } from 'react-router';
 
-import Routes, { onAppEnter } from './Routes';
+import Routes, { onAppEnter, onAuthEnter } from './Routes';
 
 // Strings.
 import strings from './config/strings.json';
@@ -17,7 +17,7 @@ import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
 // Services.
-import { InfoService, ReferencesService } from './services/index';
+import { InfoService, SessionService, ReferencesService } from './services/index';
 
 // States.
 import { InfoState as initialInfoState, ReferencesState as initialReferencesState } from './states/index';
@@ -64,6 +64,7 @@ describe('<Routes />', () => {
         this.getInfoStub = stub(InfoService, 'getInfo');
         this.getReferencesStub = stub(ReferencesService, 'getReferences');
         this.replaceStub = stub();
+        this.verifySessionTokenStub = stub(SessionService, 'verifySessionToken');
     });
 
     afterEach(function () {
@@ -74,6 +75,7 @@ describe('<Routes />', () => {
         this.dispatchSpy.restore();
         this.getInfoStub.restore();
         this.getReferencesStub.restore();
+        this.verifySessionTokenStub.restore();
     });
 
     describe('when rendering routes', function() {
@@ -129,6 +131,49 @@ describe('<Routes />', () => {
                 assert.called(this.getReferencesStub);
                 assert.calledWith(this.dispatchSpy, InfoActionCreators.setInfo(info));
                 assert.calledWith(this.dispatchSpy, ReferencesActionCreators.setReferences(references));
+
+                done();
+            });
+        });
+    });
+
+    describe('when routing to an authorised route', function() {
+        it('should redirect to the auth page if there is not session token', function(done) {
+            onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
+                expect(error).to.be.null;
+
+                assert.calledWith(this.replaceStub, '/' + strings.routes.AUTH);
+
+                done();
+            });
+        });
+
+        it('should redirect to the auth page if the session token is invalid', function(done) {
+            const sessionToken = 'I am invalid and won\'t get you anywhere';
+
+            this.props.config.sessionToken = sessionToken;
+
+            this.verifySessionTokenStub.rejects();
+
+            onAuthEnter(this.props, this.mockNextState, this.replaceStub, () => {
+                assert.calledWith(this.verifySessionTokenStub, sessionToken);
+                assert.calledWith(this.replaceStub, '/' + strings.routes.AUTH);
+
+                done();
+            });
+        });
+
+        it('should continue on if the session token is valid', function(done) {
+            const sessionToken = 'Thank the Lord [Gabe], I am a valid token!';
+
+            this.props.config.sessionToken = sessionToken;
+
+            this.verifySessionTokenStub.resolves();
+
+            onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
+                expect(error).to.be.null;
+
+                assert.calledWith(this.verifySessionTokenStub, sessionToken);
 
                 done();
             });
