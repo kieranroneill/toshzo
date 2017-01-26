@@ -1,12 +1,16 @@
-'use strict';
+import Promise from 'bluebird';
 
-import { monzoController, toshlController } from '../../lib/controllers/index';
+import { monzoController, sessionController, toshlController } from '../../lib/controllers/index';
 
 import { util } from '../../lib/util/index';
 
 const route = config.ENDPOINTS.API + config.ENDPOINTS.SESSION;
 
 describe('/session', () => {
+    const clientIp = 'http://i.am.a.client';
+    const monzoToken = 'a_monzo_token';
+    const toshlToken = 'a_toshl_token';
+
     before(function() {
         this.app = server.app;
     });
@@ -14,11 +18,13 @@ describe('/session', () => {
     beforeEach(function() {
         this.monzoWhoAmIStub = stub(monzoController, 'whoAmI');
         this.toshlMeStub = stub(toshlController, 'me');
+        this.verifySessionTokenStub = stub(sessionController, 'verifySessionToken');
     });
 
     afterEach(function() {
         this.monzoWhoAmIStub.restore();
         this.toshlMeStub.restore();
+        this.verifySessionTokenStub.restore();
     });
 
     describe('create session token', function() {
@@ -122,6 +128,66 @@ describe('/session', () => {
                     expect(response.body).to.have.property('errors')
                         .to.be.an('array')
                         .to.include(errors.REQUIRED_SESSION_TOKEN);
+
+                    done();
+                });
+        });
+
+        it('should fail if the token has expired', function(done) {
+            const token = sessionController.createSessionToken(clientIp, monzoToken, toshlToken, 1);
+            const url = route + '?token=' + token;
+
+            this.verifySessionTokenStub.restore();
+
+            // Delay for 2 seconds.
+            Promise
+                .delay(2000)
+                .then(() => {
+                    supertest(this.app)
+                        .get(url)
+                        .expect(httpCodes.UNAUTHORIZED)
+                        .end((error, response) => {
+                            expect(error).to.equal(null);
+                            expect(response.body).to.be.an('object');
+                            expect(response.body).to.have.property('errors')
+                                .to.be.an('array')
+                                .to.include(errors.TOKEN_HAS_EXPIRED);
+
+                            done();
+                        });
+                });
+        });
+
+        it('should fail if the client IP addresses do not match', function(done) {
+            const token = sessionController.createSessionToken('not the localhost', monzoToken, toshlToken);
+            const url = route + '?token=' + token;
+
+            this.verifySessionTokenStub.restore();
+
+            supertest(this.app)
+                .get(url)
+                .expect(httpCodes.UNAUTHORIZED)
+                .end((error, response) => {
+                    expect(error).to.equal(null);
+                    expect(response.body).to.be.an('object');
+                    expect(response.body).to.have.property('errors')
+                        .to.be.an('array')
+                        .to.include(errors.INVALID_CLIENT);
+
+                    done();
+                });
+        });
+
+        it('should succeed if everything is a-ok', function(done) {
+            const url = route + '?token=a_valid_token';
+
+            this.verifySessionTokenStub.resolves();
+
+            supertest(this.app)
+                .get(url)
+                .expect(httpCodes.OK)
+                .end(error => {
+                    expect(error).to.equal(null);
 
                     done();
                 });
