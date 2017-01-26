@@ -86,5 +86,45 @@ describe('/session', () => {
                     done();
                 });
         });
+
+        it('should return a token that expires in 2 hours', function(done) {
+            const body = {
+                monzoToken: 'Monzo-yes',
+                toshlToken: 'Tish-Toshl'
+            };
+
+            this.monzoWhoAmIStub.resolves();
+            this.toshlMeStub.resolves();
+
+            supertest(this.app)
+                .post(route)
+                .send(body)
+                .expect(httpCodes.OK)
+                .end((error, response) => {
+                    expect(error).to.equal(null);
+                    expect(response.body).to.be.an('object');
+                    expect(response.body).to.have.property('token');
+                    expect(response.body.token).to.be.a('string');
+
+                    done();
+                });
+        });
+    });
+
+    describe('authenticate a session token', function() {
+        it('should fail if the query parameters are missing', function(done) {
+            supertest(this.app)
+                .get(route)
+                .expect(httpCodes.BAD_REQUEST)
+                .end((error, response) => {
+                    expect(error).to.equal(null);
+                    expect(response.body).to.be.an('object');
+                    expect(response.body).to.have.property('errors')
+                        .to.be.an('array')
+                        .to.include(errors.REQUIRED_SESSION_TOKEN);
+
+                    done();
+                });
+        });
     });
 });
