@@ -1,6 +1,6 @@
 import { Route } from 'react-router';
 
-import Routes, { onAppEnter, onAuthEnter } from './Routes';
+import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
 // Strings.
 import strings from './config/strings.json';
@@ -137,11 +137,62 @@ describe('<Routes />', () => {
         });
     });
 
-    describe('when routing to an authorised route', function() {
-        it('should redirect to the auth page if there is not session token', function(done) {
+    describe('when entering the auth page', function() {
+        it('should redirect to the dashboard if the user has a valid session token', function(done) {
+            const sessionToken = 'Thank the Lord [Gabe], I am a valid token!';
+
+            this.props.config.sessionToken = sessionToken;
+
+            this.verifySessionTokenStub.resolves();
+
             onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
                 expect(error).to.be.null;
 
+                assert.calledWith(this.replaceStub, '/' + strings.routes.DASHBOARD);
+
+                done();
+            });
+        });
+
+        it('should continue to the auth page if the session token is null', function(done) {
+            this.props.config.sessionToken = null;
+
+            onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
+                expect(error).to.be.null;
+
+                assert.notCalled(this.verifySessionTokenStub);
+                assert.notCalled(this.replaceStub);
+
+                done();
+            });
+        });
+
+        it('should continue to the auth page if the session token is invalid', function(done) {
+            const sessionToken = 'I am invalid and won\'t get you anywhere';
+
+            this.props.config.sessionToken = sessionToken;
+
+            this.verifySessionTokenStub.rejects();
+
+            onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
+                expect(error).to.be.null;
+
+                assert.calledWith(this.verifySessionTokenStub, sessionToken);
+                assert.notCalled(this.replaceStub);
+
+                done();
+            });
+        });
+    });
+
+    describe('when routing to an authorised route', function() {
+        it('should redirect to the auth page if there is not session token', function(done) {
+            this.props.config.sessionToken = null;
+
+            isAuthorised(this.props, this.mockNextState, this.replaceStub, error => {
+                expect(error).to.be.null;
+
+                assert.notCalled(this.verifySessionTokenStub);
                 assert.calledWith(this.replaceStub, '/' + strings.routes.AUTH);
 
                 done();
@@ -155,7 +206,7 @@ describe('<Routes />', () => {
 
             this.verifySessionTokenStub.rejects();
 
-            onAuthEnter(this.props, this.mockNextState, this.replaceStub, () => {
+            isAuthorised(this.props, this.mockNextState, this.replaceStub, () => {
                 assert.calledWith(this.verifySessionTokenStub, sessionToken);
                 assert.calledWith(this.replaceStub, '/' + strings.routes.AUTH);
 
@@ -170,10 +221,11 @@ describe('<Routes />', () => {
 
             this.verifySessionTokenStub.resolves();
 
-            onAuthEnter(this.props, this.mockNextState, this.replaceStub, error => {
+            isAuthorised(this.props, this.mockNextState, this.replaceStub, error => {
                 expect(error).to.be.null;
 
                 assert.calledWith(this.verifySessionTokenStub, sessionToken);
+                assert.notCalled(this.replaceStub);
 
                 done();
             });

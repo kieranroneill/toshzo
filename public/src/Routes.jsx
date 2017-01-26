@@ -19,6 +19,33 @@ import { InfoActionCreators, ReferencesActionCreators } from './action-creators/
 // Strings.
 import strings from './config/strings.json';
 
+/**
+ * Checks if the user has authorised with Toshzo.
+ * @param props the app state
+ * @param nextState the next route state
+ * @param replaceState a function for altering the route state
+ * @param callback a callback function
+ */
+export function isAuthorised(props, nextState, replaceState, callback) {
+    const store = props.store.getState();
+
+    // If there is no session token, redirect to the auth page.
+    if(!store.config.sessionToken) {
+        replaceState('/' + strings.routes.AUTH);
+
+        return callback(null);
+    }
+
+    SessionService
+        .verifySessionToken(store.config.sessionToken)
+        .then(() => callback(null))
+        .catch(() => {
+            replaceState('/' + strings.routes.AUTH);
+
+            callback(null);
+        });
+}
+
 export function onAppEnter(props, nextState, replaceState, callback) {
     const promises = [
         InfoService.getInfo(),
@@ -46,23 +73,18 @@ export function onAppEnter(props, nextState, replaceState, callback) {
 export function onAuthEnter(props, nextState, replaceState, callback) {
     const store = props.store.getState();
 
-    // If there is no session token, redirect to the auth page.
     if(!store.config.sessionToken) {
-        replaceState('/' + strings.routes.AUTH);
-
         return callback(null);
     }
 
     SessionService
         .verifySessionToken(store.config.sessionToken)
         .then(() => {
+            // Redirect to the dashboard page.
+            replaceState('/' + strings.routes.DASHBOARD);
             callback(null);
         })
-        .catch(() => {
-            replaceState('/' + strings.routes.AUTH);
-
-            callback(null);
-        });
+        .catch(() => callback(null));
 }
 
 export default function Routes(props) {
@@ -83,7 +105,7 @@ export default function Routes(props) {
                 <Route
                     path={ strings.routes.DASHBOARD }
                     component={ DashboardPage }
-                    onEnter={ onAuthEnter.bind(this, props) } />
+                    onEnter={ isAuthorised.bind(this, props) } />
             </Route>
             <Route
                 path={ strings.routes.ERROR }
