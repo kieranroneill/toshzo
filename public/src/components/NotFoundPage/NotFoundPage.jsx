@@ -2,9 +2,6 @@ import React from 'react';
 
 import './NotFoundPage.scss';
 
-// Strings.
-import strings from '../../config/strings.json';
-
 class NotFoundPage extends React.Component {
     render() {
         return (

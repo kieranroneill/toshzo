@@ -6,6 +6,7 @@ import { Router, Route, IndexRoute } from 'react-router';
 import App from './components/App/App';
 import AboutPage from './components/AboutPage/AboutPage';
 import AuthPage from './components/AuthPage/AuthPage';
+import ErrorPage from './components/ErrorPage/ErrorPage';
 import HomePage from './components/HomePage/HomePage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
 
@@ -18,7 +19,7 @@ import { InfoActionCreators, ReferencesActionCreators } from './action-creators/
 // Strings.
 import strings from './config/strings.json';
 
-function onAppEnter(props, nextState, replace, callback) {
+export function onAppEnter(props, nextState, replaceState, callback) {
     const promises = [
         InfoService.getInfo(),
         ReferencesService.getReferences()
@@ -31,23 +32,27 @@ function onAppEnter(props, nextState, replace, callback) {
             props.store.dispatch(InfoActionCreators.setInfo(info));
             props.store.dispatch(ReferencesActionCreators.setReferences(references));
 
-            callback();
-        }); // TODO: Add redirection to 500 page on rejection.
+            callback(null);
+        })
+        .catch(error => {
+            // Redirect to the error page.
+            replaceState('/' + strings.routes.ERROR);
+
+            // Callback for testing.
+            callback(error);
+        });
 }
 
-const Routes = props => (
-    <Router {...props}>
-        <Route path="/" component={ App } onEnter={ onAppEnter.bind(this, props) } >
-            <IndexRoute component={ HomePage } />
-            <Route path={ strings.routes.ABOUT } component={ AboutPage } />
-            <Route path={ strings.routes.AUTH } component={ AuthPage } />
-        </Route>
-        <Route path="*" component={ NotFoundPage } />
-    </Router>
-);
-
-Routes.propTypes = {
-    store: React.PropTypes.object
-};
-
-export default Routes;
+export default function Routes(props) {
+    return (
+        <Router {...props}>
+            <Route path="/" component={ App } onEnter={ onAppEnter.bind(this, props) } >
+                <IndexRoute component={ HomePage } />
+                <Route path={ strings.routes.ABOUT } component={ AboutPage } />
+                <Route path={ strings.routes.AUTH } component={ AuthPage } />
+            </Route>
+            <Route path={ strings.routes.ERROR } component={ ErrorPage } />
+            <Route path="*" component={ NotFoundPage } />
+        </Router>
+    );
+}

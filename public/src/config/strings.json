@@ -37,7 +37,9 @@
   "routes": {
     "ABOUT": "about",
     "ACCOUNTS": "accounts",
-    "AUTH": "auth"
+    "AUTH": "auth",
+    "DASHBOARD": "dashboard",
+    "ERROR": "error"
   },
 
   "snackBarMessages": {
