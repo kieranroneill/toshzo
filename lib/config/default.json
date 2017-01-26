@@ -7,6 +7,7 @@
     "INFO": "/info",
     "MONZO": "/monzo",
     "REFERENCES": "/references",
+    "SESSION": "/session",
     "STATE": "/state",
     "TOKEN": "/token",
     "TOSHL": "/toshl"

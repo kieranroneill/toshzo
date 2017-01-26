@@ -64,7 +64,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: 'not_a_valid_token'
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -89,7 +89,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: monzoController.createStateToken('', 1)
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -119,7 +119,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: monzoController.createStateToken('not the localhost')
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -144,7 +144,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: 'valid_token'
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub
@@ -171,7 +171,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://misdirection',
                     token: 'valid_token'
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub
@@ -206,7 +206,7 @@ describe('/monzo', function() {
                     token_type: 'Bearer',
                     user_id: 'yay, I am you!'
                 };
-                let url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub
