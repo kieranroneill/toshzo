@@ -51,6 +51,10 @@
     "TOSHL_TOKEN_REQUIRED": "Toshl token required"
   },
 
+  "teapot": {
+    "CAPTION": "Curiouser and curiouser!"
+  },
+
   "tooltipMessages": {
     "FREE_AS_IN_SPEECH": "Free as in speech!"
   }
