@@ -9,6 +9,7 @@ import AuthPage from './components/AuthPage/AuthPage';
 import DashboardPage from './components/DashboardPage/DashboardPage';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import TeapotPage from './components/TeapotPage/TeapotPage';
 
 // Services.
 import { InfoService, SessionService, ReferencesService } from './services/index';
@@ -110,6 +111,9 @@ export default function Routes(props) {
             <Route
                 path={ strings.routes.ERROR }
                 component={ ErrorPage } />
+            <Route
+                path={ strings.routes.TEAPOT }
+                component={ TeapotPage } />
             <Route
                 path="*"
                 component={ NotFoundPage } />

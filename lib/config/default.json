@@ -9,6 +9,7 @@
     "REFERENCES": "/references",
     "SESSION": "/session",
     "STATE": "/state",
+    "TEAPOT": "/teapot",
     "TOKEN": "/token",
     "TOSHL": "/toshl"
   },

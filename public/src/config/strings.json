@@ -41,13 +41,18 @@
     "ACCOUNTS": "accounts",
     "AUTH": "auth",
     "DASHBOARD": "dashboard",
-    "ERROR": "error"
+    "ERROR": "error",
+    "TEAPOT": "teapot"
   },
 
   "snackBarMessages": {
     "ENTER_TOSHL_TOKEN": "Please enter your personal Toshl token",
     "SOMETHING_IS_WRONG": "Hmm... Something fishy is going on",
     "TOSHL_TOKEN_REQUIRED": "Toshl token required"
+  },
+
+  "teapot": {
+    "CAPTION": "Curiouser and curiouser!"
   },
 
   "tooltipMessages": {
