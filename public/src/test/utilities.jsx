@@ -3,7 +3,8 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
-import { ConfigState, InfoState, ReferencesState } from '../states/index';
+// States.
+import { ConfigState, InfoState, ReferencesState, SessionState } from '../states/index';
 
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 const mockStore = configureMockStore([thunk]);
@@ -23,7 +24,8 @@ export function getDefaultProps() {
     const store = {
         config: ConfigState,
         info: InfoState,
-        references: ReferencesState
+        references: ReferencesState,
+        session: SessionState
     };
 
     return {
@@ -46,7 +48,8 @@ export function getDefaultPropsWithStore() {
     const store = {
         config: ConfigState,
         info: InfoState,
-        references: ReferencesState
+        references: ReferencesState,
+        session: SessionState
     };
 
     return {

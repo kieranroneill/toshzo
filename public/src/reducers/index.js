@@ -4,6 +4,7 @@ import { combineReducers } from 'redux';
 import ConfigReducer from './ConfigReducer';
 import InfoReducer from './InfoReducer';
 import ReferencesReducer from './ReferencesReducer';
+import SessionReducer from './SessionReducer';
 
 /**
  * Combine the reducers and map them to lowercase.
@@ -11,5 +12,6 @@ import ReferencesReducer from './ReferencesReducer';
 export default combineReducers({
     config: ConfigReducer,
     info: InfoReducer,
-    references: ReferencesReducer
+    references: ReferencesReducer,
+    session: SessionReducer
 });

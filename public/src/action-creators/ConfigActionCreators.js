@@ -8,8 +8,6 @@ export const resetSnackBar = () => ({ type: ConfigActions.RESET_SNACK_BAR });
 
 export const setPageTitle = value => ({ type: ConfigActions.SET_PAGE_TITLE, value: value });
 
-export const setSessionToken = value => ({ type: ConfigActions.SET_SESSION_TOKEN, value: value });
-
 export const showLoader = () => ({ type: ConfigActions.SHOW_LOADER });
 
 export const toggleDrawer = () => ({ type: ConfigActions.TOGGLE_DRAWER });

@@ -31,14 +31,14 @@ export function isAuthorised(props, nextState, replaceState, callback) {
     const store = props.store.getState();
 
     // If there is no session token, redirect to the auth page.
-    if(!store.config.sessionToken) {
+    if(!store.session.token) {
         replaceState('/' + strings.routes.AUTH);
 
         return callback(null);
     }
 
     SessionService
-        .verifySessionToken(store.config.sessionToken)
+        .verifySessionToken(store.session.token)
         .then(() => callback(null))
         .catch(() => {
             replaceState('/' + strings.routes.AUTH);
@@ -74,12 +74,12 @@ export function onAppEnter(props, nextState, replaceState, callback) {
 export function onAuthEnter(props, nextState, replaceState, callback) {
     const store = props.store.getState();
 
-    if(!store.config.sessionToken) {
+    if(!store.session.token) {
         return callback(null);
     }
 
     SessionService
-        .verifySessionToken(store.config.sessionToken)
+        .verifySessionToken(store.session.token)
         .then(() => {
             // Redirect to the dashboard page.
             replaceState('/' + strings.routes.DASHBOARD);
