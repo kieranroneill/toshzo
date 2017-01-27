@@ -1,0 +1,15 @@
+comment:
+  layout: header, changes, diff
+coverage:
+  ignore:
+  - "**/*/*.test.js"
+  - "**/*/*.spec.js"
+  - "**/*/*.test.jsx"
+  - "**/*/*.spec.jsx"
+  status:
+    patch:
+      default:
+        target: 75%
+    project:
+      default:
+        target: 75%

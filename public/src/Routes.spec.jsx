@@ -12,6 +12,7 @@ import AuthPage from './components/AuthPage/AuthPage';
 import DashboardPage from './components/DashboardPage/DashboardPage';
 import ErrorPage from './components/ErrorPage/ErrorPage';
 import NotFoundPage from './components/NotFoundPage/NotFoundPage';
+import TeapotPage from './components/TeapotPage/TeapotPage';
 
 // ActionCreators.
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
@@ -88,6 +89,7 @@ describe('<Routes />', () => {
             expect(pathMap[strings.routes.DASHBOARD].component).to.equal(DashboardPage);
             expect(pathMap[strings.routes.ERROR].component).to.equal(ErrorPage);
             expect(pathMap['*'].component).to.equal(NotFoundPage);
+            expect(pathMap[strings.routes.TEAPOT].component).to.equal(TeapotPage);
         });
     });
 
