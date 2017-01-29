@@ -19,6 +19,10 @@
     "TOSHL": "/toshl"
   },
 
+  "errorPage": {
+    "CAPTION": "Hmm...something is afoot."
+  },
+
   "labels": {
     "AUTHORISE_MONZO": "Authorise Monzo",
     "AUTHORISE_TOSHL": "Authorise Toshl"
@@ -51,7 +55,7 @@
     "TOSHL_TOKEN_REQUIRED": "Toshl token required"
   },
 
-  "teapot": {
+  "teapotPage": {
     "CAPTION": "Curiouser and curiouser!"
   },
 
