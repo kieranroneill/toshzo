@@ -25,12 +25,4 @@ describe('<DashboardPage />', () => {
             assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.setPageTitle(strings.pageTitles.DASHBOARD));
         });
     });
-
-    describe('after component loads', function() {
-        it('should hide the loader', function() {
-            const wrapper = mountWithContext(<DashboardPageTest { ...this.props } />);
-
-            assert.calledWith(wrapper.props().dispatch, ConfigActionCreators.hideLoader());
-        });
-    });
 });

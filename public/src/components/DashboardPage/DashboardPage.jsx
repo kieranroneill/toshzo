@@ -2,15 +2,18 @@ import { Card } from 'material-ui';
 import React from 'react';
 import { connect } from 'react-redux';
 
+// Components.
+import BasePage from '../BasePage/BasePage';
+
 // Strings.
 import strings from '../../config/strings.json';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
-class DashboardPage extends React.Component {
+class DashboardPage extends BasePage {
     componentDidMount() {
-        this.props.dispatch(ConfigActionCreators.hideLoader());
+        super.componentDidMount();
     }
 
     componentWillMount() {

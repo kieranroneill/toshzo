@@ -37,7 +37,7 @@ export function isAuthorised(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    SessionService
+    return SessionService
         .verifySessionToken(store.session.token)
         .then(() => callback(null))
         .catch(() => {
@@ -54,7 +54,7 @@ export function onAppEnter(props, nextState, replaceState, callback) {
     ];
 
     // Get app dependencies.
-    Promise
+    return Promise
         .all(promises)
         .spread((info, references) => {
             props.store.dispatch(InfoActionCreators.setInfo(info));
@@ -78,7 +78,7 @@ export function onAuthEnter(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    SessionService
+    return SessionService
         .verifySessionToken(store.session.token)
         .then(() => {
             // Redirect to the dashboard page.
