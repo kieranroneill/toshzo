@@ -7,7 +7,7 @@ import strings from '../../config/strings.json';
 import { MonzoService, SessionService, ToshlService } from '../../services/index';
 
 // ActionCreators
-import { ConfigActionCreators } from '../../action-creators/index';
+import { ConfigActionCreators, SessionActionCreators } from '../../action-creators/index';
 
 // Components.
 import { AuthPageTest } from './AuthPage';
@@ -178,7 +178,7 @@ describe('<AuthPage />', () => {
                     assert.calledWith(this.createSessionTokenStub, monzoAccessToken, toshlPersonalToken);
                     assert.calledWith(
                         instance.props.dispatch,
-                        ConfigActionCreators.setSessionToken(sessionToken)
+                        SessionActionCreators.setSessionToken(sessionToken)
                     );
                     assert.calledWith(instance.props.router.push, strings.routes.DASHBOARD);
 

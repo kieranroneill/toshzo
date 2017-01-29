@@ -8,13 +8,16 @@ import './AuthPage.scss';
 // Strings.
 import strings from '../../config/strings.json';
 
+// Components.
+import BasePage from '../BasePage/BasePage';
+
 // ActionCreators.
-import { ConfigActionCreators } from '../../action-creators/index';
+import { ConfigActionCreators, SessionActionCreators } from '../../action-creators/index';
 
 // Services.
 import { MonzoService, SessionService, ToshlService } from '../../services/index';
 
-class AuthPage extends React.Component {
+class AuthPage extends BasePage {
     constructor(props) {
         super(props);
 
@@ -184,7 +187,7 @@ class AuthPage extends React.Component {
             return SessionService
                 .createSessionToken(this.state.monzo.accessToken, this.state.toshl.personalToken)
                 .then(result => {
-                    this.props.dispatch(ConfigActionCreators.setSessionToken(result.token));
+                    this.props.dispatch(SessionActionCreators.setSessionToken(result.token));
                     this.props.router.push(strings.routes.DASHBOARD);
                 })
                 .catch(error => {

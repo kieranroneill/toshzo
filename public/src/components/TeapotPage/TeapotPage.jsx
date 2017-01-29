@@ -10,7 +10,7 @@ class TeapotPage extends React.Component {
         return (
             <div className="teapot-page__outer">
                 <div className="teapot-page__inner">
-                    <h2 className="teapot-page__caption">{ strings.teapot.CAPTION }</h2>
+                    <h2 className="teapot-page__caption">{ strings.teapotPage.CAPTION }</h2>
                     <div className="teapot-page__image">
                         <img src="/assets/images/teapot.png" alt="Illustration of the Hatter by John Tenniel" />
                     </div>

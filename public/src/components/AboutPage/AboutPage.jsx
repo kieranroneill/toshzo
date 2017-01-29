@@ -9,10 +9,17 @@ import './AboutPage.scss';
 // Strings.
 import strings from '../../config/strings.json';
 
+// Components.
+import BasePage from '../BasePage/BasePage';
+
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';
 
-class AboutPage extends React.Component {
+class AboutPage extends BasePage {
+    componentDidMount() {
+        super.componentDidMount();
+    }
+
     componentWillMount() {
         this.props.dispatch(ConfigActionCreators.setPageTitle(strings.pageTitles.ABOUT));
     }
