@@ -19,6 +19,12 @@ describe('/monzo', function() {
         this.verifyStateTokenStub.restore();
     });
 
+    describe('/accounts', function() {
+        it('should fail if the session token is missing', function() {
+
+        });
+    });
+
     describe('/token', function() {
         describe('/state', function() {
             it('should return a state token', function(done) {
