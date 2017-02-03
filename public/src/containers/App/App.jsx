@@ -9,10 +9,10 @@ import './App.scss';
 import muiTheme from '../../config/theme';
 
 // Components.
-import Footer from '../Footer/Footer';
-import Header from '../Header/Header';
-import PageLoader from '../PageLoader/PageLoader';
-import ToshzoDrawer from '../ToshzoDrawer/ToshzoDrawer';
+import Footer from '../../components/Footer/Footer';
+import Header from '../../components/Header/Header';
+import PageLoader from '../../components/PageLoader/PageLoader';
+import ToshzoDrawer from '../../components/ToshzoDrawer/ToshzoDrawer';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';

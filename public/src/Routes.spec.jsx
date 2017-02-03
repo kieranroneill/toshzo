@@ -3,13 +3,13 @@ import { Route } from 'react-router';
 import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
 // Components.
-import AboutPage from './components/AboutPage/AboutPage';
-import App from './components/App/App';
-import AuthPage from './components/AuthPage/AuthPage';
-import DashboardPage from './components/DashboardPage/DashboardPage';
-import ErrorPage from './components/ErrorPage/ErrorPage';
-import NotFoundPage from './components/NotFoundPage/NotFoundPage';
-import TeapotPage from './components/TeapotPage/TeapotPage';
+import AboutPage from './containers/AboutPage/AboutPage';
+import App from './containers/App/App';
+import AuthPage from './containers/AuthPage/AuthPage';
+import DashboardPage from './containers/DashboardPage/DashboardPage';
+import ErrorPage from './containers/ErrorPage/ErrorPage';
+import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
+import TeapotPage from './containers/TeapotPage/TeapotPage';
 
 // ActionCreators.
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
