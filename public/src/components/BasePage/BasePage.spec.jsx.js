@@ -4,7 +4,7 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Components.
 import BasePage from './BasePage';
 
-import { getDefaultProps, mountWithContext } from '../../test/utilities';
+import { getDefaultProps, mountWithContext } from '../../../../test/react-helpers';
 
 describe('<BasePage />', () => {
     beforeEach(function() {

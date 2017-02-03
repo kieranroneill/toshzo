@@ -1,8 +1,8 @@
 'use strict';
 
-const packageJson = require('../../package.json');
+const packageJson = require('../../../package.json');
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.INFO;
+const route = strings.endpoints.API + strings.endpoints.INFO;
 
 describe('/info', () => {
     before(function() {

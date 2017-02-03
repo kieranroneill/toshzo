@@ -1,6 +1,6 @@
 'use strict';
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.TOSHL;
+const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
 describe('/toshl', () => {
     before(function() {
@@ -17,7 +17,7 @@ describe('/toshl', () => {
 
     describe('/token', function() {
         it('should fail if the query parameters are missing', function(done) {
-            const url = route + config.ENDPOINTS.TOKEN;
+            const url = route + strings.endpoints.TOKEN;
 
             supertest(this.app)
                 .get(url)
@@ -34,7 +34,7 @@ describe('/toshl', () => {
         });
 
         it('should fail if the Toshl personal token is invalid', function(done) {
-            let url = route + config.ENDPOINTS.TOKEN;
+            let url = route + strings.endpoints.TOKEN;
 
             url += '?token=invalid_token';
 
@@ -65,7 +65,7 @@ describe('/toshl', () => {
                     main: 'GBP'
                 }
             };
-            let url = route + config.ENDPOINTS.TOKEN;
+            let url = route + strings.endpoints.TOKEN;
 
             url += '?token=valid_token';
 

@@ -1,6 +1,6 @@
 'use strict';
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.TEAPOT;
+const route = strings.endpoints.API + strings.endpoints.TEAPOT;
 
 describe('/teapot', () => {
     before(function() {

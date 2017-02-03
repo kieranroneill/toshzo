@@ -7,7 +7,7 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const config = require('./lib/config/default.json');
+const strings = require('./config/strings.json');
 
 const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
@@ -54,10 +54,10 @@ module.exports = {
         new ExtractTextPlugin('styles.css'),
         new FaviconsWebpackPlugin({
             logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
-            title: config.APP_TITLE
+            title: strings.APP_TITLE
         }),
         new HtmlWebpackPlugin({
-            title: config.APP_TITLE,
+            title: strings.APP_TITLE,
             inject: 'body',
             template: path.resolve(srcPath, 'index.hbs'),
             minify: {

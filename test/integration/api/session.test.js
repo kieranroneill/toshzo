@@ -1,10 +1,10 @@
 import Promise from 'bluebird';
 
-import { monzoController, sessionController, toshlController } from '../../lib/controllers/index';
+import { monzoController, sessionController, toshlController } from '../../../lib/controllers/index';
 
-import { util } from '../../lib/util/index';
+import { util } from '../../../lib/util/index';
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.SESSION;
+const route = strings.endpoints.API + strings.endpoints.SESSION;
 
 describe('/session', () => {
     const clientIp = 'http://i.am.a.client';

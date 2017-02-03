@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import './AboutPage.scss';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // Components.
 import BasePage from '../BasePage/BasePage';

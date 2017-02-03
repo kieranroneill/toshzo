@@ -3,7 +3,7 @@ import React from 'react';
 import './TeapotPage.scss';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 class TeapotPage extends React.Component {
     render() {

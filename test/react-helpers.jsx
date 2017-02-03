@@ -4,7 +4,7 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 // States.
-import { ConfigState, InfoState, ReferencesState, SessionState } from '../states/index';
+import { ConfigState, InfoState, ReferencesState, SessionState } from '../public/src/states/index';
 
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 const mockStore = configureMockStore([thunk]);

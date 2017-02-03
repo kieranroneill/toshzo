@@ -8,11 +8,12 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackNotifierPlugin = require('webpack-notifier');
 
-const config = require('./lib/config/default.json');
+const defaults = require('./config/defaults.json');
+const strings = require('./config/strings.json');
 
 const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
-const localhost = 'http://localhost:' + config.PORT;
+const localhost = 'http://localhost:' + defaults.PORT;
 
 module.exports = {
     resolve: {
@@ -64,10 +65,10 @@ module.exports = {
             [{ from: path.resolve(srcPath, 'assets'), to: path.resolve(distPath, 'assets') }]),
         new FaviconsWebpackPlugin({
             logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
-            title: config.APP_TITLE
+            title: strings.APP_TITLE
         }),
         new HtmlWebpackPlugin({
-            title: config.APP_TITLE,
+            title: strings.APP_TITLE,
             inject: 'body',
             template: path.resolve(srcPath, 'index.hbs'),
             minify: false

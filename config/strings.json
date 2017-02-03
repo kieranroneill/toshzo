@@ -10,17 +10,23 @@
   "endpoints": {
     "ACCESS": "/access",
     "API": "/api",
-    "MONZO": "/monzo",
     "INFO": "/info",
+    "MONZO": "/monzo",
     "REFERENCES": "/references",
     "SESSION": "/session",
     "STATE": "/state",
+    "TEAPOT": "/teapot",
     "TOKEN": "/token",
     "TOSHL": "/toshl"
   },
 
   "errorPage": {
     "CAPTION": "Hmm...something is afoot."
+  },
+
+  "headers": {
+    "POWERED_BY": "X-Powered-By",
+    "TOSHL_TOKEN": "X-Toshl-Token"
   },
 
   "labels": {
@@ -31,6 +37,14 @@
   "links": {
     "MONZO": "https://monzo.com",
     "TOSHL": "https://toshl.com"
+  },
+
+  "monzo": {
+    "ACCOUNTS": "/accounts",
+    "BASE": "https://api.monzo.com",
+    "TOKEN": "/oauth2/token",
+    "WEBHOOKS": "/webhooks",
+    "WHOAMI": "/ping/whoami"
   },
 
   "pageTitles": {
@@ -61,5 +75,11 @@
 
   "tooltipMessages": {
     "FREE_AS_IN_SPEECH": "Free as in speech!"
+  },
+
+  "toshl": {
+    "BASE": "https://api.toshl.com",
+    "ACCOUNTS": "/accounts",
+    "ME": "/me"
   }
 }

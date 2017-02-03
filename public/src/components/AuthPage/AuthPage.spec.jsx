@@ -1,7 +1,7 @@
 import { RaisedButton } from 'material-ui';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // Services.
 import { MonzoService, SessionService, ToshlService } from '../../services/index';
@@ -12,7 +12,7 @@ import { ConfigActionCreators, SessionActionCreators } from '../../action-creato
 // Components.
 import { AuthPageTest } from './AuthPage';
 
-import { getDefaultProps, mountWithContext, shallowWithContext } from '../../test/utilities';
+import { getDefaultProps, mountWithContext, shallowWithContext } from '../../../../test/react-helpers';
 
 describe('<AuthPage />', () => {
     beforeEach(function() {

@@ -1,5 +1,5 @@
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // ActionCreators
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -7,7 +7,7 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Components.
 import { AboutPageTest } from './AboutPage';
 
-import { getDefaultProps, mountWithContext } from '../../test/utilities';
+import { getDefaultProps, mountWithContext } from '../../../../test/react-helpers';
 
 describe('<AboutPage />', () => {
     beforeEach(function() {

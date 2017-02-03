@@ -2,9 +2,6 @@ import { Route } from 'react-router';
 
 import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
-// Strings.
-import strings from './config/strings.json';
-
 // Components.
 import AboutPage from './components/AboutPage/AboutPage';
 import App from './components/App/App';
@@ -23,7 +20,7 @@ import { InfoService, SessionService, ReferencesService } from './services/index
 // States.
 import { InfoState as initialInfoState, ReferencesState as initialReferencesState } from './states/index';
 
-import { getDefaultPropsWithStore, shallowWithContext } from './test/utilities';
+import { getDefaultPropsWithStore, shallowWithContext } from '../../test/react-helpers';
 
 /**
  * Gets a map that links a route to it's corresponding component.

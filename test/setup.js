@@ -11,8 +11,8 @@ import { assert, mock, spy, stub } from 'sinon';
 import sinonAsPromised from 'sinon-as-promised';
 import supertest from 'supertest';
 
-import config from '../lib/config/default.json';
-import errors from '../lib/config/errors.json';
+import strings from '../config/strings.json';
+import errors from '../config/errors.json';
 import server from '../server.js';
 
 // Use bluebird promises.
@@ -23,7 +23,7 @@ injectTapEventPlugin();
 
 // General globals.
 global.assert = assert;
-global.config = config;
+global.strings = strings;
 global.errors = errors;
 global.expect = expect;
 global.mock = mock;

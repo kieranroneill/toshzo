@@ -18,7 +18,7 @@ import { InfoService, SessionService, ReferencesService } from './services/index
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
 // Strings.
-import strings from './config/strings.json';
+import strings from '../../config/strings.json';
 
 /**
  * Checks if the user has authorised with Toshzo.

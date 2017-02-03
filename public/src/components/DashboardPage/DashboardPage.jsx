@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import BasePage from '../BasePage/BasePage';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // ActionCreators.
 import { ConfigActionCreators } from '../../action-creators/index';

@@ -7,7 +7,7 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Store.
 import { ConfigState as initialConfigState } from '../../states/index';
 
-import { getDefaultProps, shallowWithContext } from '../../test/utilities';
+import { getDefaultProps, shallowWithContext } from '../../../../test/react-helpers';
 
 describe('<ToshzoDrawer />', () => {
     beforeEach(function() {

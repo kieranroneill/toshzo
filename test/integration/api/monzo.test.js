@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 
-import { monzoController } from '../../lib/controllers/index';
+import { monzoController } from '../../../lib/controllers/index';
 
-const route = config.ENDPOINTS.API + config.ENDPOINTS.MONZO;
+const route = strings.endpoints.API + strings.endpoints.MONZO;
 
 describe('/monzo', function() {
     before(function() {
@@ -22,7 +22,7 @@ describe('/monzo', function() {
     describe('/token', function() {
         describe('/state', function() {
             it('should return a state token', function(done) {
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.STATE;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.STATE;
 
                 supertest(this.app)
                     .post(url)
@@ -40,7 +40,7 @@ describe('/monzo', function() {
 
         describe('/access', function() {
             it('should fail if the query parameters are missing', function(done) {
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 supertest(this.app)
                     .post(url)
@@ -64,7 +64,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: 'not_a_valid_token'
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -89,7 +89,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: monzoController.createStateToken('', 1)
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -119,7 +119,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: monzoController.createStateToken('not the localhost')
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.restore();
 
@@ -144,7 +144,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://here.not.there',
                     token: 'valid_token'
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub
@@ -171,7 +171,7 @@ describe('/monzo', function() {
                     redirectUri: 'http://misdirection',
                     token: 'valid_token'
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub
@@ -206,7 +206,7 @@ describe('/monzo', function() {
                     token_type: 'Bearer',
                     user_id: 'yay, I am you!'
                 };
-                const url = route + config.ENDPOINTS.TOKEN + config.ENDPOINTS.ACCESS;
+                const url = route + strings.endpoints.TOKEN + strings.endpoints.ACCESS;
 
                 this.verifyStateTokenStub.resolves();
                 this.requestPostStub

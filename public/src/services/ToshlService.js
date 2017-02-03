@@ -1,7 +1,7 @@
 import BaseService from './BaseService';
 
 // Strings.
-import strings from '../config/strings.json';
+import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.TOSHL;
 

@@ -3,7 +3,7 @@ import React from 'react';
 import './ErrorPage.scss';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 class ErrorPage extends React.Component {
     render() {

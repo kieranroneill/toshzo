@@ -4,7 +4,7 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Components.
 import { AppTest } from './App';
 
-import { getDefaultPropsWithStore, shallowWithContext } from '../../test/utilities';
+import { getDefaultPropsWithStore, shallowWithContext } from '../../../../test/react-helpers';
 
 describe('<App />', () => {
     beforeEach(function () {

@@ -21,7 +21,8 @@ const util = require('./lib/util/index').util;
 const authMiddleware = require('./lib/middleware/index').authMiddleware;
 const headerMiddleware = require('./lib/middleware/index').headerMiddleware;
 
-const config = require('./lib/config/default.json');
+const defaults = require('./config/defaults.json');
+const strings = require('./config/strings.json');
 const webpackDevConfig = require('./webpack.dev.config');
 
 const Router = require('./lib/routes/router');
@@ -80,7 +81,7 @@ else {
 //====================================================
 
 // API routes.
-app.use(config.ENDPOINTS.API, router.router);
+app.use(strings.endpoints.API, router.router);
 
 // Use client-side routing.
 app.get('*', (request, response) => response.sendFile(path.resolve(staticPath, 'index.html')));
@@ -101,7 +102,7 @@ app.use((error, request, response, next) => {
 // Start server and open sockets.
 //====================================================
 
-server.listen((process.env.NODE_ENV === 'test' ? util.randomPort() : config.PORT), process.env.SERVER_IP, () => {
+server.listen((process.env.NODE_ENV === 'test' ? util.randomPort() : defaults.PORT), process.env.SERVER_IP, () => {
     const addr = server.address();
 
     /* eslint-disable no-console */
