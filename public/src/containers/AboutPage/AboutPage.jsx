@@ -32,7 +32,7 @@ class AboutPage extends BasePage {
                     <p>{ this.props.info.description }</p>
                     <p>Special thanks and a high five to both teams at Monzo and Toshl for bringing great products!</p>
                     <div className="about-page__affiliates">
-                        <div className="about-page__affiliates__item about-page__affiliates__item--width-4">
+                        <div className="about-page__affiliates-item about-page__affiliates-item--width-4">
                             <a href={ strings.links.MONZO } target="_blank">
                                 <div className="about-page__affiliates__image">
                                     <img src="assets/images/monzo_logo.png" alt="Monzo logo" />

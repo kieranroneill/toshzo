@@ -1,24 +1,23 @@
-.error-page {
-  &__container {
-    width: 100%;
-    height: 100%;
-  }
+@import '../../stylesheets/modules/color';
 
+$nyan-cat-background: #014479;
+
+.error-page {
   &__caption {
+    color: color('white', 'shade');
+    left: 3rem;
     position: absolute;
     top: 2rem;
-    left: 3rem;
-    color: white;
     z-index: 10;
   }
 
   &__background {
-    width: 100%;
-    height: 100%;
-    display: flex;
     align-items: center;
+    background-color: $nyan-cat-background;
+    display: flex;
+    height: 100%;
     justify-content: center;
-    background-color: #014479;
+    width: 100%;
     z-index: 1;
 
     img {

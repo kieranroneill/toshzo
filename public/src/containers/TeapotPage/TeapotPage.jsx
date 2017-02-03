@@ -8,7 +8,7 @@ import strings from '../../../../config/strings.json';
 class TeapotPage extends React.Component {
     render() {
         return (
-            <div className="teapot-page__outer">
+            <div className="teapot-page__outer full--height full--width">
                 <div className="teapot-page__inner">
                     <h2 className="teapot-page__caption">{ strings.teapotPage.CAPTION }</h2>
                     <div className="teapot-page__image">

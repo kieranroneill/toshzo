@@ -1,11 +1,20 @@
 files:
   include:
-    - 'public/src/stylesheets/**/*.s+(a|c)ss'
+    - 'public/src/**/*.s+(a|c)ss'
 rules:
   # Disallows.
   no-css-comments: 0
 
   # Style guide.
+  brace-style:
+    - 2
+    - style: 'stroustrup'
+  class-name-format:
+    - 2
+    - convention: hyphenatedbem
+  nesting-depth:
+    - 2
+    - max-depth: 3
   quotes:
     - 2
     - style: single

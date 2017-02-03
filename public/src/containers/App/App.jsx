@@ -29,7 +29,7 @@ class App extends React.Component {
     render() {
         return (
             <MuiThemeProvider muiTheme={ muiTheme }>
-                <div className="page grey lighten-2">
+                <div className="full--height full--width grey lighten-2">
                     <PageLoader />
                     <ToshzoDrawer />
                     <Header />

@@ -8,7 +8,7 @@ import strings from '../../../../config/strings.json';
 class ErrorPage extends React.Component {
     render() {
         return (
-            <div className="error-page__container">
+            <div className="error-page__container full--height full--width">
                 <div className="error-page__caption">
                     <h2>{ strings.errorPage.CAPTION }</h2>
                 </div>

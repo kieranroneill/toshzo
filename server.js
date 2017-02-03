@@ -29,7 +29,6 @@ const Router = require('./lib/routes/router');
 const app = express();
 const port = (process.env.NODE_ENV === 'test' ? utilities.expressUtil.randomPort() : defaults.PORT); // Use a random port when testing.
 const server = http.Server(app);
-const router = new Router(middlewares.authMiddleware);
 const staticPath = path.resolve(__dirname, 'public', 'dist');
 let webpackCompiler;
 
@@ -81,7 +80,7 @@ else {
 //====================================================
 
 // API routes.
-app.use(strings.endpoints.API, router.router);
+app.use(strings.endpoints.API, Router(express));
 
 // Use client-side routing.
 app.get('*', (request, response) => response.sendFile(path.resolve(staticPath, 'index.html')));

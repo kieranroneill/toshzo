@@ -374,7 +374,8 @@ $colors: (
       .#{$color-name}-text {
         color: $color-value;
       }
-    } @else if $color-name != 'shades' {
+    }
+    @else if $color-name != 'shades' {
       .#{$color-name} {
         &.#{$color-type} {
           background-color: $color-value;
