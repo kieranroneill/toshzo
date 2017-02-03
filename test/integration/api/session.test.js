@@ -2,7 +2,7 @@ import Promise from 'bluebird';
 
 import { monzoController, sessionController, toshlController } from '../../../lib/controllers/index';
 
-import { util } from '../../../lib/util/index';
+import { errorsUtil } from '../../../lib/utilities/index';
 
 const route = strings.endpoints.API + strings.endpoints.SESSION;
 
@@ -51,7 +51,7 @@ describe('/session', () => {
                 toshlToken: 'does it matter if this is valid?'
             };
 
-            this.monzoWhoAmIStub.rejects(util.createMonzoError(httpCodes.UNAUTHORIZED));
+            this.monzoWhoAmIStub.rejects(errorsUtil.createMonzoError(httpCodes.UNAUTHORIZED));
             this.toshlMeStub.resolves();
 
             supertest(this.app)
@@ -76,7 +76,7 @@ describe('/session', () => {
             };
 
             this.monzoWhoAmIStub.resolves();
-            this.toshlMeStub.rejects(util.createToshlError(httpCodes.UNAUTHORIZED));
+            this.toshlMeStub.rejects(errorsUtil.createToshlError(httpCodes.UNAUTHORIZED));
 
             supertest(this.app)
                 .post(route)
