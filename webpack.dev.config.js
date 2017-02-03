@@ -34,28 +34,28 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loaders: ['style-loader', 'css-loader']
+                loaders: ['style', 'css']
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-                loader: 'file-loader'
+                loader: 'file-'
             },
             {
                 test: /\.hbs$/,
-                loader: 'handlebars-loader'
+                loader: 'handlebars'
             },
             {
                 test: /\.json$/,
-                loader: 'json-loader'
+                loader: 'json'
             },
             {
                 test: /.jsx?$/,
-                loaders: ['react-hot', 'babel-loader'],
+                loaders: ['react-hot', 'babel'],
                 exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
-                loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+                loaders: ['style', 'css', 'postcss', 'sass']
             }
         ]
     },

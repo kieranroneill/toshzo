@@ -25,28 +25,28 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+                loader: ExtractTextPlugin.extract('style', 'css')
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-                loader: 'file-loader'
+                loader: 'file'
             },
             {
                 test: /\.hbs$/,
-                loader: 'handlebars-loader'
+                loader: 'handlebars'
             },
             {
                 test: /\.json$/,
-                loader: 'json-loader'
+                loader: 'json'
             },
             {
                 test: /.jsx?$/,
-                loaders: ['babel-loader'],
+                loaders: ['babel'],
                 exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader')
+                loader: ExtractTextPlugin.extract('style', 'css!postcss!sass')
             }
         ]
     },
