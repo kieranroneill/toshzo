@@ -34,7 +34,11 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loaders: ['style', 'css']
+                loaders: ['style-loader', 'css-loader']
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
+                loader: 'file-loader'
             },
             {
                 test: /\.hbs$/,
@@ -51,7 +55,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loaders: ['style', 'css', 'postcss', 'sass']
+                loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
             }
         ]
     },
@@ -64,7 +68,7 @@ module.exports = {
         new CopyWebpackPlugin(
             [{ from: path.resolve(srcPath, 'assets'), to: path.resolve(distPath, 'assets') }]),
         new FaviconsWebpackPlugin({
-            logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
+            logo: path.resolve(srcPath, 'favicon.png'),
             title: strings.APP_TITLE
         }),
         new HtmlWebpackPlugin({
@@ -80,9 +84,5 @@ module.exports = {
             alwaysNotify: true
         })
     ],
-    postcss: () => {
-        return [autoprefixer({
-            browsers: ['last 3 versions']
-        })];
-    }
+    postcss: () => [ autoprefixer({ browsers: ['last 3 versions'] }) ]
 };

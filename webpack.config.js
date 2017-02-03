@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
 const strings = require('./config/strings.json');
 
@@ -24,11 +25,15 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loaders: ['style', 'css']
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
+                loader: 'file-loader'
             },
             {
                 test: /\.hbs$/,
-                loader: 'handlebars'
+                loader: 'handlebars-loader'
             },
             {
                 test: /\.json$/,
@@ -41,7 +46,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css!postcss!sass')
+                loader: ExtractTextPlugin.extract('style-loader', 'css-loader!postcss-loader!sass-loader')
             }
         ]
     },
@@ -53,7 +58,7 @@ module.exports = {
         new CopyWebpackPlugin([{ from: path.resolve(srcPath, 'assets'), to: path.resolve(distPath, 'assets') }]),
         new ExtractTextPlugin('styles.css'),
         new FaviconsWebpackPlugin({
-            logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
+            logo: path.resolve(srcPath, 'favicon.png'),
             title: strings.APP_TITLE
         }),
         new HtmlWebpackPlugin({
@@ -66,11 +71,20 @@ module.exports = {
                 minifyJS: true,
                 minifyCSS: true
             }
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: false,
+            mangle: false
         })
     ],
-    postcss: () => {
-        return [autoprefixer({
-            browsers: ['last 3 versions']
-        })];
-    }
+    postcss: () => [ autoprefixer({ browsers: ['last 3 versions'] }) ],
+    sassLoader: { outputStyle: 'compressed' }
 };
