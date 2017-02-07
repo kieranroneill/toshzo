@@ -1,27 +1,46 @@
 import Promise from 'bluebird';
 
+import { authMiddleware } from '../../../lib/middlewares/index';
+
 import { monzoController } from '../../../lib/controllers/index';
 
 const route = strings.endpoints.API + strings.endpoints.MONZO;
 
-describe('/monzo', function() {
+describe('/monzo', () => {
     before(function() {
         this.app = server.app;
     });
 
     beforeEach(function() {
+        this.isAuthenticatedAsPromisedStub = stub(authMiddleware, 'isAuthenticatedAsPromised');
+        this.getAccountsStub = stub(monzoController, 'getAccounts');
         this.requestPostStub = stub(request, 'post');
         this.verifyStateTokenStub = stub(monzoController, 'verifyStateToken');
     });
 
     afterEach(function() {
+        this.isAuthenticatedAsPromisedStub.restore();
+        this.getAccountsStub.restore();
         this.requestPostStub.restore();
         this.verifyStateTokenStub.restore();
     });
 
     describe('/accounts', function() {
-        it('should fail if the session token is missing', function() {
+        it('should return a list of Monzo user accounts', function(done) {
+            const url = route  + strings.endpoints.ACCOUNTS;
 
+            this.isAuthenticatedAsPromisedStub.resolves({ monzoToken: 'coooooool!!!!' });
+            this.getAccountsStub.resolves([]);
+
+            supertest(this.app)
+                .get(url)
+                .expect(httpCodes.OK)
+                .end((error, response) => {
+                    expect(error).to.equal(null);
+                    expect(response.body).to.be.an('array');
+
+                    done();
+                });
         });
     });
 

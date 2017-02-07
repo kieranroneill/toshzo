@@ -9,6 +9,7 @@
 
   "endpoints": {
     "ACCESS": "/access",
+    "ACCOUNTS": "/accounts",
     "API": "/api",
     "INFO": "/info",
     "MONZO": "/monzo",
