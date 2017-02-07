@@ -14,8 +14,8 @@ describe('server', () => {
                 .expect(httpCodes.OK)
                 .end((error, response) => {
                     expect(error).to.equal(null);
-                    expect(response.headers).to.have.property(strings.headers.POWERED_BY.toLowerCase());
-                    expect(response.headers[strings.headers.POWERED_BY.toLowerCase()]).to.equal('Unicorns!');
+                    expect(response.headers).to.have.property(strings.headers.POWERED_BY);
+                    expect(response.headers[strings.headers.POWERED_BY]).to.equal('Unicorns!');
 
                     done();
                 });

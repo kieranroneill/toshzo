@@ -1,8 +1,6 @@
 import Promise from 'bluebird';
 
-import { authMiddleware } from '../../../lib/middlewares/index';
-
-import { monzoController } from '../../../lib/controllers/index';
+import { monzoController, sessionController } from '../../../lib/controllers/index';
 
 const route = strings.endpoints.API + strings.endpoints.MONZO;
 
@@ -12,16 +10,16 @@ describe('/monzo', () => {
     });
 
     beforeEach(function() {
-        this.isAuthenticatedAsPromisedStub = stub(authMiddleware, 'isAuthenticatedAsPromised');
         this.getAccountsStub = stub(monzoController, 'getAccounts');
         this.requestPostStub = stub(request, 'post');
+        this.verifySessionTokenStub = stub(sessionController, 'verifySessionToken');
         this.verifyStateTokenStub = stub(monzoController, 'verifyStateToken');
     });
 
     afterEach(function() {
-        this.isAuthenticatedAsPromisedStub.restore();
         this.getAccountsStub.restore();
         this.requestPostStub.restore();
+        this.verifySessionTokenStub.restore();
         this.verifyStateTokenStub.restore();
     });
 
@@ -29,11 +27,12 @@ describe('/monzo', () => {
         it('should return a list of Monzo user accounts', function(done) {
             const url = route  + strings.endpoints.ACCOUNTS;
 
-            this.isAuthenticatedAsPromisedStub.resolves({ monzoToken: 'coooooool!!!!' });
+            this.verifySessionTokenStub.resolves({ monzoToken: 'coooooool!!!!' });
             this.getAccountsStub.resolves([]);
 
             supertest(this.app)
                 .get(url)
+                .set(strings.headers.SESSION_TOKEN, 'valid-session-token')
                 .expect(httpCodes.OK)
                 .end((error, response) => {
                     expect(error).to.equal(null);

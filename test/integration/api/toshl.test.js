@@ -1,6 +1,4 @@
-import { authMiddleware } from '../../../lib/middlewares/index';
-
-import { toshlController } from '../../../lib/controllers/index';
+import { sessionController, toshlController } from '../../../lib/controllers/index';
 
 const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
@@ -10,26 +8,27 @@ describe('/toshl', () => {
     });
 
     beforeEach(function() {
-        this.isAuthenticatedAsPromisedStub = stub(authMiddleware, 'isAuthenticatedAsPromised');
         this.getAccountsStub = stub(toshlController, 'getAccounts');
         this.requestGetStub = stub(request, 'get');
+        this.verifySessionTokenStub = stub(sessionController, 'verifySessionToken');
     });
 
     afterEach(function() {
-        this.isAuthenticatedAsPromisedStub.restore();
         this.getAccountsStub.restore();
         this.requestGetStub.restore();
+        this.verifySessionTokenStub.restore();
     });
 
     describe('/accounts', function() {
         it('should return a list of Toshl accounts', function(done) {
             const url = route  + strings.endpoints.ACCOUNTS;
 
-            this.isAuthenticatedAsPromisedStub.resolves({ toshlToken: 'coooooool!!!!' });
+            this.verifySessionTokenStub.resolves({ toshlToken: 'coooooool!!!!' });
             this.getAccountsStub.resolves([]);
 
             supertest(this.app)
                 .get(url)
+                .set(strings.headers.SESSION_TOKEN, 'valid-session-token')
                 .expect(httpCodes.OK)
                 .end((error, response) => {
                     expect(error).to.equal(null);

@@ -26,8 +26,8 @@
   },
 
   "headers": {
-    "POWERED_BY": "X-Powered-By",
-    "TOSHL_TOKEN": "X-Toshl-Token"
+    "POWERED_BY": "x-powered-by",
+    "SESSION_TOKEN": "x-session-token"
   },
 
   "labels": {
