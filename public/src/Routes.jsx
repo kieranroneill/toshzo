@@ -5,6 +5,7 @@ import { Router, Route, IndexRedirect } from 'react-router';
 // Components.
 import App from './containers/App/App';
 import AboutPage from './containers/AboutPage/AboutPage';
+import AccountsPage from './containers/AccountsPage/AccountsPage';
 import AuthPage from './containers/AuthPage/AuthPage';
 import DashboardPage from './containers/DashboardPage/DashboardPage';
 import ErrorPage from './containers/ErrorPage/ErrorPage';
@@ -100,6 +101,10 @@ export default function Routes(props) {
                 <Route
                     path={ strings.routes.ABOUT }
                     component={ AboutPage } />
+                <Route
+                    path={ strings.routes.ACCOUNTS }
+                    component={ AccountsPage }
+                    onEnter={ isAuthorised.bind(this, props) } />
                 <Route
                     path={ strings.routes.AUTH }
                     component={ AuthPage } />

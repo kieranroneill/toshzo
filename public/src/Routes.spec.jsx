@@ -4,6 +4,7 @@ import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
 // Components.
 import AboutPage from './containers/AboutPage/AboutPage';
+import AccountsPage from './containers/AccountsPage/AccountsPage';
 import App from './containers/App/App';
 import AuthPage from './containers/AuthPage/AuthPage';
 import DashboardPage from './containers/DashboardPage/DashboardPage';
@@ -82,6 +83,7 @@ describe('<Routes />', () => {
 
             expect(pathMap['/'].component).to.equal(App);
             expect(pathMap[strings.routes.ABOUT].component).to.equal(AboutPage);
+            expect(pathMap[strings.routes.ACCOUNTS].component).to.equal(AccountsPage);
             expect(pathMap[strings.routes.AUTH].component).to.equal(AuthPage);
             expect(pathMap[strings.routes.DASHBOARD].component).to.equal(DashboardPage);
             expect(pathMap[strings.routes.ERROR].component).to.equal(ErrorPage);

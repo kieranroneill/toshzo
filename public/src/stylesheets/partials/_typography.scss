@@ -1,5 +1,9 @@
 html,
-body {
+button,
+input,
+select,
+textarea,
+.pure-g [class *= 'pure-u'] {
   @include tablet {
     font-size: 90%;
   }
@@ -8,10 +12,7 @@ body {
     font-size: 100%;
   }
 
-  font-size: 70%;
-}
-
-body {
   font-family: 'Roboto', sans-serif;
+  font-size: 70%;
   font-weight: 400;
 }
