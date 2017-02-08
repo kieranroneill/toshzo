@@ -1,6 +1,3 @@
-import axios from 'axios';
-import httpCodes from 'http-codes';
-
 import BaseService from './BaseService';
 
 import { SessionState } from '../states/index';

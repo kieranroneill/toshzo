@@ -21,30 +21,11 @@ describe('session reducers', () => {
         });
     });
 
-    describe('when setting the session token', function() {
-        it('should use the default state if the session token is null', function() {
-            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: null });
+    describe('when resetting the session stated', function() {
+        it('should reset the session state', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.RESET_SESSION_STATE });
 
-            expect(state.token).to.equal(this.initialState.token);
-        });
-
-        it('should use the default state if the session token is not a string', function() {
-            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: 42 });
-
-            expect(state.token).to.equal(this.initialState.token);
-        });
-
-        it('should use the default state if the page title is an empty string', function() {
-            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: '' });
-
-            expect(state.token).to.equal(this.initialState.token);
-        });
-
-        it('should change the page title to the specified string', function() {
-            const token = 'Please please add me!!!';
-            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: token });
-
-            expect(state.token).to.equal(token);
+            expect(state).to.deep.equal(this.initialState);
         });
     });
 
@@ -78,6 +59,33 @@ describe('session reducers', () => {
             state = SessionReducer(this.initialState, { type: SessionActions.SET_AUTHENTICATION_STATE, value: false });
 
             expect(state.isLoggedIn).to.be.false;
+        });
+    });
+
+    describe('when setting the session token', function() {
+        it('should use the default state if the session token is null', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: null });
+
+            expect(state.token).to.equal(this.initialState.token);
+        });
+
+        it('should use the default state if the session token is not a string', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: 42 });
+
+            expect(state.token).to.equal(this.initialState.token);
+        });
+
+        it('should use the default state if the page title is an empty string', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: '' });
+
+            expect(state.token).to.equal(this.initialState.token);
+        });
+
+        it('should change the page title to the specified string', function() {
+            const token = 'Please please add me!!!';
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_SESSION_TOKEN, value: token });
+
+            expect(state.token).to.equal(token);
         });
     });
 });

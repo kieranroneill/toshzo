@@ -2,11 +2,10 @@ import * as SessionActionCreators from './SessionActionCreators';
 import { SessionActions } from '../actions/index';
 
 describe('session actions', () => {
-    it('should create an action to set the session token', () => {
-        const token = 'Tokenize time';
-        const expectedAction = { type: SessionActions.SET_SESSION_TOKEN, value: token };
+    it('should create an action reset the session state', () => {
+        const expectedAction = { type: SessionActions.RESET_SESSION_STATE };
 
-        expect(SessionActionCreators.setSessionToken(token)).to.deep.equal(expectedAction);
+        expect(SessionActionCreators.resetSessionState()).to.deep.equal(expectedAction);
     });
 
     it('should create an action to set the authenticated state', () => {
@@ -14,5 +13,12 @@ describe('session actions', () => {
         const expectedAction = { type: SessionActions.SET_AUTHENTICATION_STATE, value: isLoggedIn };
 
         expect(SessionActionCreators.setAuthenticationState(isLoggedIn)).to.deep.equal(expectedAction);
+    });
+
+    it('should create an action to set the session token', () => {
+        const token = 'Tokenize time';
+        const expectedAction = { type: SessionActions.SET_SESSION_TOKEN, value: token };
+
+        expect(SessionActionCreators.setSessionToken(token)).to.deep.equal(expectedAction);
     });
 });

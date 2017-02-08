@@ -7,6 +7,9 @@ function SessionReducer(state = initialSessionState, action) {
     let isLoggedIn, token;
 
     switch (action.type) {
+        case SessionActions.RESET_SESSION_STATE:
+            return Object.assign({}, state, { isLoggedIn: false, token: null });
+
         case SessionActions.SET_AUTHENTICATION_STATE:
             isLoggedIn = state.isLoggedIn;
 
