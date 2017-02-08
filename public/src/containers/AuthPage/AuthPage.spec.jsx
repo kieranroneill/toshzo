@@ -15,10 +15,10 @@ describe('<AuthPage />', () => {
     beforeEach(function() {
         this.props = getDefaultProps();
 
-        this.createSessionTokenStub = stub(this.props.services.SessionService, 'createSessionToken');
-        this.getAccessTokenStub = stub(this.props.services.MonzoService, 'getAccessToken');
-        this.getStateTokenStub = stub(this.props.services.MonzoService, 'getStateToken');
-        this.verifyTokenStub = stub(this.props.services.ToshlService, 'verifyToken');
+        this.createSessionTokenStub = stub(this.props.services.session, 'createSessionToken');
+        this.getAccessTokenStub = stub(this.props.services.monzo, 'getAccessToken');
+        this.getStateTokenStub = stub(this.props.services.monzo, 'getStateToken');
+        this.verifyTokenStub = stub(this.props.services.toshl, 'verifyToken');
     });
 
     afterEach(function() {

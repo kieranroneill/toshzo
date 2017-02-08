@@ -58,10 +58,10 @@ describe('<Routes />', () => {
         this.wrapper = shallowWithContext(<Routes { ...this.props }/>);
 
         this.dispatchSpy = spy(this.props.store, 'dispatch');
-        this.getInfoStub = stub(this.props.services.InfoService, 'getInfo');
-        this.getReferencesStub = stub(this.props.services.ReferencesService, 'getReferences');
+        this.getInfoStub = stub(this.props.services.info, 'getInfo');
+        this.getReferencesStub = stub(this.props.services.references, 'getReferences');
         this.replaceStub = stub();
-        this.verifySessionTokenStub = stub(this.props.services.SessionService, 'verifySessionToken');
+        this.verifySessionTokenStub = stub(this.props.services.session, 'verifySessionToken');
     });
 
     afterEach(function () {

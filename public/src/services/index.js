@@ -6,10 +6,10 @@ import ToshlService from './ToshlService';
 
 export default function createServices(store) {
     return {
-        InfoService: new InfoService(store),
-        MonzoService: new MonzoService(store),
-        ReferencesService: new ReferencesService(store),
-        SessionService: new SessionService(store),
-        ToshlService: new ToshlService(store)
+        info: new InfoService(store),
+        monzo: new MonzoService(store),
+        references: new ReferencesService(store),
+        session: new SessionService(store),
+        toshl: new ToshlService(store)
     };
 }

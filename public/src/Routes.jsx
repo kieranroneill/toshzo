@@ -2,7 +2,7 @@ import Promise from 'bluebird';
 import React from 'react';
 import { Router, Route, IndexRedirect } from 'react-router';
 
-// Components.
+// Containers.
 import App from './containers/App/App';
 import AboutPage from './containers/AboutPage/AboutPage';
 import AccountsPage from './containers/AccountsPage/AccountsPage';
@@ -35,7 +35,7 @@ export function isAuthorised(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    return props.services.SessionService
+    return props.services.session
         .verifySessionToken(store.session.token)
         .then(() => callback(null))
         .catch(() => {
@@ -47,8 +47,8 @@ export function isAuthorised(props, nextState, replaceState, callback) {
 
 export function onAppEnter(props, nextState, replaceState, callback) {
     const promises = [
-        props.services.InfoService.getInfo(),
-        props.services.ReferencesService.getReferences()
+        props.services.info.getInfo(),
+        props.services.references.getReferences()
     ];
 
     // Get app dependencies.
@@ -76,7 +76,7 @@ export function onAuthEnter(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    return props.services.SessionService
+    return props.services.session
         .verifySessionToken(store.session.token)
         .then(() => {
             // Redirect to the dashboard page.
