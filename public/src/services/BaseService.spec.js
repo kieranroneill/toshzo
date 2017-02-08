@@ -5,6 +5,8 @@ import BaseService from './BaseService';
 
 import { SessionState } from '../states/index';
 
+import { getMockStore } from '../../../test/react-helpers';
+
 describe('base service', () => {
     const testUrl = 'http://to.infinity.and.beyond';
     const testBody = {
@@ -12,7 +14,7 @@ describe('base service', () => {
     };
 
     beforeEach(function() {
-        this.baseService = new BaseService();
+        this.baseService = new BaseService(getMockStore());
         this.response = {
             data: testBody,
             status: httpCodes.OK,

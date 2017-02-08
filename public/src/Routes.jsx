@@ -12,9 +12,6 @@ import ErrorPage from './containers/ErrorPage/ErrorPage';
 import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
 import TeapotPage from './containers/TeapotPage/TeapotPage';
 
-// Services.
-import { InfoService, SessionService, ReferencesService } from './services/index';
-
 // ActionCreators.
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
@@ -38,7 +35,7 @@ export function isAuthorised(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    return SessionService
+    return props.services.SessionService
         .verifySessionToken(store.session.token)
         .then(() => callback(null))
         .catch(() => {
@@ -50,8 +47,8 @@ export function isAuthorised(props, nextState, replaceState, callback) {
 
 export function onAppEnter(props, nextState, replaceState, callback) {
     const promises = [
-        InfoService.getInfo(),
-        ReferencesService.getReferences()
+        props.services.InfoService.getInfo(),
+        props.services.ReferencesService.getReferences()
     ];
 
     // Get app dependencies.
@@ -79,7 +76,7 @@ export function onAuthEnter(props, nextState, replaceState, callback) {
         return callback(null);
     }
 
-    return SessionService
+    return props.services.SessionService
         .verifySessionToken(store.session.token)
         .then(() => {
             // Redirect to the dashboard page.

@@ -6,6 +6,10 @@ import strings from '../../../config/strings.json';
 const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
 class ToshlService extends BaseService {
+    constructor(store) {
+        super(store);
+    }
+
     getAccounts() {
         const url = route + strings.endpoints.ACCOUNTS;
 
@@ -21,4 +25,4 @@ class ToshlService extends BaseService {
     }
 }
 
-export default new ToshlService();
+export default ToshlService;

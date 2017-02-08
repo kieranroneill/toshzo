@@ -2,7 +2,7 @@ import { Route } from 'react-router';
 
 import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
-// Components.
+// Containers.
 import AboutPage from './containers/AboutPage/AboutPage';
 import AccountsPage from './containers/AccountsPage/AccountsPage';
 import App from './containers/App/App';
@@ -15,13 +15,11 @@ import TeapotPage from './containers/TeapotPage/TeapotPage';
 // ActionCreators.
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
-// Services.
-import { InfoService, SessionService, ReferencesService } from './services/index';
-
 // States.
 import { InfoState as initialInfoState, ReferencesState as initialReferencesState } from './states/index';
 
-import { getDefaultPropsWithStore, shallowWithContext } from '../../test/react-helpers';
+// Helpers.
+import { getDefaultProps, shallowWithContext } from '../../test/react-helpers';
 
 /**
  * Gets a map that links a route to it's corresponding component.
@@ -55,15 +53,15 @@ const mockNextState = {
 
 describe('<Routes />', () => {
     beforeEach(function () {
-        this.props = getDefaultPropsWithStore();
+        this.props = getDefaultProps();
         this.mockNextState = mockNextState;
         this.wrapper = shallowWithContext(<Routes { ...this.props }/>);
 
         this.dispatchSpy = spy(this.props.store, 'dispatch');
-        this.getInfoStub = stub(InfoService, 'getInfo');
-        this.getReferencesStub = stub(ReferencesService, 'getReferences');
+        this.getInfoStub = stub(this.props.services.InfoService, 'getInfo');
+        this.getReferencesStub = stub(this.props.services.ReferencesService, 'getReferences');
         this.replaceStub = stub();
-        this.verifySessionTokenStub = stub(SessionService, 'verifySessionToken');
+        this.verifySessionTokenStub = stub(this.props.services.SessionService, 'verifySessionToken');
     });
 
     afterEach(function () {

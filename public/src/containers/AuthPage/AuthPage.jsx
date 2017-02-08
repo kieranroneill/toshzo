@@ -15,7 +15,7 @@ import BasePage from '../BasePage/BasePage';
 import { ConfigActionCreators, SessionActionCreators } from '../../action-creators/index';
 
 // Services.
-import { MonzoService, SessionService, ToshlService } from '../../services/index';
+//import { MonzoService, SessionService, ToshlService } from '../../services/index';
 
 class AuthPage extends BasePage {
     constructor(props) {
@@ -42,14 +42,14 @@ class AuthPage extends BasePage {
     authoriseMonzo() {
         this.props.dispatch(ConfigActionCreators.showLoader());
 
-        return MonzoService
+        return this.props.services.MonzoService
             .getStateToken()
             .bind(this)
             .then(result => {
                 const monzoAuthUri = AuthPage.createMonzoAuthUri(
                     this.props.references.monzo.clientId,
                     result.token,
-                    MonzoService.createMonzoRedirectUri()
+                    this.props.services.MonzoService.createMonzoRedirectUri()
                 );
 
                 // Navigate to Monzo for authorisation.
@@ -61,7 +61,7 @@ class AuthPage extends BasePage {
     authoriseToshl() {
         this.props.dispatch(ConfigActionCreators.showLoader());
 
-        return ToshlService
+        return this.props.services.ToshlService
             .verifyToken(this.state.toshl.personalToken)
             .bind(this)
             .then(() => this.incrementStep())
@@ -72,7 +72,7 @@ class AuthPage extends BasePage {
     componentDidMount() {
         // Handle a Monzo redirection.
         if(this.state.monzo.authorisationCode && this.state.stateToken) {
-            MonzoService
+            this.props.services.MonzoService
                 .getAccessToken(this.state.stateToken, this.state.monzo.authorisationCode)
                 .bind(this)
                 .then(result => this.setState({
@@ -184,7 +184,7 @@ class AuthPage extends BasePage {
         if(this.state.finished) {
             this.props.dispatch(ConfigActionCreators.showLoader());
 
-            return SessionService
+            return this.props.services.SessionService
                 .createSessionToken(this.state.monzo.accessToken, this.state.toshl.personalToken)
                 .then(result => {
                     this.props.dispatch(SessionActionCreators.setSessionToken(result.token));
@@ -244,7 +244,8 @@ AuthPage.propTypes = {
     dispatch: React.PropTypes.func,
     location: React.PropTypes.object,
     references: React.PropTypes.object,
-    router: React.PropTypes.object
+    router: React.PropTypes.object,
+    services: React.PropTypes.object,
 };
 
 function mapStateToProps(state) {

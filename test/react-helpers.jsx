@@ -4,10 +4,19 @@ import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 // States.
+import createServices from '../public/src/services/index';
+
+// States.
 import { ConfigState, InfoState, ReferencesState, SessionState } from '../public/src/states/index';
 
 const muiTheme = getMuiTheme({ userAgent: 'all' });
 const mockStore = configureMockStore([thunk]);
+const state = {
+    config: ConfigState,
+    info: InfoState,
+    references: ReferencesState,
+    session: SessionState
+};
 
 function getContext() {
     return {
@@ -21,12 +30,7 @@ function getContext() {
  * @return a mocked props object
  */
 export function getDefaultProps() {
-    const store = {
-        config: ConfigState,
-        info: InfoState,
-        references: ReferencesState,
-        session: SessionState
-    };
+    const store = getMockStore(state);
 
     return {
         dispatch: stub(),
@@ -36,33 +40,14 @@ export function getDefaultProps() {
         router: {
             push: stub()
         },
-        ...store
+        services: createServices(store),
+        store: store,
+        ...state
     };
 }
 
-/**
- * Returns props that mocks the router, store and connected components.
- * @return a mocked props object
- */
-export function getDefaultPropsWithStore() {
-    const store = {
-        config: ConfigState,
-        info: InfoState,
-        references: ReferencesState,
-        session: SessionState
-    };
-
-    return {
-        dispatch: stub(),
-        location: {
-            query: {}
-        },
-        router: {
-            push: stub()
-        },
-        store: mockStore(store),
-        ...store
-    };
+export function getMockStore() {
+    return mockStore(state);
 }
 
 /**

@@ -2,15 +2,16 @@ import _ from 'underscore';
 import axios from 'axios';
 import Promise from 'bluebird';
 
-import configureStore from '../config/store';
-
-const store = configureStore();
 const initialRequestConfig = {
     headers: {},
     validateStatus: () => true // Return resolved for all requests.
 };
 
 class BaseService {
+    constructor(store) {
+        this.store = store;
+    }
+
     static getRequestConfig(state) {
         const requestConfig = _.clone(initialRequestConfig);
 
@@ -31,13 +32,13 @@ class BaseService {
 
     httpGet(url) {
         return Promise
-            .resolve(axios.get(url, BaseService.getRequestConfig(store.getState()))) // Covert to bluebird promise.
+            .resolve(axios.get(url, BaseService.getRequestConfig(this.store.getState()))) // Covert to bluebird promise.
             .then(BaseService.handleResponse);
     }
 
     httpPost(url, body) {
         return Promise
-            .resolve(axios.post(url, body, BaseService.getRequestConfig(store.getState())))
+            .resolve(axios.post(url, body, BaseService.getRequestConfig(this.store.getState())))
             .then(BaseService.handleResponse);
     }
 }

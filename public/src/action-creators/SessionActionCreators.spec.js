@@ -8,4 +8,11 @@ describe('session actions', () => {
 
         expect(SessionActionCreators.setSessionToken(token)).to.deep.equal(expectedAction);
     });
+
+    it('should create an action to set the authenticated state', () => {
+        const isLoggedIn = false;
+        const expectedAction = { type: SessionActions.SET_AUTHENTICATION_STATE, value: isLoggedIn };
+
+        expect(SessionActionCreators.setAuthenticationState(isLoggedIn)).to.deep.equal(expectedAction);
+    });
 });

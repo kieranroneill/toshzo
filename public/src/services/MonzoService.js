@@ -6,6 +6,10 @@ import strings from '../../../config/strings.json';
 const route = strings.endpoints.API + strings.endpoints.MONZO;
 
 class MonzoService extends BaseService {
+    constructor(store) {
+        super(store);
+    }
+
     createMonzoRedirectUri() {
         return window.location.protocol + '//' +
             window.location.hostname +
@@ -37,4 +41,4 @@ class MonzoService extends BaseService {
     }
 }
 
-export default new MonzoService();
+export default MonzoService;

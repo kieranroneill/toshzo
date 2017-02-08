@@ -3,9 +3,6 @@ import { RaisedButton } from 'material-ui';
 // Strings.
 import strings from '../../../../config/strings.json';
 
-// Services.
-import { MonzoService, SessionService, ToshlService } from '../../services/index';
-
 // ActionCreators
 import { ConfigActionCreators, SessionActionCreators } from '../../action-creators/index';
 
@@ -18,10 +15,10 @@ describe('<AuthPage />', () => {
     beforeEach(function() {
         this.props = getDefaultProps();
 
-        this.createSessionTokenStub = stub(SessionService, 'createSessionToken');
-        this.getAccessTokenStub = stub(MonzoService, 'getAccessToken');
-        this.getStateTokenStub = stub(MonzoService, 'getStateToken');
-        this.verifyTokenStub = stub(ToshlService, 'verifyToken');
+        this.createSessionTokenStub = stub(this.props.services.SessionService, 'createSessionToken');
+        this.getAccessTokenStub = stub(this.props.services.MonzoService, 'getAccessToken');
+        this.getStateTokenStub = stub(this.props.services.MonzoService, 'getStateToken');
+        this.verifyTokenStub = stub(this.props.services.ToshlService, 'verifyToken');
     });
 
     afterEach(function() {

@@ -4,11 +4,12 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Components.
 import { AppTest } from './App';
 
-import { getDefaultPropsWithStore, shallowWithContext } from '../../../../test/react-helpers';
+// Helpers.
+import { getDefaultProps, shallowWithContext } from '../../../../test/react-helpers';
 
 describe('<App />', () => {
     beforeEach(function () {
-        this.props = getDefaultPropsWithStore();
+        this.props = getDefaultProps();
     });
 
     afterEach(function () {
