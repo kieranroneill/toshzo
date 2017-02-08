@@ -5,10 +5,10 @@ import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.REFERENCES;
 
-class ReferencesService {
-    static getReferences() {
-        return BaseService.httpGet(route);
+class ReferencesService extends BaseService {
+    getReferences() {
+        return this.httpGet(route);
     }
 }
 
-export default ReferencesService;
+export default new ReferencesService();

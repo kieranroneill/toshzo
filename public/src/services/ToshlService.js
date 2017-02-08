@@ -5,15 +5,20 @@ import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
-class ToshlService {
+class ToshlService extends BaseService {
+    getAccounts() {
+        const url = route + strings.endpoints.ACCOUNTS;
 
-    static verifyToken(personalToken) {
+        return this.httpGet(url);
+    }
+
+    verifyToken(personalToken) {
         let url = route + strings.endpoints.TOKEN;
 
         url += '?token=' + personalToken;
 
-        return BaseService.httpGet(url);
+        return this.httpGet(url);
     }
 }
 
-export default ToshlService;
+export default new ToshlService();

@@ -5,16 +5,16 @@ import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.SESSION;
 
-class SessionService {
-    static createSessionToken(monzoToken, toshlToken) {
-        return BaseService.httpPost(route, { monzoToken: monzoToken, toshlToken: toshlToken });
+class SessionService extends BaseService {
+    createSessionToken(monzoToken, toshlToken) {
+        return this.httpPost(route, { monzoToken: monzoToken, toshlToken: toshlToken });
     }
 
-    static verifySessionToken(token) {
+    verifySessionToken(token) {
         const url = route + '?token=' + token;
 
-        return BaseService.httpGet(url);
+        return this.httpGet(url);
     }
 }
 
-export default SessionService;
+export default new SessionService();
