@@ -1,7 +1,7 @@
 import { AppBar } from 'material-ui';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // ActionCreators
 import { ConfigActionCreators } from '../../action-creators/index';
@@ -9,7 +9,7 @@ import { ConfigActionCreators } from '../../action-creators/index';
 // Components.
 import { HeaderTest } from './Header';
 
-import { getDefaultProps, shallowWithContext } from '../../test/utilities';
+import { getDefaultProps, shallowWithContext } from '../../../../test/react-helpers';
 
 describe('<Header />', () => {
     beforeEach(function() {

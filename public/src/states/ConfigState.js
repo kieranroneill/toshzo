@@ -1,5 +1,5 @@
 // Strings.
-import strings from '../config/strings.json';
+import strings from '../../../config/strings.json';
 
 export default {
     isDrawerOpen: false,

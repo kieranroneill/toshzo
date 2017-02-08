@@ -1,7 +1,7 @@
 --compilers js:babel-core/register,jsx:babel-core/register
 --extensions js,jsx
 --require ignore-styles
---require test/helper.js
+--require test/setup.js
 --recursive
 --timeout 15000
 --full-trace

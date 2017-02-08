@@ -4,7 +4,7 @@ import { PageLoaderTest } from './PageLoader';
 // Store.
 import { ConfigState as initialConfigState } from '../../states/index';
 
-import { getDefaultProps, mountWithContext } from '../../test/utilities';
+import { getDefaultProps, mountWithContext } from '../../../../test/react-helpers';
 
 describe('<PageLoader />', () => {
     beforeEach(function() {

@@ -1,10 +1,12 @@
+import _ from 'underscore';
+
 import SessionReducer from './SessionReducer';
 import { SessionActions } from '../actions/index';
 import { SessionState as initialSessionState } from '../states/index';
 
 describe('session reducers', () => {
     beforeEach(function() {
-        this.initialState = initialSessionState;
+        this.initialState = _.clone(initialSessionState);
     });
 
     afterEach(function() {
@@ -16,6 +18,47 @@ describe('session reducers', () => {
             const state = SessionReducer(this.initialState, {});
 
             expect(state).to.deep.equal(this.initialState);
+        });
+    });
+
+    describe('when resetting the session stated', function() {
+        it('should reset the session state', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.RESET_SESSION_STATE });
+
+            expect(state).to.deep.equal(this.initialState);
+        });
+    });
+
+    describe('when setting the authentication state', function() {
+        it('should use the default state if the value is null', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_AUTHENTICATION_STATE, value: null });
+
+            expect(state.isLoggedIn).to.equal(this.initialState.isLoggedIn);
+        });
+
+        it('should use the default state if the value is a string', function() {
+            const state = SessionReducer(this.initialState, {
+                type: SessionActions.SET_AUTHENTICATION_STATE,
+                value: 'what am I?...oh right, I am an invalid authentication state'
+            });
+
+            expect(state.isLoggedIn).to.equal(this.initialState.isLoggedIn);
+        });
+
+        it('should use the default state if the value is a number', function() {
+            const state = SessionReducer(this.initialState, { type: SessionActions.SET_AUTHENTICATION_STATE, value: 123 });
+
+            expect(state.isLoggedIn).to.equal(this.initialState.isLoggedIn);
+        });
+
+        it('should change state if the value is a boolean', function() {
+            let state;
+
+            this.initialState.isLoggedIn = true;
+
+            state = SessionReducer(this.initialState, { type: SessionActions.SET_AUTHENTICATION_STATE, value: false });
+
+            expect(state.isLoggedIn).to.be.false;
         });
     });
 

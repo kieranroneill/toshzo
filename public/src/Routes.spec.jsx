@@ -2,28 +2,24 @@ import { Route } from 'react-router';
 
 import Routes, { isAuthorised, onAppEnter, onAuthEnter } from './Routes';
 
-// Strings.
-import strings from './config/strings.json';
-
-// Components.
-import AboutPage from './components/AboutPage/AboutPage';
-import App from './components/App/App';
-import AuthPage from './components/AuthPage/AuthPage';
-import DashboardPage from './components/DashboardPage/DashboardPage';
-import ErrorPage from './components/ErrorPage/ErrorPage';
-import NotFoundPage from './components/NotFoundPage/NotFoundPage';
-import TeapotPage from './components/TeapotPage/TeapotPage';
+// Containers.
+import AboutPage from './containers/AboutPage/AboutPage';
+import AccountsPage from './containers/AccountsPage/AccountsPage';
+import App from './containers/App/App';
+import AuthPage from './containers/AuthPage/AuthPage';
+import DashboardPage from './containers/DashboardPage/DashboardPage';
+import ErrorPage from './containers/ErrorPage/ErrorPage';
+import NotFoundPage from './containers/NotFoundPage/NotFoundPage';
+import TeapotPage from './containers/TeapotPage/TeapotPage';
 
 // ActionCreators.
 import { InfoActionCreators, ReferencesActionCreators } from './action-creators/index';
 
-// Services.
-import { InfoService, SessionService, ReferencesService } from './services/index';
-
 // States.
 import { InfoState as initialInfoState, ReferencesState as initialReferencesState } from './states/index';
 
-import { getDefaultPropsWithStore, shallowWithContext } from './test/utilities';
+// Helpers.
+import { getDefaultProps, shallowWithContext } from '../../test/react-helpers';
 
 /**
  * Gets a map that links a route to it's corresponding component.
@@ -57,15 +53,15 @@ const mockNextState = {
 
 describe('<Routes />', () => {
     beforeEach(function () {
-        this.props = getDefaultPropsWithStore();
+        this.props = getDefaultProps();
         this.mockNextState = mockNextState;
         this.wrapper = shallowWithContext(<Routes { ...this.props }/>);
 
         this.dispatchSpy = spy(this.props.store, 'dispatch');
-        this.getInfoStub = stub(InfoService, 'getInfo');
-        this.getReferencesStub = stub(ReferencesService, 'getReferences');
+        this.getInfoStub = stub(this.props.services.info, 'getInfo');
+        this.getReferencesStub = stub(this.props.services.references, 'getReferences');
         this.replaceStub = stub();
-        this.verifySessionTokenStub = stub(SessionService, 'verifySessionToken');
+        this.verifySessionTokenStub = stub(this.props.services.session, 'verifySessionToken');
     });
 
     afterEach(function () {
@@ -85,6 +81,7 @@ describe('<Routes />', () => {
 
             expect(pathMap['/'].component).to.equal(App);
             expect(pathMap[strings.routes.ABOUT].component).to.equal(AboutPage);
+            expect(pathMap[strings.routes.ACCOUNTS].component).to.equal(AccountsPage);
             expect(pathMap[strings.routes.AUTH].component).to.equal(AuthPage);
             expect(pathMap[strings.routes.DASHBOARD].component).to.equal(DashboardPage);
             expect(pathMap[strings.routes.ERROR].component).to.equal(ErrorPage);

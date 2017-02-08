@@ -1,18 +1,27 @@
 import BaseService from './BaseService';
 
 // Strings.
-import strings from '../config/strings.json';
+import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.TOSHL;
 
-class ToshlService {
+class ToshlService extends BaseService {
+    constructor(store) {
+        super(store);
+    }
 
-    static verifyToken(personalToken) {
+    getAccounts() {
+        const url = route + strings.endpoints.ACCOUNTS;
+
+        return this.httpGet(url);
+    }
+
+    verifyToken(personalToken) {
         let url = route + strings.endpoints.TOKEN;
 
         url += '?token=' + personalToken;
 
-        return BaseService.httpGet(url);
+        return this.httpGet(url);
     }
 }
 

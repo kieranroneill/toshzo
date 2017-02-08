@@ -1,0 +1,24 @@
+.teapot-page {
+  &__outer {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__inner {
+    max-width: 500px;
+    width: 50%;
+  }
+
+  &__caption {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  &__image {
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+}

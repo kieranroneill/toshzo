@@ -6,8 +6,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const webpack = require('webpack');
 
-const config = require('./lib/config/default.json');
+const strings = require('./config/strings.json');
 
 const distPath = path.join(__dirname, 'public', 'dist');
 const srcPath = path.join(__dirname, 'public', 'src');
@@ -24,7 +25,11 @@ module.exports = {
         loaders: [
             {
                 test: /\.css$/,
-                loaders: ['style', 'css']
+                loader: ExtractTextPlugin.extract('style', 'css')
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
+                loader: 'file'
             },
             {
                 test: /\.hbs$/,
@@ -32,16 +37,16 @@ module.exports = {
             },
             {
                 test: /\.json$/,
-                loader: 'json-loader'
+                loader: 'json'
             },
             {
                 test: /.jsx?$/,
-                loaders: ['babel-loader'],
+                loaders: ['babel'],
                 exclude: /node_modules/
             },
             {
                 test: /\.scss$/,
-                loader: ExtractTextPlugin.extract('css!postcss!sass')
+                loader: ExtractTextPlugin.extract('style', 'css!postcss!sass')
             }
         ]
     },
@@ -53,11 +58,11 @@ module.exports = {
         new CopyWebpackPlugin([{ from: path.resolve(srcPath, 'assets'), to: path.resolve(distPath, 'assets') }]),
         new ExtractTextPlugin('styles.css'),
         new FaviconsWebpackPlugin({
-            logo: path.resolve(srcPath, 'favicon', 'favicon.png'),
-            title: config.APP_TITLE
+            logo: path.resolve(srcPath, 'favicon.png'),
+            title: strings.APP_TITLE
         }),
         new HtmlWebpackPlugin({
-            title: config.APP_TITLE,
+            title: strings.APP_TITLE,
             inject: 'body',
             template: path.resolve(srcPath, 'index.hbs'),
             minify: {
@@ -66,11 +71,20 @@ module.exports = {
                 minifyJS: true,
                 minifyCSS: true
             }
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
+        }),
+        new webpack.optimize.UglifyJsPlugin({
+            compress: {
+                warnings: false
+            },
+            sourceMap: false,
+            mangle: false
         })
     ],
-    postcss: () => {
-        return [autoprefixer({
-            browsers: ['last 3 versions']
-        })];
-    }
+    postcss: () => [ autoprefixer({ browsers: ['last 3 versions'] }) ],
+    sassLoader: { outputStyle: 'compressed' }
 };

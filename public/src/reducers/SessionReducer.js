@@ -4,9 +4,21 @@ import { SessionActions } from '../actions/index';
 import { SessionState as initialSessionState } from '../states/index';
 
 function SessionReducer(state = initialSessionState, action) {
-    let token;
+    let isLoggedIn, token;
 
     switch (action.type) {
+        case SessionActions.RESET_SESSION_STATE:
+            return Object.assign({}, state, { isLoggedIn: false, token: null });
+
+        case SessionActions.SET_AUTHENTICATION_STATE:
+            isLoggedIn = state.isLoggedIn;
+
+            if(_.isBoolean(action.value)) {
+                isLoggedIn = action.value;
+            }
+
+            return Object.assign({}, state, { isLoggedIn: isLoggedIn });
+
         case SessionActions.SET_SESSION_TOKEN:
             token = state.token;
 

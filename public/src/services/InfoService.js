@@ -1,13 +1,17 @@
 import BaseService from './BaseService';
 
 // Strings.
-import strings from '../config/strings.json';
+import strings from '../../../config/strings.json';
 
 const route = strings.endpoints.API + strings.endpoints.INFO;
 
-class InfoService {
-    static getInfo() {
-        return BaseService.httpGet(route);
+class InfoService extends BaseService {
+    constructor(store) {
+        super(store);
+    }
+
+    getInfo() {
+        return this.httpGet(route);
     }
 }
 

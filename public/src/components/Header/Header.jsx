@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import './Header.scss';
 
 // Strings.
-import strings from '../../config/strings.json';
+import strings from '../../../../config/strings.json';
 
 // Components.
 import GitHubSvgIcon from '../GitHubSvgIcon/GitHubSvgIcon';
