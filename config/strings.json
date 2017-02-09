@@ -79,8 +79,9 @@
   },
 
   "toshl": {
-    "BASE": "https://api.toshl.com",
     "ACCOUNTS": "/accounts",
+    "BASE": "https://api.toshl.com",
+    "CATEGORIES": "/categories",
     "ME": "/me"
   }
 }

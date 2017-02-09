@@ -2,6 +2,8 @@ import Promise from 'bluebird';
 
 import { monzoController, sessionController, toshlController } from '../../../lib/controllers/index';
 
+import { monzoAccounts, toshlAccounts, toshlCategories } from '../../helpers';
+
 import { errorsUtil } from '../../../lib/utilities/index';
 
 const route = strings.endpoints.API + strings.endpoints.SESSION;
@@ -16,13 +18,19 @@ describe('/session', () => {
     });
 
     beforeEach(function() {
+        this.monzoGetAccountsStub = stub(monzoController, 'getAccounts');
         this.monzoWhoAmIStub = stub(monzoController, 'whoAmI');
+        this.toshlGetAccountsStub = stub(toshlController, 'getAccounts');
+        this.toshlGetCategoriesStub = stub(toshlController, 'getCategories');
         this.toshlMeStub = stub(toshlController, 'me');
         this.verifySessionTokenStub = stub(sessionController, 'verifySessionToken');
     });
 
     afterEach(function() {
+        this.monzoGetAccountsStub.restore();
         this.monzoWhoAmIStub.restore();
+        this.toshlGetAccountsStub.restore();
+        this.toshlGetCategoriesStub.restore();
         this.toshlMeStub.restore();
         this.verifySessionTokenStub.restore();
     });
@@ -99,8 +107,14 @@ describe('/session', () => {
                 toshlToken: 'Tish-Toshl'
             };
 
+            // Verification stubs.
             this.monzoWhoAmIStub.resolves();
             this.toshlMeStub.resolves();
+
+            // Informations.
+            this.monzoGetAccountsStub.resolves(monzoAccounts);
+            this.toshlGetAccountsStub.resolves(toshlAccounts);
+            this.toshlGetCategoriesStub.resolves(toshlCategories);
 
             supertest(this.app)
                 .post(route)
@@ -109,8 +123,19 @@ describe('/session', () => {
                 .end((error, response) => {
                     expect(error).to.equal(null);
                     expect(response.body).to.be.an('object');
+
                     expect(response.body).to.have.property('token');
                     expect(response.body.token).to.be.a('string');
+
+                    expect(response.body).to.have.property('monzo');
+                    expect(response.body.monzo).to.have.property('account');
+                    expect(response.body.monzo.account).to.deep.equal(monzoAccounts[0]);
+
+                    expect(response.body).to.have.property('toshl');
+                    expect(response.body.toshl).to.have.property('accounts');
+                    expect(response.body.toshl.accounts).to.deep.equal(toshlAccounts);
+                    expect(response.body.toshl).to.have.property('categories');
+                    expect(response.body.toshl.categories).to.deep.equal(toshlCategories);
 
                     done();
                 });
