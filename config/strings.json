@@ -18,7 +18,8 @@
     "STATE": "/state",
     "TEAPOT": "/teapot",
     "TOKEN": "/token",
-    "TOSHL": "/toshl"
+    "TOSHL": "/toshl",
+    "WEBHOOK_CALLBACK": "/webhookery"
   },
 
   "errorPage": {
